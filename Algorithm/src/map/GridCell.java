@@ -1,12 +1,14 @@
 package map;
+import java.awt.*;
 import Main.Constants.*;
 
 public class GridCell {
 
 	enum State{UNEXPLORED, EXPLORED, BLOCKED}
-	private int ver_coord;
-	private int hor_coord;
+	private int ver_coord;//ver_coord: along length
+	private int hor_coord;//hor_coord: along width
 	private State state;
+	private boolean hasWall;
 	
 	//constructor
 	public GridCell(int ver_coord, int hor_coord) {
@@ -39,4 +41,19 @@ public class GridCell {
 	public State getState() {
 		return state;
 	}
+	
+	public boolean isBlocked(State state) {
+		if (this.state == State.BLOCKED)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean hasExplored(State state) {
+		if (this.state == State.EXPLORED)
+			return true;
+		else
+			return false;
+	}
+	
 }

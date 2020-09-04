@@ -2,10 +2,17 @@ package Main;
 import robot.*;
 import map.*;
 import controller.*;
+import java.awt.*;
+import javax.swing.*;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		//simulation frame
+		frame = new JFrame();
+		frame.setTitle("Maze Simulator");
+		frame.setSize(1000,1000);
 		
 		// whether robot is in simulation or not
 		boolean inSimulation = true; 

@@ -18,6 +18,10 @@ public final class Constants {
 	public static final int WIDTH = 15;
 	
 	//sensors
+	//3 front sensors: 3 short range
+	//2 left sensors: 1 short range, 1 long range
+	//1 right sensor: 1 short range
+	public enum OrientationType{FRONT, LEFT, RIGHT}
 	public enum RangeType{SHORT, LONG}
 	public static final int LONG_RANGE_DISTANCE = 90; //range is 19-90cm, technically 19cm-151cm
 	public static final int SHORT_RANGE_DISTANCE = 50; //range is 9-50cm, technically 9cm-81cm
