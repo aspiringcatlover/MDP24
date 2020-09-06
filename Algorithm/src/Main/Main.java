@@ -7,12 +7,7 @@ import javax.swing.*;
 
 public class Main {
 
-	public static void main(String[] args) {
-		
-		//simulation frame
-		frame = new JFrame();
-		frame.setTitle("Maze Simulator");
-		frame.setSize(1000,1000);
+	public static void main(String[] args) throws InterruptedException {
 		
 		// whether robot is in simulation or not
 		boolean inSimulation = true; 
