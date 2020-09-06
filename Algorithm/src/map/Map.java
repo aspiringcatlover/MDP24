@@ -1,4 +1,5 @@
 package map;
+
 import static main.Constants.*;
 import java.awt.*;
 import javax.swing.*;
@@ -11,7 +12,6 @@ public class Map extends JFrame{
 	public static final Color START = Color.yellow;
 	public static final Color GOAL = Color.green;
 	public static final Color ROBOT_CENTER = Color.orange;
-	
 	//simulation frame
 	JFrame mapFrame = new JFrame("Map Simulator");
 	mapFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

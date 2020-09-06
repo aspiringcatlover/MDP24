@@ -4,10 +4,12 @@ import simulator.SimulatorRobot;
 import map.*;
 import actual.ActualRobot;
 import controller.*;
+import java.awt.*;
+import javax.swing.*;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		// whether robot is in simulation or not
 		boolean inSimulation = true; 

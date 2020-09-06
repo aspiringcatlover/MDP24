@@ -21,6 +21,10 @@ public final class Constants {
 	public static final int GRID_LENGTH = 10; //10cm
 	
 	//sensors
+	//3 front sensors: 3 short range
+	//2 left sensors: 1 short range, 1 long range
+	//1 right sensor: 1 short range
+	public enum OrientationType{FRONT, LEFT, RIGHT}
 	public enum RangeType{SHORT, LONG}
 	public enum SensorDir{FRONT, LEFT, RIGHT}
 	public static final int LONG_RANGE_DISTANCE = 90; //range is 19-90cm, technically 19cm-151cm
