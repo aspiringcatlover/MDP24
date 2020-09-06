@@ -1,5 +1,6 @@
 package controller;
 import robot.Robot;
+import actual.ActualExploration;
 import map.Map;
 
 public class Actual{
@@ -16,7 +17,7 @@ public class Actual{
 	//Starts actual
 	public void startActual() {
 		
-		Exploration exploration = new Exploration(robot, map);
+		ActualExploration exploration = new ActualExploration(robot, map);
 		
 	}
 

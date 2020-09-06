@@ -1,6 +1,8 @@
-package Main;
+package main;
 import robot.*;
+import simulator.SimulatorRobot;
 import map.*;
+import actual.ActualRobot;
 import controller.*;
 
 public class Main {
@@ -29,7 +31,7 @@ public class Main {
 			//decide whether robot is in exploration or fastest path mode in simulator
 			boolean isExploring = true;
 					
-			Robot robot = new Robot(steps_per_sec); 
+			SimulatorRobot robot = new SimulatorRobot(steps_per_sec); 
 			
 			Map map = new Map(coverage_perc);
 			
@@ -45,7 +47,7 @@ public class Main {
 		}
 		//in actual
 		else {
-			Robot robot = new Robot(); 
+			ActualRobot robot = new ActualRobot(); 
 			Map map = new Map();
 			Actual actual = new Actual(robot, map);
 			actual.startActual();

@@ -1,18 +1,21 @@
 package map;
-import Main.Constants.*;
+import java.awt.*;
+import static main.Constants.*;
+import main.Constants.*;
 
 public class GridCell {
 
-	enum State{UNEXPLORED, EXPLORED, BLOCKED}
-	private int ver_coord;
-	private int hor_coord;
-	private State state;
+	private int ver_coord;//ver_coord: along length
+	private int hor_coord;//hor_coord: along width
+	private boolean explored;
+	private boolean obstacle;
 	
 	//constructor
 	public GridCell(int ver_coord, int hor_coord) {
 		this.ver_coord = ver_coord;
 		this.hor_coord = hor_coord;
-		state = State.UNEXPLORED;
+		explored = false;
+		obstacle = false;
 	}
 	
 	//getters and setters
@@ -32,11 +35,5 @@ public class GridCell {
 		return hor_coord;
 	}
 
-	public void setState(State state) {
-		this.state = state;
-	}
 	
-	public State getState() {
-		return state;
-	}
 }

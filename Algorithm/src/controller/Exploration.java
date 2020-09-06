@@ -1,12 +1,15 @@
 package controller;
 import robot.Robot;
-import map.Map;
-import static Main.Constants.*;
 
-public class Exploration{
+import static main.Constants.*;
+
+import main.Constants.Direction;
+import map.Map;
+
+public abstract class Exploration{
 	
-	private Robot robot;
-	private Map map;
+	protected Robot robot;
+	protected Map map;
 			
 	//constructor
 	public Exploration(Robot robot, Map map) {
@@ -15,16 +18,26 @@ public class Exploration{
 	}
 	
 	//start exploring maze
-	public void explore() {
-		while(map.getActualCoveragePerc() < map.getGoalCoveragePerc()) {
-			rightWallHugging();
-		}
-	}
+	public abstract void explore();
+	
+	//sense map using sensors and update map descriptor where there is obstacles/free explored space
+	public abstract void senseMap();
 	
 	//right wall hugging - make sure wall always on right of robot
 	public void rightWallHugging() {
-		
+		//if no obstacle on the right, turn right and move forward
+		if (robot.hasObstacle(robot.robotRightDir()) == false) {
+			robot.turn(robot.robotRightDir());
+			robot.moveForward();
+		}
+		//if can move forward, move forward
+		else if (robot.hasObstacle(robot.getDirection()) == false) {
+			robot.moveForward();
+		}
+		//else, turn left
+		else {
+			robot.turn(robot.robotLeftDir());
+		}
 	}
-
 
 }
