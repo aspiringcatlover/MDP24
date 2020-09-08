@@ -1,15 +1,19 @@
 package controller;
 import robot.Robot;
+<<<<<<< Updated upstream
 import actual.ActualExploration;
 import map.Map;
+=======
+import map.ActualMap;
+>>>>>>> Stashed changes
 
 public class Actual{
 
 	private Robot robot;
-	private Map map;
+	private ActualMap map;
 	
 	//constructor
-	public Actual(Robot robot, Map map) {
+	public Actual(Robot robot, ActualMap map) {
 		this.robot = robot;
 		this.map = map;
 	}
