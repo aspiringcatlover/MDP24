@@ -18,7 +18,7 @@ public class Actual{
 	public void startActual() {
 		
 		ActualExploration exploration = new ActualExploration(robot, map);
-		
+		exploration.explore();
 	}
 
 }

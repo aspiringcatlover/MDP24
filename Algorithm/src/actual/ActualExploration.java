@@ -5,6 +5,8 @@ import controller.Exploration;
 import static main.Constants.*;
 
 import main.Constants.Direction;
+import main.Constants.Movement;
+import map.GridCell;
 import map.Map;
 
 public class ActualExploration extends Exploration{
@@ -16,24 +18,48 @@ public class ActualExploration extends Exploration{
 	
 	//start exploring maze
 	public void explore() {
-		while(super.map.getActualCoveragePerc() < map.getGoalCoveragePerc()) {
+		while(map.getActualCoveragePerc() < map.getGoalCoveragePerc()) {
 			realign();
 			//sense map and update map descriptor
-			senseMap();
-			super.rightWallHugging();
+			//false to mean not inSimulation
+			senseMap(false);
+			rightWallHugging();
 		}
 	}
 	
-	//sense map using sensors and update map descriptor where there is obstacles/free explored space
-	public void senseMap() {
-		
+	public void rightWallHugging() {
+		//if no obstacle on the right, turn right and move forward
+		if (hasObstacle(robot.robotRightDir()) == false) {
+			robot.turn(robot.robotRightDir());
+			movement.add(Movement.TURN_RIGHT);
+			//displayTurn(Direction robot.getDirection)
+			robot.moveForward();
+			movement.add(Movement.MOVE_FORWARD);
+			//displayMove(int robot.x_coord, int robot.y_coord)
+		}
+		//if can move forward, move forward
+		else if (hasObstacle(robot.getDirection()) == false) {
+			robot.moveForward();
+			movement.add(Movement.MOVE_FORWARD);
+			//displayMove(int robot.x_coord, int robot.y_coord)
+		}
+		//else, turn left
+		else {
+			robot.turn(robot.robotLeftDir());
+			movement.add(Movement.TURN_LEFT);
+			//displayTurn(Direction robot.getDirection)
+		}
 	}
+	
+	public boolean hasObstacle(Direction dir) {
+		return true;
+ 	}
 	
 	//realign robot
 	public void realign() {
 		//if robot at corner made by 2 obstacles or walls
-		if (robot.hasObstacle(robot.getDirection()) && 
-				(robot.hasObstacle(robot.robotLeftDir())|robot.hasObstacle(robot.robotRightDir()))){
+		if (hasObstacle(robot.getDirection()) && 
+				(hasObstacle(robot.robotLeftDir())|hasObstacle(robot.robotRightDir()))){
 			parallelRealign();
 		}
 		//if distance from wall/obstacle to robot is off

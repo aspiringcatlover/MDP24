@@ -1,5 +1,6 @@
 package robot;
 import static main.Constants.*;
+import java.util.ArrayList;
 
 import controller.*;
 import main.Constants.Direction;
@@ -11,7 +12,6 @@ public abstract class Robot {
 	protected int y_coord;
 	protected Direction direction; // forward direction of robot
 	
-	
 	// constructor
 	public Robot() {
 		x_coord = START_X_COORD;
@@ -19,8 +19,6 @@ public abstract class Robot {
 		// assuming forward direction of robot is LEFT if right wall hugging 
 		direction = Direction.LEFT;
 	}
-	
-	
 	
 	// getters and setters
 	public void setXCoord(int x_coord) {
@@ -76,38 +74,35 @@ public abstract class Robot {
 	
 	//return direction to the right of the forward direction of robot
 	public Direction robotRightDir() {
-		//the right of robot is to look from clockwise direction
-		Direction [] directions = {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
-		//index gives index of array based on current direction
-		int index = 0;
-		for (int i = 0; i < directions.length; i++) {
-	        if (directions[i] == direction) {
-	            index = i;
-	        }
-	    }
-		//right index gives index based on robot's right direction
-		int rightIndex = (index+1)%4;
-		return directions[rightIndex];
+		return HelperDir(Direction.RIGHT);
 	}
 	
 	//return direction to the left of the forward direction of robot
 	public Direction robotLeftDir() {
+		return HelperDir(Direction.LEFT);
+	}
+	
+	public Direction HelperDir(Direction dir) {
 		//the left of robot is to look from anti-clockwise direction
-		Direction [] directions = {Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT};
-		//index gives index of array based on current direction
+		//the right of robot is to look from clockwise direction
+		Direction [] directions = {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
+		//index gives index based on current direction
 		int index = 0;
 		for (int i = 0; i < directions.length; i++) {
 			if (directions[i] == direction) {
 				index = i;
 			}
 		}
-		//left index gives index based on robot's left direction
-		int leftIndex = (index+1)%4;
-		return directions[leftIndex];
+		int newIndex;
+		if (dir == Direction.LEFT) {
+			//left index gives index based on robot's left direction
+			newIndex = (index+1)%4;
+		}
+		else {
+			//right index gives index based on robot's right direction
+			newIndex = (index-1)%4;
+		}
+		return directions[newIndex];
 	}
-	
-	//check if robot sensor detects an obstacle in the specified direction
-	public abstract boolean hasObstacle(Direction dir);
-	
 
 }

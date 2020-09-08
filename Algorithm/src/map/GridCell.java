@@ -35,5 +35,17 @@ public class GridCell {
 	public int getHorCoord() {
 		return hor_coord;
 	}
+	
+	public void setExplored(boolean isExplored) {
+		explored = isExplored;
+	}
+	
+	public boolean getObstacle() {
+		return obstacle;
+	}
+	
+	public void setObstacle(boolean isObstacle) {
+		obstacle = isObstacle;
+	}
 
 }

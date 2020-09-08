@@ -26,4 +26,5 @@ public class Simulator{
 	public void startFastestPath() {
 		FastestPath fastestPath = new FastestPath(robot, map, time_limit_ms);
 	}
+	
 }

@@ -18,6 +18,11 @@ public class Map extends JFrame{
 	mapFrame.setSize(2000,1500);
 	mapFrame.setLocationRelativeTo(null);
 	
+	//getters and setters
+	public GridCell getGridCell(int row, int col) {
+		return grid[row][col];
+	}
+	
 	//constructor for simulation
 	public Map(int goal_coverage_perc) {
 		this.goal_coverage_perc = goal_coverage_perc;
