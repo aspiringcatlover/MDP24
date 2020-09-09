@@ -1,31 +1,21 @@
 package map;
-
 import java.awt.*;
-<<<<<<< Updated upstream
-import static main.Constants.*;
-import main.Constants.*;
-=======
 import javax.swing.*;
 import Main.Constants.*;
 import robot.*;
 import robot.Robot;
->>>>>>> Stashed changes
 
 public class GridCell extends JPanel {
 
-	private int ver_coord;// ver_coord: along length
-	private int hor_coord;// hor_coord: along width
-	private boolean explored;
-	private boolean obstacle;
-
-	// constructor
+	enum State{UNEXPLORED, EXPLORED, BLOCKED, START, GOAL}
+	private int ver_coord;//ver_coord: along length
+	private int hor_coord;//hor_coord: along width
+	private State state;
+	
+	//constructor
 	public GridCell(int ver_coord, int hor_coord) {
 		this.ver_coord = ver_coord;
 		this.hor_coord = hor_coord;
-<<<<<<< Updated upstream
-		explored = false;
-		obstacle = false;
-=======
 		Robot robot = new Robot();
 		if((this.hor_coord == 1 && this.ver_coord == 1) || (this.hor_coord == 1 && this.ver_coord == 2) || (this.hor_coord == 1 && this.ver_coord == 3) || (this.hor_coord == 2 && this.ver_coord == 1) || (this.hor_coord == 2 && this.ver_coord == 2) || (this.hor_coord == 2 && this.ver_coord == 3) || (this.hor_coord == 3 && this.ver_coord == 1) || (this.hor_coord == 3 && this.ver_coord == 2) || (this.hor_coord == 3 && this.ver_coord == 3)) {
 			state = State.START;
@@ -43,14 +33,13 @@ public class GridCell extends JPanel {
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setPreferredSize(new Dimension (20, 20));
->>>>>>> Stashed changes
 	}
-
-	// getters and setters
+	
+	//getters and setters
 	public void setVerCoord(int ver_coord) {
 		this.ver_coord = ver_coord;
 	}
-
+	
 	public int getVerCoord() {
 		return ver_coord;
 	}
@@ -58,21 +47,31 @@ public class GridCell extends JPanel {
 	public void setHorCoord(int hor_coord) {
 		this.hor_coord = hor_coord;
 	}
-
+	
 	public int getHorCoord() {
 		return hor_coord;
 	}
-	
-	public void setExplored(boolean isExplored) {
-		explored = isExplored;
-	}
-	
-	public boolean getObstacle() {
-		return obstacle;
-	}
-	
-	public void setObstacle(boolean isObstacle) {
-		obstacle = isObstacle;
-	}
 
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	public State getState() {
+		return state;
+	}
+	
+	public boolean isBlocked(State state) {
+		if (this.state == State.BLOCKED)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean hasExplored(State state) {
+		if (this.state == State.EXPLORED)
+			return true;
+		else
+			return false;
+	}
+	
 }
