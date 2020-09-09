@@ -10,6 +10,8 @@ import map.GridCell;
 import map.Map;
 
 public class ActualExploration extends Exploration{
+	
+	
 			
 	//constructor
 	public ActualExploration(Robot robot, Map map) {
