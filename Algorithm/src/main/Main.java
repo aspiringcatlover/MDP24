@@ -9,9 +9,8 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		
-		ActualMap map = new ActualMap();
-
 		// whether robot is in simulation or not
+		// Initialized to true
 		boolean inSimulation = true; 
 		
 		// controls whether robot goes to simulator or actual
@@ -27,17 +26,15 @@ public class Main {
 			//control steps per sec of robot
 			int steps_per_sec = 1;
 			
-			//decide coverage percentage for map in simulator
-			int coverage_perc = 100;
-			
 			//decide whether robot is in exploration or fastest path mode in simulator
 			boolean isExploring = true;
 					
-			ActualRobot robot = new ActualRobot(); 
+			SimulatorRobot robot = new SimulatorRobot(steps_per_sec); 
 			
-			ActualMap map = new ActualMap();
+			SimulatorMap simulatorMap = new SimulatorMap();
+			MapPanel map = new MapPanel();
 			
-			Simulator simulator = new Simulator(robot, time_limit_ms, map);
+			Simulator simulator = new Simulator(robot, simulatorMap, time_limit_ms, map);
 			
 			if (isExploring) {
 				simulator.startExploration();
@@ -49,12 +46,12 @@ public class Main {
 		}
 		//in actual
 		else {
+			ActualMap map = new ActualMap();
 			ActualRobot robot = new ActualRobot();
 			Actual actual = new Actual(robot, map);
 			actual.startActual();
 		}
 		
-
 	}
 
 }

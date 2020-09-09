@@ -1,14 +1,13 @@
-package simulator;
+package robot;
 
 import static main.Constants.START_X_COORD;
 import static main.Constants.START_Y_COORD;
 
-import actual.ActualSensor;
-import robot.Robot;
-import robot.RobotSensor;
 import main.Constants.Direction;
 import main.Constants.RangeType;
 import main.Constants.SensorDir;
+import sensor.ActualSensor;
+import sensor.SimulatorSensor;
 
 public class SimulatorRobot extends Robot {
 	

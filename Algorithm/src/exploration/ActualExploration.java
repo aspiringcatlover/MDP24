@@ -1,20 +1,19 @@
-package actual;
+package exploration;
 import robot.Robot;
-import controller.Exploration;
 
 import static main.Constants.*;
 
 import main.Constants.Direction;
 import main.Constants.Movement;
 import map.GridCell;
-import map.Map;
+import map.ActualMap;
 
 public class ActualExploration extends Exploration{
 	
 	
 			
 	//constructor
-	public ActualExploration(Robot robot, Map map) {
+	public ActualExploration(Robot robot, ActualMap map) {
 		super(robot,map);
 	}
 	

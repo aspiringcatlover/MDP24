@@ -1,4 +1,4 @@
-package robot;
+package sensor;
 
 import static main.Constants.*;
 

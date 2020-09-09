@@ -1,10 +1,9 @@
-package actual;
+package sensor;
 import static main.Constants.LONG_RANGE_DISTANCE;
 import static main.Constants.SHORT_RANGE_DISTANCE;
 
 import main.Constants.RangeType;
 import main.Constants.SensorDir;
-import robot.RobotSensor;
 
 public class ActualSensor extends RobotSensor{
 

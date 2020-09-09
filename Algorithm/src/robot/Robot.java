@@ -46,6 +46,7 @@ public abstract class Robot {
 	}
 	
 	//helper functions
+	/**
 	public boolean blocked() {
 		//get robot coordinate
 		//get sensor data from front, left and right
@@ -61,6 +62,7 @@ public abstract class Robot {
 		else
 			return false;
 	}
+	**/
 
 	//move robot forward
 	public void moveForward() {
@@ -95,7 +97,9 @@ public abstract class Robot {
 	//return direction to the left of the forward direction of robot
 	public Direction robotLeftDir() {
 		return HelperDir(Direction.LEFT);
+	}
 
+	/**
 	public boolean explored() {
 		//get robot coordinate
 		//get sensor data from front, left and right
@@ -105,6 +109,7 @@ public abstract class Robot {
 		boolean rightexplored = GridCell.hasExplored();
 
 	}
+	**/
 	
 	public Direction HelperDir(Direction dir) {
 		//the left of robot is to look from anti-clockwise direction

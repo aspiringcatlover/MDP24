@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class MapSimulator extends JFrame {
+public class SimulatorMap extends JFrame {
 	
 	private int goal_coverage_perc;
 	private int actual_coverage_perc;
 	
-	public MapSimulator() {
-		this.goal_coverage_perc = goal_coverage_perc;
+	//constructor
+	public SimulatorMap() {
 		actual_coverage_perc = 0;
 		
 		//simulator frame
@@ -44,7 +44,7 @@ public class MapSimulator extends JFrame {
             public void actionPerformed(ActionEvent ae) {
             	System.out.println(goalCovPerField.getText());
             	Scanner input1 = new Scanner(System.in);
-            	int goal_coverage_perc = input1.nextInt();
+            	goal_coverage_perc = input1.nextInt();
             }          
           });
 		setLocationRelativeTo(null); 

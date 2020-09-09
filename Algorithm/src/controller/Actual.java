@@ -1,6 +1,6 @@
 package controller;
 import robot.Robot;
-import actual.ActualExploration;
+import exploration.ActualExploration;
 import map.ActualMap;
 
 

@@ -1,9 +1,8 @@
-package simulator;
+package sensor;
 import static main.Constants.*;
 
 import main.Constants.RangeType;
 import main.Constants.SensorDir;
-import robot.RobotSensor;
 
 public class SimulatorSensor extends RobotSensor{
 	
