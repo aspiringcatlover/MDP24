@@ -7,6 +7,7 @@ import robot.Robot;
 
 public class GridCell extends JPanel {
 
+	//TEST
 	private boolean obstacle;
 	private boolean explored;
 	private int ver_coord;//ver_coord: along length
