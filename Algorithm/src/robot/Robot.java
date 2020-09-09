@@ -3,10 +3,7 @@ import static main.Constants.*;
 import java.util.ArrayList;
 
 import controller.*;
-<<<<<<< Updated upstream
 import main.Constants.Direction;
-=======
->>>>>>> Stashed changes
 import map.GridCell;
 
 public abstract class Robot {
@@ -64,8 +61,7 @@ public abstract class Robot {
 		else
 			return false;
 	}
-	
-<<<<<<< Updated upstream
+
 	//move robot forward
 	public void moveForward() {
 		switch(direction){
@@ -99,7 +95,7 @@ public abstract class Robot {
 	//return direction to the left of the forward direction of robot
 	public Direction robotLeftDir() {
 		return HelperDir(Direction.LEFT);
-=======
+
 	public boolean explored() {
 		//get robot coordinate
 		//get sensor data from front, left and right
@@ -107,8 +103,7 @@ public abstract class Robot {
 		boolean frontexplored = GridCell.hasExplored();
 		boolean leftexplored = GridCell.hasExplored();
 		boolean rightexplored = GridCell.hasExplored();
-			
->>>>>>> Stashed changes
+
 	}
 	
 	public Direction HelperDir(Direction dir) {

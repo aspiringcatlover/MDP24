@@ -1,23 +1,17 @@
 package controller;
 import robot.Robot;
-<<<<<<< Updated upstream
 import simulator.SimulatorExploration;
 import map.Map;
-=======
 import map.ActualMap;
->>>>>>> Stashed changes
 
 public class Simulator{
 	
 	private int time_limit_ms; 
 	private Robot robot;
-<<<<<<< Updated upstream
 	private Map map;
-=======
 	private ActualMap map;
 	private long startTime;
 	private long endTime;
->>>>>>> Stashed changes
 	
 	//constructor
 	public Simulator(Robot robot, int time_limit_ms, ActualMap map) {

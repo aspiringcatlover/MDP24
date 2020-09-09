@@ -1,11 +1,8 @@
 package controller;
 import robot.Robot;
-<<<<<<< Updated upstream
 import actual.ActualExploration;
-import map.Map;
-=======
 import map.ActualMap;
->>>>>>> Stashed changes
+
 
 public class Actual{
 

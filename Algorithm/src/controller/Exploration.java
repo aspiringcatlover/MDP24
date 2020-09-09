@@ -1,6 +1,6 @@
 package controller;
 import robot.Robot;
-<<<<<<< Updated upstream
+
 
 import static main.Constants.*;
 
@@ -10,21 +10,17 @@ import main.Constants.Direction;
 import main.Constants.Movement;
 import map.GridCell;
 import map.Map;
-=======
 import map.ActualMap;
 import static Main.Constants.*;
->>>>>>> Stashed changes
+
 
 public abstract class Exploration{
 	
-<<<<<<< Updated upstream
 	protected Robot robot;
 	protected Map map;
 	protected ArrayList<Movement> movement = new ArrayList<Movement>();
-=======
 	private Robot robot;
 	private ActualMap map;
->>>>>>> Stashed changes
 			
 	//constructor
 	public Exploration(Robot robot, ActualMap map) {
