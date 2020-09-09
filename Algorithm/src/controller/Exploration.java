@@ -99,9 +99,15 @@ public abstract class Exploration{
 			default:
 				gridCell = map.getGridCell(robot.getYCoord(), robot.getXCoord());
 			}
-			gridCell.setExplored(true);
-			//then colorMap(GridCell gridCell)
-			//assigns a color depending on whether gridCell is obstacle and explored/explored
+			//if have obstacle, cant see the grid cell behind
+			if (gridCell.getObstacle()) {
+				break;
+			}
+			else {
+				gridCell.setExplored(true);
+				//then colorMap(GridCell gridCell)
+				//assigns a color depending on whether gridCell is obstacle and explored/explored
+			}
 		}
 	}
 	
@@ -128,10 +134,18 @@ public abstract class Exploration{
 			default:
 				gridCell = map.getGridCell(robot.getYCoord(), robot.getXCoord());
 			}
-			gridCell.setExplored(true);
-			//then colorMap(GridCell gridCell)
-			//assigns a color depending on whether gridCell is obstacle and explored/explored
+			//if have obstacle, cant see the grid cell behind
+			if (gridCell.getObstacle()) {
+				break;
+			}
+			else {
+				gridCell.setExplored(true);
+				//then colorMap(GridCell gridCell)
+				//assigns a color depending on whether gridCell is obstacle and explored/explored
+			}
 		}
 	}
+	
+	
 	
 }

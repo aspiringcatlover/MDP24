@@ -60,21 +60,22 @@ public class SimulatorExploration extends Exploration {
 		}
 	}
 	
+	//check if have obstacle in front of it with a difference of GRID_APART
 	public boolean hasObstacle(Direction dir) {
 		int x_coord;
 		int y_coord;
 		switch(dir) {
 			case UP:
 				x_coord = robot.getXCoord();
-				y_coord = robot.getYCoord()+1;
+				y_coord = robot.getYCoord()+1+GRID_APART;
 			case DOWN:
 				x_coord = robot.getXCoord();
-				y_coord = robot.getYCoord()-1;
+				y_coord = robot.getYCoord()-1-GRID_APART;
 			case LEFT:
-				x_coord = robot.getXCoord()-1;
+				x_coord = robot.getXCoord()-1-GRID_APART;
 				y_coord = robot.getYCoord();
 			case RIGHT:
-				x_coord = robot.getXCoord()+1;
+				x_coord = robot.getXCoord()+1+GRID_APART;
 				y_coord = robot.getYCoord();
 			default:
 				x_coord = robot.getXCoord();

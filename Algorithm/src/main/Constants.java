@@ -20,6 +20,7 @@ public final class Constants {
 	public static final int HEIGHT = 20; //in terms of no. of grid
 	public static final int WIDTH = 15;
 	public static final int GRID_LENGTH = 10; //10cm
+	public static final int GRID_APART = 1; //min distance between obstacle and robot
 	
 	//sensors
 	//3 front sensors: 3 short range
