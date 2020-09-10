@@ -1,5 +1,5 @@
 package robot;
-import static Main.Constants.*;
+import static main.Constants.*;
 
 public class RobotCamera {
 	

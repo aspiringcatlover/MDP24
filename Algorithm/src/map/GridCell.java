@@ -1,20 +1,40 @@
 package map;
 import java.awt.*;
-import Main.Constants.*;
+import simulator.SimulatorRobot;
+import javax.swing.*;
+import robot.*;
+import robot.Robot;
 
-public class GridCell {
+public class GridCell extends JPanel {
 
-	enum State{UNEXPLORED, EXPLORED, BLOCKED}
+	private boolean obstacle;
+	private boolean explored;
 	private int ver_coord;//ver_coord: along length
 	private int hor_coord;//hor_coord: along width
-	private State state;
-	private boolean hasWall;
+	private SimulatorRobot simRobot = new SimulatorRobot(1);
 	
 	//constructor
 	public GridCell(int ver_coord, int hor_coord) {
 		this.ver_coord = ver_coord;
 		this.hor_coord = hor_coord;
-		state = State.UNEXPLORED;
+//		Robot robot = new Robot();
+		//start point
+		if((this.hor_coord == 0 && this.ver_coord == 0) || (this.hor_coord == 0 && this.ver_coord == 1) || (this.hor_coord == 0 && this.ver_coord == 2) || (this.hor_coord == 1 && this.ver_coord == 0) || (this.hor_coord == 1 && this.ver_coord == 1) || (this.hor_coord == 1 && this.ver_coord == 2) || (this.hor_coord == 2 && this.ver_coord == 0) || (this.hor_coord == 2 && this.ver_coord == 1) || (this.hor_coord == 2 && this.ver_coord == 2)) {
+			setBackground(Color.YELLOW);
+		} 
+		//end point
+		else if ((this.hor_coord == 12 && this.ver_coord == 17) || (this.hor_coord == 12 && this.ver_coord == 18) || (this.hor_coord == 12 && this.ver_coord == 19) || (this.hor_coord == 13 && this.ver_coord == 17) || (this.hor_coord == 13 && this.ver_coord == 18) || (this.hor_coord == 13 && this.ver_coord == 19) || (this.hor_coord == 14 && this.ver_coord == 17) || (this.hor_coord == 14 && this.ver_coord == 18) || (this.hor_coord == 14 && this.ver_coord == 19)) {
+			setBackground(Color.GREEN);
+		}
+		if (this.isRobot(ver_coord, hor_coord)) {
+			setBackground(Color.ORANGE);
+		}
+		else {
+			setBackground(Color.BLUE);
+		}
+		setOpaque(true); 
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setPreferredSize(new Dimension (20, 20));
 	}
 	
 	//getters and setters
@@ -34,26 +54,35 @@ public class GridCell {
 		return hor_coord;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public boolean getObstacle() {
+		return obstacle;
 	}
 	
-	public State getState() {
-		return state;
+	public boolean getExplored() {
+		return explored;
 	}
 	
-	public boolean isBlocked(State state) {
-		if (this.state == State.BLOCKED)
+	public void setExplored(boolean explored) {
+		this.explored = explored;
+	}
+	
+	//set color
+	public void setColor() {
+		if (explored) {
+			setBackground(Color.WHITE);
+		}
+		if (obstacle){
+			setBackground(Color.RED);
+		}
+	}
+	
+	public boolean isRobot(int ver_coord, int hor_coord) {
+		if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord)
 			return true;
 		else
 			return false;
 	}
 	
-	public boolean hasExplored(State state) {
-		if (this.state == State.EXPLORED)
-			return true;
-		else
-			return false;
-	}
+	
 	
 }

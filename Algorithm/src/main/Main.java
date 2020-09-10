@@ -1,4 +1,4 @@
-package Main;
+package main;
 import robot.*;
 import map.*;
 import controller.*;
@@ -7,14 +7,10 @@ import javax.swing.*;
 
 public class Main {
 
-	public static void main(String[] args) {
-		
-		//simulation frame
-		frame = new JFrame();
-		frame.setTitle("Maze Simulator");
-		frame.setSize(1000,1000);
+	public static void main(String[] args) throws InterruptedException {
 		
 		// whether robot is in simulation or not
+		// Initialized to true
 		boolean inSimulation = true; 
 		
 		// controls whether robot goes to simulator or actual
@@ -30,17 +26,15 @@ public class Main {
 			//control steps per sec of robot
 			int steps_per_sec = 1;
 			
-			//decide coverage percentage for map in simulator
-			int coverage_perc = 100;
-			
 			//decide whether robot is in exploration or fastest path mode in simulator
 			boolean isExploring = true;
 					
-			Robot robot = new Robot(steps_per_sec); 
+			SimulatorRobot robot = new SimulatorRobot(steps_per_sec); 
 			
-			Map map = new Map(coverage_perc);
+			SimulatorMap simulatorMap = new SimulatorMap();
+			MapPanel map = new MapPanel();
 			
-			Simulator simulator = new Simulator(robot, time_limit_ms, map);
+			Simulator simulator = new Simulator(robot, simulatorMap, time_limit_ms, map);
 			
 			if (isExploring) {
 				simulator.startExploration();
@@ -52,13 +46,12 @@ public class Main {
 		}
 		//in actual
 		else {
-			Robot robot = new Robot(); 
-			Map map = new Map();
+			ActualMap map = new ActualMap();
+			ActualRobot robot = new ActualRobot();
 			Actual actual = new Actual(robot, map);
 			actual.startActual();
 		}
 		
-
 	}
 
 }

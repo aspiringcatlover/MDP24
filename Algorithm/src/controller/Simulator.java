@@ -1,40 +1,36 @@
 package controller;
 import robot.Robot;
-import map.Map;
+import robot.SimulatorRobot;
+import map.*;
+import map.SimulatorMap;
+import exploration.SimulatorExploration;
+import fastest_path.SimulatorFastestPath;
+import map.ActualMap;
 
 public class Simulator{
 	
 	private int time_limit_ms; 
-	private Robot robot;
-	private Map map;
-	private long startTime;
-	private long endTime;
+	private SimulatorRobot robot;
+	private SimulatorMap simulatorMap;
+	private MapPanel map;
 	
 	//constructor
-	public Simulator(Robot robot, int time_limit_ms, Map map) {
+	public Simulator(SimulatorRobot robot, SimulatorMap simulatorMap, int time_limit_ms, MapPanel map) {
 		this.robot = robot;
 		this.time_limit_ms = time_limit_ms;
 		this.map = map;
+		this.simulatorMap = simulatorMap;
 	}
 	
 	//Starts exploration simulation
 	public void startExploration() {
-		
-		startTime = System.currentTimeMillis();
-		endTime = startTime + time_limit_ms;
-		while (System.currentTimeMillis() != endTime) {
-			Exploration exploration = new Exploration(robot, map);
-			exploration.explore();
-		}
+		SimulatorExploration exploration = new SimulatorExploration(robot, simulatorMap, time_limit_ms, map);
+		exploration.explore();
 	}
 	
 	//Starts fastest path simulation
 	public void startFastestPath() {
-		
-		startTime = System.currentTimeMillis();
-		endTime = startTime + time_limit_ms;
-		while (System.currentTimeMillis() != endTime) {
-			FastestPath fastestPath = new FastestPath(robot, map);
-		}
+		SimulatorFastestPath fastestPath = new SimulatorFastestPath(robot, simulatorMap, map);
 	}
+	
 }

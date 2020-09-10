@@ -1,14 +1,16 @@
 package controller;
 import robot.Robot;
-import map.Map;
+import exploration.ActualExploration;
+import map.ActualMap;
+
 
 public class Actual{
 
 	private Robot robot;
-	private Map map;
+	private ActualMap map;
 	
 	//constructor
-	public Actual(Robot robot, Map map) {
+	public Actual(Robot robot, ActualMap map) {
 		this.robot = robot;
 		this.map = map;
 	}
@@ -16,8 +18,8 @@ public class Actual{
 	//Starts actual
 	public void startActual() {
 		
-		Exploration exploration = new Exploration(robot, map);
-		
+		ActualExploration exploration = new ActualExploration(robot, map);
+		exploration.explore();
 	}
 
 }
