@@ -14,7 +14,7 @@ public class ActualExploration extends Exploration{
 			
 	//constructor
 	public ActualExploration(Robot robot, ActualMap map) {
-		super(robot,map);
+//		super(robot,map);
 	}
 	
 	//start exploring maze

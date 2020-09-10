@@ -2,6 +2,7 @@ package main;
 import robot.*;
 import map.*;
 import controller.*;
+import exploration.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -32,17 +33,20 @@ public class Main {
 			SimulatorRobot robot = new SimulatorRobot(steps_per_sec); 
 			
 			SimulatorMap simulatorMap = new SimulatorMap();
+			
 			MapPanel map = new MapPanel();
 			
-			Simulator simulator = new Simulator(robot, simulatorMap, time_limit_ms, map);
+			SimulatorExploration simulatorExp = new SimulatorExploration(robot, simulatorMap, time_limit_ms, map);
 			
 			if (isExploring) {
-				simulator.startExploration();
+				//for testing
+				simulatorExp.displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection()); 
+				simulatorExp.explore();
 	
 			}
-			else {
-				simulator.startFastestPath();
-			}
+//			else {
+//				simulatorExp.startFastestPath();
+//			}
 		}
 		//in actual
 		else {

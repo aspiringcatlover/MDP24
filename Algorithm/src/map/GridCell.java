@@ -1,7 +1,9 @@
 package map;
 import java.awt.*;
-import simulator.SimulatorRobot;
+import robot.SimulatorRobot;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+
 import robot.*;
 import robot.Robot;
 
@@ -17,20 +19,23 @@ public class GridCell extends JPanel {
 	public GridCell(int ver_coord, int hor_coord) {
 		this.ver_coord = ver_coord;
 		this.hor_coord = hor_coord;
-//		Robot robot = new Robot();
-		//start point
+		
+		//mark start area
 		if((this.hor_coord == 0 && this.ver_coord == 0) || (this.hor_coord == 0 && this.ver_coord == 1) || (this.hor_coord == 0 && this.ver_coord == 2) || (this.hor_coord == 1 && this.ver_coord == 0) || (this.hor_coord == 1 && this.ver_coord == 1) || (this.hor_coord == 1 && this.ver_coord == 2) || (this.hor_coord == 2 && this.ver_coord == 0) || (this.hor_coord == 2 && this.ver_coord == 1) || (this.hor_coord == 2 && this.ver_coord == 2)) {
 			setBackground(Color.YELLOW);
 		} 
-		//end point
+		//mark goal area
 		else if ((this.hor_coord == 12 && this.ver_coord == 17) || (this.hor_coord == 12 && this.ver_coord == 18) || (this.hor_coord == 12 && this.ver_coord == 19) || (this.hor_coord == 13 && this.ver_coord == 17) || (this.hor_coord == 13 && this.ver_coord == 18) || (this.hor_coord == 13 && this.ver_coord == 19) || (this.hor_coord == 14 && this.ver_coord == 17) || (this.hor_coord == 14 && this.ver_coord == 18) || (this.hor_coord == 14 && this.ver_coord == 19)) {
 			setBackground(Color.GREEN);
 		}
-		if (this.isRobot(ver_coord, hor_coord)) {
-			setBackground(Color.ORANGE);
-		}
+		//mark unexplored area
 		else {
 			setBackground(Color.BLUE);
+		}
+		
+		//mark area occupied by robot 
+		if ((this.isRobotCenter(ver_coord, hor_coord)) || (this.isRobot(ver_coord, hor_coord))) {
+			setBackground(Color.ORANGE);
 		}
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -76,13 +81,34 @@ public class GridCell extends JPanel {
 		}
 	}
 	
-	public boolean isRobot(int ver_coord, int hor_coord) {
+	//check if gridcell is occcupied by robot center
+	public boolean isRobotCenter(int ver_coord, int hor_coord) {
 		if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord)
 			return true;
 		else
 			return false;
 	}
 	
-	
+	//check if gridcell is occupied by robot
+	public boolean isRobot(int ver_coord, int hor_coord) {
+		if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord-1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord-1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord-1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord+1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord+1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord+1)
+			return true;
+		else if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord)
+			return true;
+		else
+			return false;
+	}
 	
 }

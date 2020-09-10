@@ -3,7 +3,10 @@ package exploration;
 import map.SimulatorMap;
 import static main.Constants.*;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+
+import javax.swing.plaf.basic.BasicArrowButton;
 
 import main.Constants.Direction;
 import robot.Robot;
@@ -142,7 +145,7 @@ public class SimulatorExploration extends Exploration {
 				gridCell.setExplored(true);
 				// assigns a color depending on whether gridCell is obstacle and
 				// explored/explored
-				colorMap(GridCell gridCell);
+//				colorMap(GridCell gridCell);
 			}
 		}
 	}
@@ -181,5 +184,39 @@ public class SimulatorExploration extends Exploration {
 				}
 			}
 		}
+	
+	//display direction of robot
+	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
+		map.markArrow(map.getGridCell(ver_coord, hor_coord), Direction dir);
+	}
+	
+	public void displayMove(int ver_coord, int hor_coord, Movement m) {
+		// set new coordinates of robot
+		switch (m) {
+		case MOVE_FORWARD:
+			robot.setYCoord(ver_coord - 1);
+			break;
+		case TURN_LEFT:
+			robot.setXCoord(hor_coord + 1);
+			break;
+		case TURN_RIGHT:
+			robot.setXCoord(hor_coord - 1);
+			break;
+		}
+		//set new direction of robot
+		switch (m) {
+        case MOVE_FORWARD:
+        	robot.setDirection(Direction.UP);
+            break;
+        case TURN_LEFT:
+        	robot.setDirection(Direction.LEFT);
+            break;
+        case TURN_RIGHT:
+        	robot.setDirection(Direction.RIGHT);
+            break;
+		}
+		//mark direction on new robot center 
+		map.markArrow(map.getGridCell(robot.getYCoord(), robot.getXCoord()), robot.getDirection());
+	}
 
 }
