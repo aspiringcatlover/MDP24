@@ -34,23 +34,33 @@ public class SimulatorExploration extends Exploration {
 
 	// start exploring maze
 	public void explore() {
-		while (simulatorMap.getActualCoveragePerc() < simulatorMap.getGoalCoveragePerc()
-				&& System.currentTimeMillis() != endTime) {
-			// sense map and update map descriptor
-			// true to mean in simulation
-			senseMap(true);
-			rightWallHugging();
-			if (stuckInLoop()) {
-				escapeLoop();
-			}
-			try {
-				// ms timeout
-				int timeout = (1 / steps_per_sec) * 1000;
-				Thread.sleep(timeout); // Customize your refresh time
-			} catch (InterruptedException e) {
-			}
-		}
+		simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
+		displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+		
+		/*
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (simulatorMap.getActualCoveragePerc() < simulatorMap.getGoalCoveragePerc()
+						&& System.currentTimeMillis() != endTime) {
+					// sense map and update map descriptor
+					// true to mean in simulation
+					senseMap(true);
+					rightWallHugging();
+					if (stuckInLoop()) {
+						escapeLoop();
+					}
+					try {
+						// ms timeout
+						int timeout = (1 / steps_per_sec) * 1000;
+						Thread.sleep(timeout); // Customize your refresh time
+					} catch (InterruptedException e) {
+					}
+				}
 
+			}
+		}).start();
+		*/
 	}
 
 	public void rightWallHugging() {
@@ -58,8 +68,7 @@ public class SimulatorExploration extends Exploration {
 		if (hasObstacle(robot.robotRightDir()) == false) {
 			robot.turn(robot.robotRightDir());
 			movement.add(Movement.TURN_RIGHT);
-			// simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(),
-			// robot.getDirection());
+			//simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
 			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
@@ -74,8 +83,7 @@ public class SimulatorExploration extends Exploration {
 		else {
 			robot.turn(robot.robotLeftDir());
 			movement.add(Movement.TURN_LEFT);
-			// simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(),
-			// robot.getDirection());
+			//simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 		}
 	}
 
@@ -192,24 +200,42 @@ public class SimulatorExploration extends Exploration {
 			}
 		}
 	}
-
+	
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
 		simulatorMap.getMap().displayDirection(ver_coord, hor_coord, dir);
 	}
 
 	/*
-	 * public void displayMove(int ver_coord, int hor_coord, Movement m) { // set
-	 * new coordinates of robot switch (m) { case MOVE_FORWARD:
-	 * robot.setYCoord(ver_coord - 1); break; case TURN_LEFT:
-	 * robot.setXCoord(hor_coord + 1); break; case TURN_RIGHT:
-	 * robot.setXCoord(hor_coord - 1); break; } // set new direction of robot switch
-	 * (m) { case MOVE_FORWARD: robot.setDirection(Direction.UP); break; case
-	 * TURN_LEFT: robot.setDirection(Direction.LEFT); break; case TURN_RIGHT:
-	 * robot.setDirection(Direction.RIGHT); break; }
-	 * 
-	 * // mark direction on new robot center
-	 * simulatorMap.getMap().markArrow(simulatorMap.getMap().getGridCell(robot.
-	 * getYCoord(), robot.getXCoord()), robot.getDirection()); }
-	 */
+	public void displayMove(int ver_coord, int hor_coord, Movement m) {
+		// set new coordinates of robot
+		switch (m) {
+		case MOVE_FORWARD:
+			robot.setYCoord(ver_coord - 1);
+			break;
+		case TURN_LEFT:
+			robot.setXCoord(hor_coord + 1);
+			break;
+		case TURN_RIGHT:
+			robot.setXCoord(hor_coord - 1);
+			break;
+		}
+		// set new direction of robot
+		switch (m) {
+		case MOVE_FORWARD:
+			robot.setDirection(Direction.UP);
+			break;
+		case TURN_LEFT:
+			robot.setDirection(Direction.LEFT);
+			break;
+		case TURN_RIGHT:
+			robot.setDirection(Direction.RIGHT);
+			break;
+		}
+		
+		// mark direction on new robot center
+		simulatorMap.getMap().markArrow(simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord()),
+				robot.getDirection());
+	}
+	*/
 
 }
