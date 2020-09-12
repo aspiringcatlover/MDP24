@@ -14,9 +14,19 @@ public class GridCell extends JPanel {
 	private boolean explored;
 	private int ver_coord;//ver_coord: along length
 	private int hor_coord;//hor_coord: along width
-	
+
+	private int gCost;
+	private int hCost;
+	private int fCost; //f=g+h
+	private GridCell parent;
+
 	//constructor
 	public GridCell(int ver_coord, int hor_coord, String state) {
+		gCost = 0;
+		hCost = 0;
+		fCost = 0;
+		parent= null;
+
 		this.ver_coord = ver_coord;
 		this.hor_coord = hor_coord;
 		if (state.equals("O"))
@@ -81,7 +91,39 @@ public class GridCell extends JPanel {
 	public void setExplored(boolean explored) {
 		this.explored = explored;
 	}
-	
+
+	public int getgCost() {
+		return gCost;
+	}
+
+	public void setgCost(int gCost) {
+		this.gCost = gCost;
+	}
+
+	public int gethCost() {
+		return hCost;
+	}
+
+	public void sethCost(int hCost) {
+		this.hCost = hCost;
+	}
+
+	public int getfCost() {
+		return fCost;
+	}
+
+	public void setfCost(int fCost) {
+		this.fCost = fCost;
+	}
+
+	public GridCell getParentGrid() {
+		return parent;
+	}
+
+	public void setParentGrid(GridCell parent) {
+		this.parent = parent;
+	}
+
 	//set color for map
 	public void setColor() {
 		if (explored) {

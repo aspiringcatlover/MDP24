@@ -31,16 +31,16 @@ public class MapPanel extends JPanel {
 	}
 
 	// getter and setter
-	public GridCell getGridCell(int ver_coord, int hor_coord) {
-		for (int i = 0; i < gridcells.length; i++) {
-			if (i == ver_coord) {
-				for (int j = 0; j < gridcells[i].length; j++) {
-					if (j == hor_coord)
-						return gridcells[i][j];
-				}
-			}
-		}
-		return gridcells[0][0];
+	public GridCell getGridCell(int y, int x) {
+		if ((y >gridcells.length) || (x>gridcells[y].length))
+			return null;
+
+		return gridcells[y][x];
+	}
+
+
+	public void setGridCell(int y, int x, GridCell gridCell) {
+		this.gridcells[y][x] = gridCell;
 	}
 
 	// assigns a color depending on whether gridCell is obstacle and

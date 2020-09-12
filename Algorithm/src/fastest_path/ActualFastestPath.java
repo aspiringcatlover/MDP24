@@ -11,7 +11,7 @@ public class ActualFastestPath {
 	private long endTime;
 	
 	//constructor
-	public FastestPath(ActualRobot robot, ActualMap map) {
+	public ActualFastestPath(ActualRobot robot, ActualMap map) {
 		this.robot = robot;
 		this.map = map;
 	}
