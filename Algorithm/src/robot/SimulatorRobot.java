@@ -11,13 +11,11 @@ import sensor.SimulatorSensor;
 
 public class SimulatorRobot extends Robot {
 	
-	private int steps_per_sec;
 	private SimulatorSensor[] sensorArr = new SimulatorSensor[6];
 	
 	// constructor for simulation
-	public SimulatorRobot(int steps_per_sec) {
+	public SimulatorRobot() {
 		super();
-		this.steps_per_sec = steps_per_sec;
 		// initialize sensors for robot
 		// 3 short for front
 		for (int i=0; i < 3; i ++) {
@@ -30,13 +28,5 @@ public class SimulatorRobot extends Robot {
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorDir.RIGHT);
 	}
 	
-	//getters and setters
-	public void setStepsPerSec(int steps_per_sec) {
-		this.steps_per_sec = steps_per_sec;
-	}
-	
-	public int getStepsPerSec() {
-		return steps_per_sec;
-	}
 	
 }

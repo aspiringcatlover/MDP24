@@ -14,17 +14,18 @@ public class SimulatorMap extends JFrame {
 	
 	private int goal_coverage_perc;
 	private int actual_coverage_perc;
+	private MapPanel map;
 	
 	//constructor
-	public SimulatorMap() {
+	public SimulatorMap(String[][] sample_map) {
 		actual_coverage_perc = 0;
-		
+		map = new MapPanel(sample_map);
 		//simulator frame
 		setTitle("Maze Simulator");
 		setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(10000,10000);
-		add(new MapPanel());
+		add(map);
 		
 		//goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
@@ -66,5 +67,14 @@ public class SimulatorMap extends JFrame {
 	public int getActualCoveragePerc() {
 		return actual_coverage_perc;
 	}
+	
+	public void setMap(MapPanel map) {
+		this.map = map;
+	}
+	
+	public MapPanel getMap() {
+		return map;
+	}
+	
 
 }

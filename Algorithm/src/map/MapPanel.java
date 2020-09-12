@@ -14,14 +14,14 @@ public class MapPanel extends JPanel {
 	private GridCell[][] gridcells;
 	
 	//constructor
-	public MapPanel() {
+	public MapPanel(String[][] sample_map) {
 		setLayout(new GridLayout(20, 15));
 		gridcells = new GridCell[20][15];
 		for (int row = 0; row < 20; row++)
         {
             for (int col = 0; col < 15; col++)
             {
-				GridCell gridCell = new GridCell(row, col);
+				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
 				MapPanel.this.add(gridCell);
                 
@@ -88,6 +88,11 @@ public class MapPanel extends JPanel {
 	            }
 			}
         }
+
+	//set robot color
+	public void displayMove(int x_coord, int y_coord) {
+		gridcells[x_coord][y_coord].setRobotColor();
+	}
 	
 //	    //Generate map descriptor part 1
 //		public String generateMapDes1() {

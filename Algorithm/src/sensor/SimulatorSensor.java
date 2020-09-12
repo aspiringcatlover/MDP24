@@ -16,7 +16,7 @@ public class SimulatorSensor extends RobotSensor{
 		case SHORT:
 			gridDistance = GRID_SHORT_RANGE_DISTANCE;
 		default:
-			System.out.println("Cannot detect sensor");
+			//System.out.println("Cannot detect sensor");
 		}
 	}
 }
