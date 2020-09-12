@@ -7,8 +7,7 @@ UUID = '443559ba-b80f-4fb6-99d9-ddbcd6138fbd'
 ANDROID_SOCKET_BUFFER_SIZE = 512
 
 # Algorithm Wifi connection settings
-# raspberryHotPotato: 192.168.3.1
-WIFI_IP = '192.168.15.15'
+WIFI_IP = '192.168.24.24'
 WIFI_PORT = 8080
 ALGORITHM_SOCKET_BUFFER_SIZE = 512
 
