@@ -4,6 +4,7 @@ import robot.SimulatorRobot;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import main.Constants.Direction;
 import robot.*;
 import robot.Robot;
 
@@ -39,10 +40,12 @@ public class GridCell extends JPanel {
 			setBackground(Color.RED);
 		}
 		
-//		//mark area occupied by robot 
-//		if ((this.isRobotCenter(ver_coord, hor_coord)) || (this.isRobot(ver_coord, hor_coord))) {
-//			setBackground(Color.ORANGE);
-//		}
+		/*
+		//mark area occupied by robot 
+		if ((this.isRobotCenter(ver_coord, hor_coord)) || (this.isRobot(ver_coord, hor_coord))) {
+			setBackground(Color.ORANGE);
+		}
+		*/
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setPreferredSize(new Dimension (20, 20));
@@ -93,37 +96,34 @@ public class GridCell extends JPanel {
 	public void setRobotColor() {
 		setBackground(Color.ORANGE);
 	}
-	
-	/*
-	//check if gridcell is occcupied by robot center
-	public boolean isRobotCenter(int ver_coord, int hor_coord) {
-		if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord)
-			return true;
-		else
-			return false;
+
+	public void displayDirection(Direction direction) {
+		switch (direction) {
+		case UP:
+			BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.SOUTH);
+			add(arrowSouth, BorderLayout.NORTH);
+			revalidate();
+			repaint();
+			break;
+		case DOWN:
+			BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.NORTH);
+			add(arrowNorth, BorderLayout.NORTH);
+			revalidate();
+			repaint();
+			break;
+		case LEFT:
+			BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.EAST);
+			add(arrowEast, BorderLayout.NORTH);
+			revalidate();
+			repaint();
+			break;
+		case RIGHT:
+			BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.WEST);
+			add(arrowWest, BorderLayout.NORTH);
+			revalidate();
+			repaint();
+			break;
+		}
 	}
-	
-	//check if gridcell is occupied by robot
-	public boolean isRobot(int ver_coord, int hor_coord) {
-		if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord-1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord-1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord-1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord+1 && simRobot.getYCoord() == ver_coord+1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord && simRobot.getYCoord() == ver_coord+1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord+1)
-			return true;
-		else if (simRobot.getXCoord() == hor_coord-1 && simRobot.getYCoord() == ver_coord)
-			return true;
-		else
-			return false;
-	}
-	*/
 	
 }
