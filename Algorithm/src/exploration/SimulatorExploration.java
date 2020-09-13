@@ -35,9 +35,8 @@ public class SimulatorExploration extends Exploration {
 	// start exploring maze
 	public void explore() {
 		simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
-		displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 		
-		/*
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -60,7 +59,7 @@ public class SimulatorExploration extends Exploration {
 
 			}
 		}).start();
-		*/
+		
 	}
 
 	public void rightWallHugging() {
@@ -68,7 +67,7 @@ public class SimulatorExploration extends Exploration {
 		if (hasObstacle(robot.robotRightDir()) == false) {
 			robot.turn(robot.robotRightDir());
 			movement.add(Movement.TURN_RIGHT);
-			//simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
 			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
@@ -83,7 +82,7 @@ public class SimulatorExploration extends Exploration {
 		else {
 			robot.turn(robot.robotLeftDir());
 			movement.add(Movement.TURN_LEFT);
-			//simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 		}
 	}
 
@@ -232,9 +231,6 @@ public class SimulatorExploration extends Exploration {
 			break;
 		}
 		
-		// mark direction on new robot center
-		simulatorMap.getMap().markArrow(simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord()),
-				robot.getDirection());
 	}
 	*/
 

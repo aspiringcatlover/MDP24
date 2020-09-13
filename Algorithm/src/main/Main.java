@@ -32,15 +32,13 @@ public class Main {
 			// control steps per sec of robot
 			int steps_per_sec = 1;
 
-			// decide whether robot is in exploration or fastest path mode in simulator
-			boolean isExploring = true;
-
 			SimulatorRobot robot = new SimulatorRobot();
 
 			// read sample map
 			String[][] sample_map = new String[HEIGHT][WIDTH];
 			try {
-				File myObj = new File("/Users/charlottechng/Desktop/MDP24/Algorithm/src/sample_map/map3.txt");
+				File myObj = new File("C:\\Users\\shiny\\OneDrive\\Documents\\Y3S1\\Mdp\\MDP24\\MDP24\\Algorithm\\src\\sample_map\\map3.txt");
+				//shiny's path: C:\Users\shiny\OneDrive\Documents\Y3S1\Mdp\MDP24\MDP24\Algorithm\src\sample_map
 				Scanner myReader = new Scanner(myObj);
 				int col = 0;
 				while (myReader.hasNextLine()) {
@@ -60,10 +58,12 @@ public class Main {
 
 			SimulatorExploration simulatorExp = new SimulatorExploration(robot, simulatorMap, time_limit_ms, steps_per_sec);
 
-			if (isExploring) {
+			// check whether robot is in exploration or fastest path mode in simulator
+			if (simulatorMap.getOption()) {
+				System.out.println("test");
 				simulatorExp.explore();
-
-			} else {
+			} 
+			else if(!simulatorMap.getOption()) { 
 				//do fastest path
 			}
 

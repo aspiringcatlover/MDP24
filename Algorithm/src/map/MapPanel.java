@@ -5,16 +5,19 @@ import robot.SimulatorRobot;
 
 //import static Main.Constants.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+
 import main.Constants.Direction;
 
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements ActionListener {
 	private GridCell[][] gridcells;
-	private SimulatorRobot simRobot;
+	Timer timer=new Timer(1000, this);
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
@@ -25,7 +28,7 @@ public class MapPanel extends JPanel {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
 				MapPanel.this.add(gridCell);
-
+				timer.start();
 			}
 		}
 	}
@@ -49,6 +52,11 @@ public class MapPanel extends JPanel {
 		gridCell.setColor();
 	}
 
+	public void actionPerformed(ActionEvent ev){
+	    if(ev.getSource()==timer){
+	      repaint();// this will call at every 1 second
+	    }
+	}
 
 	// clear simulation map
 	public void clearMap() {

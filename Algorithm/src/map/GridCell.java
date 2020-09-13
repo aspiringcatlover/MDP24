@@ -50,15 +50,9 @@ public class GridCell extends JPanel {
 			setBackground(Color.RED);
 		}
 		
-		/*
-		//mark area occupied by robot 
-		if ((this.isRobotCenter(ver_coord, hor_coord)) || (this.isRobot(ver_coord, hor_coord))) {
-			setBackground(Color.ORANGE);
-		}
-		*/
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        setPreferredSize(new Dimension (20, 20));
+        setPreferredSize(new Dimension (30, 30));
         
         
 	}
