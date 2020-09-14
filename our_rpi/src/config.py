@@ -2,8 +2,8 @@ LOCALE = 'UTF-8'
 
 # Android BT connection settings
 RFCOMM_CHANNEL = 9
-RPI_MAC_ADDR = 'B8:27:EB:99:A8:38'
-UUID = '443559ba-b80f-4fb6-99d9-ddbcd6138fbd'
+RPI_MAC_ADDR = 'B8:27:EB:AF:DC:B9'
+UUID = '443559ba-b80f-4fb6-99d9-ddbcd6138fbd' #need to change to our tablet one
 ANDROID_SOCKET_BUFFER_SIZE = 512
 
 # Algorithm Wifi connection settings
