@@ -10,13 +10,11 @@ public final class Constants {
 	//robot
 	//assume start point is (0,0)
 	//default steps per sec for actual run
-	public static final int STEPS_PER_SEC = 1;
 	public enum Direction{UP, DOWN, LEFT, RIGHT} //forward direction of robot
 	public enum Movement{MOVE_FORWARD, TURN_RIGHT, TURN_LEFT}
 	public enum checkDirection{LEFT,RIGHT}
 	
 	//map
-	public static final int GOAL_COVERAGE_PERC = 100;
 	public static final int HEIGHT = 20; //in terms of no. of grid
 	public static final int WIDTH = 15;
 	public static final int GRID_LENGTH = 10; //10cm

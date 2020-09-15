@@ -16,8 +16,9 @@ public abstract class Robot {
 	public Robot() {
 		x_coord = START_X_COORD;
 		y_coord = START_Y_COORD;
-		// assuming forward direction of robot is LEFT if right wall hugging 
-		direction = Direction.LEFT;
+		// assuming forward direction of robot is DOWN if right wall hugging 
+		//in simulation
+		direction = Direction.DOWN;
 	}
 	
 	// getters and setters
@@ -68,10 +69,10 @@ public abstract class Robot {
 	public void moveForward() {
 		switch(direction){
 			case UP:
-				y_coord += 1;
+				y_coord -= 1;
 				break;
 			case DOWN:
-				y_coord -= 1;
+				y_coord += 1;
 				break;
 			case LEFT:
 				x_coord -= 1;

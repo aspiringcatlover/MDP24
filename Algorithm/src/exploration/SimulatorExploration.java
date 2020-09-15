@@ -24,42 +24,32 @@ public class SimulatorExploration extends Exploration {
 	private int steps_per_sec;
 
 	// constructor
-	public SimulatorExploration(SimulatorRobot robot, SimulatorMap simulatorMap, int time_limit_ms, int steps_per_sec) {
+	public SimulatorExploration(SimulatorRobot robot, SimulatorMap simulatorMap) {
 		this.robot = robot;
 		this.simulatorMap = simulatorMap;
 		startTime = System.currentTimeMillis();
-		endTime = startTime + time_limit_ms;
-		this.steps_per_sec = steps_per_sec;
+		endTime = startTime + simulatorMap.getTimeLimitMs();
+		steps_per_sec = simulatorMap.getStepsPerSec();
 	}
 
 	// start exploring maze
 	public void explore() {
-		simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
-		
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (simulatorMap.getActualCoveragePerc() < simulatorMap.getGoalCoveragePerc()
-						&& System.currentTimeMillis() != endTime) {
-					// sense map and update map descriptor
-					// true to mean in simulation
-					senseMap(true);
-					rightWallHugging();
-					if (stuckInLoop()) {
-						escapeLoop();
-					}
-					try {
-						// ms timeout
-						int timeout = (1 / steps_per_sec) * 1000;
-						Thread.sleep(timeout); // Customize your refresh time
-					} catch (InterruptedException e) {
-					}
-				}
-
+		while (simulatorMap.getActualCoveragePerc() < simulatorMap.getGoalCoveragePerc()
+				&& System.currentTimeMillis() != endTime) {
+			// sense map and update map descriptor
+			// true to mean in simulation
+			senseMap(true);
+			rightWallHugging();
+			if (stuckInLoop()) {
+				escapeLoop();
 			}
-		}).start();
-		
+			try {
+				// ms timeout
+				int timeout = (1 / steps_per_sec) * 1000;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	public void rightWallHugging() {
@@ -140,24 +130,26 @@ public class SimulatorExploration extends Exploration {
 		} else {
 			grid = LONG_RANGE_DISTANCE / GRID_LENGTH;
 		}
+
 		for (int i = 0; i < grid; i++) {
 			GridCell gridCell;
 			switch (dir) {
 			case RIGHT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
-			case UP:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() - i);
-			case LEFT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
-			case DOWN:
 				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() + i);
+			case UP:
+				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
+			case LEFT:
+				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() - i);
+			case DOWN:
+				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
 			default:
 				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord());
 			}
 			// if have obstacle, cant see the grid cell behind
 			if (gridCell.getObstacle()) {
 				break;
-			} else {
+			}
+			if (gridCell.equals(null) == false) {
 				gridCell.setExplored(true);
 				// assigns a color depending on whether gridCell is obstacle and
 				// explored/explored
@@ -180,18 +172,19 @@ public class SimulatorExploration extends Exploration {
 			case RIGHT:
 				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() + i);
 			case UP:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
+				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
 			case LEFT:
 				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() - i);
 			case DOWN:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
+				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
 			default:
 				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord());
 			}
 			// if have obstacle, cant see the grid cell behind
 			if (gridCell.getObstacle()) {
 				break;
-			} else {
+			}
+			if (gridCell.equals(null) == false) {
 				gridCell.setExplored(true);
 				// assigns a color depending on whether gridCell is obstacle and
 				// explored/explored
@@ -199,39 +192,9 @@ public class SimulatorExploration extends Exploration {
 			}
 		}
 	}
-	
+
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
 		simulatorMap.getMap().displayDirection(ver_coord, hor_coord, dir);
 	}
-
-	/*
-	public void displayMove(int ver_coord, int hor_coord, Movement m) {
-		// set new coordinates of robot
-		switch (m) {
-		case MOVE_FORWARD:
-			robot.setYCoord(ver_coord - 1);
-			break;
-		case TURN_LEFT:
-			robot.setXCoord(hor_coord + 1);
-			break;
-		case TURN_RIGHT:
-			robot.setXCoord(hor_coord - 1);
-			break;
-		}
-		// set new direction of robot
-		switch (m) {
-		case MOVE_FORWARD:
-			robot.setDirection(Direction.UP);
-			break;
-		case TURN_LEFT:
-			robot.setDirection(Direction.LEFT);
-			break;
-		case TURN_RIGHT:
-			robot.setDirection(Direction.RIGHT);
-			break;
-		}
-		
-	}
-	*/
 
 }

@@ -126,11 +126,15 @@ public class GridCell extends JPanel {
 		if (obstacle){
 			setBackground(Color.RED);
 		}
+		revalidate();
+		repaint();
 	}
 	
 	//set color for robot
 	public void setRobotColor() {
 		setBackground(Color.ORANGE);
+		revalidate();
+		repaint();
 	}
 
 	public void displayDirection(Direction direction) {

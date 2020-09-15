@@ -12,16 +12,17 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-
 import main.Constants.Direction;
 
 public class MapPanel extends JPanel implements ActionListener {
 	private GridCell[][] gridcells;
-	Timer timer=new Timer(1000, this);
+	Timer timer = new Timer(1000, this);
+	String[][] sample_map;
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
 		setLayout(new GridLayout(20, 15));
+		this.sample_map = sample_map;
 		gridcells = new GridCell[20][15];
 		for (int row = 0; row < 20; row++) {
 			for (int col = 0; col < 15; col++) {
@@ -35,15 +36,19 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// getter and setter
 	public GridCell getGridCell(int y, int x) {
-		if ((y >gridcells.length) || (x>gridcells[y].length))
+		//System.out.println("y: "+y+" x: "+x);
+		if ((y > gridcells.length) || (x > gridcells[y].length) || (y<0) || (x<0))
 			return null;
 
 		return gridcells[y][x];
 	}
 
-
 	public void setGridCell(int y, int x, GridCell gridCell) {
 		this.gridcells[y][x] = gridCell;
+	}
+
+	public void setSampleMap(String[][] sample_map) {
+		this.sample_map = sample_map;
 	}
 
 	// assigns a color depending on whether gridCell is obstacle and
@@ -52,10 +57,10 @@ public class MapPanel extends JPanel implements ActionListener {
 		gridCell.setColor();
 	}
 
-	public void actionPerformed(ActionEvent ev){
-	    if(ev.getSource()==timer){
-	      repaint();// this will call at every 1 second
-	    }
+	public void actionPerformed(ActionEvent ev) {
+		if (ev.getSource() == timer) {
+			repaint();// this will call at every 1 second
+		}
 	}
 
 	// clear simulation map
@@ -84,103 +89,35 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// set robot color
 	public void displayMove(int x_coord, int y_coord) {
-		gridcells[x_coord - 1][y_coord - 1].setRobotColor();
-		gridcells[x_coord][y_coord - 1].setRobotColor();
-		gridcells[x_coord + 1][y_coord - 1].setRobotColor();
-		gridcells[x_coord + 1][y_coord].setRobotColor();
-		gridcells[x_coord + 1][y_coord + 1].setRobotColor();
-		gridcells[x_coord][y_coord + 1].setRobotColor();
-		gridcells[x_coord - 1][y_coord + 1].setRobotColor();
-		gridcells[x_coord - 1][y_coord].setRobotColor();
-		gridcells[x_coord][y_coord].setRobotColor();
+		gridcells[y_coord - 1][x_coord - 1].setRobotColor();
+		gridcells[y_coord][x_coord - 1].setRobotColor();
+		gridcells[y_coord + 1][x_coord - 1].setRobotColor();
+		gridcells[y_coord + 1][x_coord].setRobotColor();
+		gridcells[y_coord + 1][x_coord + 1].setRobotColor();
+		gridcells[y_coord][x_coord + 1].setRobotColor();
+		gridcells[y_coord - 1][x_coord + 1].setRobotColor();
+		gridcells[y_coord - 1][x_coord].setRobotColor();
+		gridcells[y_coord][x_coord].setRobotColor();
 	}
-	
+
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
 		gridcells[ver_coord][hor_coord].displayDirection(dir);
 	}
 
-//	    //Generate map descriptor part 1
-//		public String generateMapDes1() {
-//			Component[] components = this.getComponents();
-//			String bitStream1 = "11";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) 
-//					bitStream1 = bitStream1 + "0";
-//				else 
-//					bitStream1 = bitStream1 + "1";
-//				}
-//			bitStream1 = bitStream1 + "11";
-//			return String.format("%016x", Integer.parseInt(bitStream1));
-//		}
-//		
-//		
-//		//Generate map descriptor part 2
-//		public String generateMapDes2() {
-//			Component[] components = this.getComponents();
-//			String bitStream2 = "";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) {
-//						if (components[i] instanceof JPanel && components[i].getState() == State.BLOCKED)
-//							bitStream2 = bitStream2 + "1";
-//						else
-//							bitStream2 = bitStream2 + "1";
-//				}
-//			}
-//			return String.format("%016x", Integer.parseInt(bitStream2));
-//		}
-//		
-//		
-//		public void move(movement m, boolean sendMoveToAndroid) {
-//			//get robot coordinates from sensor
-//	        if (!realBot) {
-//	            try {
-//	                long speed;
-//					TimeUnit.MILLISECONDS.sleep(speed);
-//	            } catch (InterruptedException e) {
-//	                System.out.println("Something went wrong in move()!");
-//	            }
-//	        }
-//
-//	        switch (m) {
-//	            case FORWARD:
-//	                switch (robotDir) {
-//	                    case NORTH:
-//	                        robot.getYCoord()++;
-//	                        break;
-//	                    case EAST:
-//	                    	robot.getXCoord()++;
-//	                        break;
-//	                    case SOUTH:
-//	                    	robot.getYCoord()--;
-//	                        break;
-//	                    case WEST:
-//	                    	robot.getYCoord()--;
-//	                        break;
-//	                }
-//	                break;
-//	            case BACKWARD:
-//	                switch (robotDir) {
-//	                case NORTH:
-//                        robot.getYCoord()--;
-//                        break;
-//                    case EAST:
-//                    	robot.getXCoord()--;
-//                        break;
-//                    case SOUTH:
-//                    	robot.getYCoord()++;
-//                        break;
-//                    case WEST:
-//                    	robot.getYCoord()++;
-//                        break;
-//	                }
-//	                break;
-//	            case CALIBRATE:
-//	                break;
-//	            default:
-//	                System.out.println("Error!");
-//	                break;
-//	        }
-//	        if (realBot) sendMovement(m, sendMoveToAndroid);
-//	    }
-
+	/*
+	// Generate map descriptor part 2
+	public String generateMapDes2() {
+		Component[] components = this.getComponents();
+		String bitStream2 = "";
+		for (int i = 0; i < components.length; i++) {
+			if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) {
+				if (components[i] instanceof JPanel && components[i].getState() == State.BLOCKED)
+					bitStream2 = bitStream2 + "1";
+				else
+					bitStream2 = bitStream2 + "1";
+			}
+		}
+		return String.format("%016x", Integer.parseInt(bitStream2));
+	}
+	*/
 }
