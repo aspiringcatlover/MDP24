@@ -5,8 +5,6 @@ import map.GridCell;
 import map.MapPanel;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class PathFinder {
@@ -23,6 +21,7 @@ public class PathFinder {
 
     public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd){
         calculateHeuristicCostOfMap(xEnd, yEnd);
+        //System.out.println("check hcost: " + map.getGridCell(10,10).gethCost());
         search(xStart, yStart,xEnd,yEnd);
         return pathList;
     }
@@ -42,9 +41,10 @@ public class PathFinder {
     }
 
     private void calculateHeuristicCostOfMap(int xEnd, int yEnd){
+        //System.out.println("height" + map.getX()+"width"+map.getWidth());
         //check the get height get width is it correct
-        for (int y=0; y<map.getHeight(); y++){
-            for (int x=0; x<map.getWidth(); x++){
+        for (int y=0; y<20; y++){
+            for (int x=0; x<15; x++){
                 map.getGridCell(y,x).sethCost(calculateHeuristicCost(x,y,xEnd, yEnd));
             }
         }
@@ -71,14 +71,8 @@ public class PathFinder {
          */
 
         //Creation of a PriorityQueue and the declaration of the Comparator
-        PriorityQueue<GridCell> openList = new PriorityQueue<>(11, new Comparator<GridCell>() {
-
-            //Compares 2 Node objects stored in the PriorityQueue and Reorders the Queue according to the object which has the lowest fValue
-            @Override
-            public int compare(GridCell o1, GridCell o2) {
-                return Integer.compare(o1.getfCost(), o2.getfCost());
-            }
-        });
+        //Compares 2 Node objects stored in the PriorityQueue and Reorders the Queue according to the object which has the lowest fValue
+        PriorityQueue<GridCell> openList = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.getfCost(), o2.getfCost()));
 
 
 
@@ -89,9 +83,11 @@ public class PathFinder {
 
         GridCell lowestCostGridCell;
         Constants.Direction currentDirection;
+        lowestCostGridCell = openList.poll();
 
+        int debugCounter=1;
         while (true){
-            lowestCostGridCell = openList.poll();
+
 
             if (lowestCostGridCell==null)
                 break;
@@ -108,6 +104,15 @@ public class PathFinder {
                 //find current direction
                 openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList);
             }
+
+            System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
+            for (GridCell gridCell: openList){
+                System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
+            }
+            debugCounter++;
+
+            //System.out.println("openlist" + Arrays.toString(openList.toArray()));
+            lowestCostGridCell = openList.poll();
         }
 
         //last grid cell in closed list is end point
@@ -133,7 +138,7 @@ public class PathFinder {
      * @return
      */
     private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Constants.Direction cardinalDirection, Constants.Direction currentDirection,
-                                      PriorityQueue<GridCell> openList){
+                                                         PriorityQueue<GridCell> openList){
         GridCell childGridCell;
         int xChild, yChild, parentToChildCost, xParent, yParent;
 
@@ -158,8 +163,9 @@ public class PathFinder {
                 throw new IllegalStateException("Unexpected value: " + cardinalDirection);
         }
 
+        //System.out.println("ychild: " + yChild +"xchild: "+xChild);
         //if grid exist
-        childGridCell =  map.getGridCell(yParent,xParent);
+        childGridCell =  map.getGridCell(yChild,xChild);
         if (childGridCell==null || childGridCell.getObstacle() )
             return openList; //no changes to openlist
 
@@ -167,7 +173,7 @@ public class PathFinder {
         if (cardinalDirection==currentDirection)
             parentToChildCost = 1;
         else
-            parentToChildCost = 3; //2 for turning, 1 for moving in front --> here is with the assumption of there is no uturn
+            parentToChildCost = 4; //2 for turning, 1 for moving in front --> here is with the assumption of there is no uturn, tried 3 will have some issue
 
 
 
@@ -197,9 +203,10 @@ public class PathFinder {
             int fCost = parentGridCell.gethCost() + parentToChildCost + childGridCell.gethCost(); //new fCost
 
             //if cost calculated before is > new cost
-            if (childGridCell.getfCost() > fCost){
+            if (childGridCell.getgCost() > parentGridCell.getgCost()+parentToChildCost){
                 openList.remove(childGridCell);
 
+                childGridCell.setgCost(parentGridCell.getgCost()+parentToChildCost);
                 childGridCell.setfCost(fCost);  //set the lower f cost
                 childGridCell.setParentGrid(parentGridCell);  //update new parent
 
@@ -207,6 +214,7 @@ public class PathFinder {
                 map.setGridCell(yChild,xChild,childGridCell);
             }
         }
+
         else if (openList.contains(childGridCell)  && closedList.contains(childGridCell)){
             int fCost = parentGridCell.gethCost() + parentToChildCost + childGridCell.gethCost();
             if (childGridCell.getfCost()>fCost){

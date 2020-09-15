@@ -14,14 +14,27 @@ public class TestFastestPath {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
         PathFinder pathFinder = new PathFinder(map);
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(0, 0, 14, 19);
+
+        /*
+        print map layout
+        System.out.println(map.getGridCell(0,7).getVerCoord() + "x :" +map.getGridCell(0,7).getHorCoord() +map.getGridCell(0,7).getObstacle() );
+
+        for (int i=0;i<20;i++){
+            for (int r=0;r<15;r++){
+                System.out.println("y:" + map.getGridCell(i,r).getVerCoord() + "x :" +map.getGridCell(i,r).getHorCoord() +map.getGridCell(i,r).getObstacle() );
+            }
+        }
+        System.out.println("----------------------------");*/
+
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(0, 0, 4, 10);
+        System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
                     " fcost: " + gridCell.getfCost() + " gcost:"+gridCell.getgCost()+" hcost:"+gridCell.gethCost());
         }
     }
 
-    public static String[][] getSampleMap(int mapChoice){
+    private static String[][] getSampleMap(int mapChoice){
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();

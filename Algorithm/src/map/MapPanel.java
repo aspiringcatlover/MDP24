@@ -37,7 +37,7 @@ public class MapPanel extends JPanel implements ActionListener {
 	// getter and setter
 	public GridCell getGridCell(int y, int x) {
 		//System.out.println("y: "+y+" x: "+x);
-		if ((y > gridcells.length) || (x > gridcells[y].length) || (y<0) || (x<0))
+		if ((y<0) || (x<0) ||(y >= gridcells.length) || (x >= gridcells[y].length) )
 			return null;
 
 		return gridcells[y][x];
