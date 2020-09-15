@@ -2,7 +2,6 @@ package robot;
 
 import static main.Constants.START_X_COORD;
 import static main.Constants.START_Y_COORD;
-import static main.Constants.STEPS_PER_SEC;
 
 import main.Constants.Direction;
 import main.Constants.RangeType;

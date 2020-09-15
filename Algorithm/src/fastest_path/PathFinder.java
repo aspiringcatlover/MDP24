@@ -22,7 +22,7 @@ public class PathFinder {
     }
 
     public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd){
-        calculateHeuristicCost(xEnd, yEnd);
+        calculateHeuristicCostOfMap(xEnd, yEnd);
         search(xStart, yStart,xEnd,yEnd);
         return pathList;
     }
@@ -36,9 +36,18 @@ public class PathFinder {
 	after calculation, then can perform a*star search grid by grid to get the fastest algorithm
 	 */
 
-    private void calculateHeuristicCost(int xEnd, int yEnd){
-        //heuristic
+    private int calculateHeuristicCost(int xNow, int yNow, int xEnd, int yEnd){
+        //manhattan heuristic
+        return (Math.abs(xNow-xEnd) + Math.abs(yNow-yEnd));
+    }
 
+    private void calculateHeuristicCostOfMap(int xEnd, int yEnd){
+        //check the get height get width is it correct
+        for (int y=0; y<map.getHeight(); y++){
+            for (int x=0; x<map.getWidth(); x++){
+                map.getGridCell(y,x).sethCost(calculateHeuristicCost(x,y,xEnd, yEnd));
+            }
+        }
     }
 
     /**
@@ -71,8 +80,12 @@ public class PathFinder {
             }
         });
 
+
+
         //Adds the Starting grid inside the openList
-        openList.add(map.getGridCell(yStart, xStart));
+        GridCell startGrid = map.getGridCell(yStart, xStart);
+        startGrid.setgCost(0);
+        openList.add(startGrid);
 
         GridCell lowestCostGridCell;
         Constants.Direction currentDirection;
@@ -145,6 +158,11 @@ public class PathFinder {
                 throw new IllegalStateException("Unexpected value: " + cardinalDirection);
         }
 
+        //if grid exist
+        childGridCell =  map.getGridCell(yParent,xParent);
+        if (childGridCell==null || childGridCell.getObstacle() )
+            return openList; //no changes to openlist
+
         //cost from parent to child
         if (cardinalDirection==currentDirection)
             parentToChildCost = 1;
@@ -152,19 +170,15 @@ public class PathFinder {
             parentToChildCost = 3; //2 for turning, 1 for moving in front --> here is with the assumption of there is no uturn
 
 
-        //if grid exist
-        if (map.getGridCell(yChild, xChild)!=null)
-            childGridCell =  map.getGridCell(yParent,xParent);
-        else
-            return openList; //?????
+
 
         /*
-        1. childGrid is not obstacle
+        1. childGrid is not obstacle (settle above)
         2. childGrid hCost is not negative (negative heuristic --> means it go behind the end point already) BUT KIV, is there -number for heuristic
         3. childGrid is not in openList (not explored before)
         4. childGrid is not in closedList (not expanded before) --> so by right shld alr have the shortest path to it
          */
-        if (!childGridCell.getObstacle() && childGridCell.gethCost()>=0 && !openList.contains(childGridCell) && !closedList.contains(childGridCell)){
+        if (childGridCell.gethCost()>=0 && !openList.contains(childGridCell) && !closedList.contains(childGridCell)){
             //double check
             childGridCell.setgCost(parentGridCell.getgCost()+parentToChildCost);  //g = parent g cost + cost from parent to child
             childGridCell.setfCost(childGridCell.getgCost()+childGridCell.gethCost()); //f = g + h
@@ -174,12 +188,12 @@ public class PathFinder {
             map.setGridCell(yChild,xChild,childGridCell);
         }
         /*
-        1. childGrid is not obstacle
+        1. childGrid is not obstacle (Settle above)
         2. childGrid hCost is not negative (negative heuristic --> means it go behind the end point already) BUT KIV, is there -number for heuristic
         3. childGrid is IN openList (EXPLORED BEFORE thru other grid) --> nid need if this parent will have lower cost or wat
         4. childGrid is not in closedList (not expanded before) --> so by right shld alr have the shortest path to it
          */
-        else if (!childGridCell.getObstacle() && childGridCell.gethCost()>=0 && openList.contains(childGridCell)  && !closedList.contains(childGridCell)){
+        else if ( childGridCell.gethCost()>=0 && openList.contains(childGridCell)  && !closedList.contains(childGridCell)){
             int fCost = parentGridCell.gethCost() + parentToChildCost + childGridCell.gethCost(); //new fCost
 
             //if cost calculated before is > new cost
@@ -193,6 +207,19 @@ public class PathFinder {
                 map.setGridCell(yChild,xChild,childGridCell);
             }
         }
+        else if (openList.contains(childGridCell)  && closedList.contains(childGridCell)){
+            int fCost = parentGridCell.gethCost() + parentToChildCost + childGridCell.gethCost();
+            if (childGridCell.getfCost()>fCost){
+                closedList.remove(childGridCell);
+
+                childGridCell.setfCost(fCost);  //set the lower f cost
+                childGridCell.setParentGrid(parentGridCell);  //update new parent
+
+                openList.add(childGridCell);
+                map.setGridCell(yChild,xChild,childGridCell);
+
+            }
+        }
 
         return openList;
 
@@ -202,6 +229,10 @@ public class PathFinder {
     private Constants.Direction getCurrentDirection(GridCell gridCell){
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
+        if (parentGridCell==null){
+            return Constants.Direction.UP;
+        }
+
         //calculate
 
         //move x
