@@ -60,19 +60,23 @@ public class SimulatorExploration extends Exploration {
 			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
-			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
+			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord()); 
+			System.out.println("ohhh1");
 		}
+		
 		// if can move forward, move forward
 		else if (hasObstacle(robot.getDirection()) == false) {
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
 			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
+			System.out.println("ohhh2");
 		}
 		// else, turn left
 		else {
 			robot.turn(robot.robotLeftDir());
 			movement.add(Movement.TURN_LEFT);
 			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+			System.out.println("ohhh3");
 		}
 	}
 

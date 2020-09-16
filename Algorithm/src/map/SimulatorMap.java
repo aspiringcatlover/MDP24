@@ -23,6 +23,7 @@ import main.*;
 
 public class SimulatorMap extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private int goal_coverage_perc;
 	private int actual_coverage_perc;
 	private MapPanel map;

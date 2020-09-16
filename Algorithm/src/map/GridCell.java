@@ -52,7 +52,7 @@ public class GridCell extends JPanel {
 		
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        setPreferredSize(new Dimension (30, 30));
+        setPreferredSize(new Dimension (25, 25));
         
         
 	}

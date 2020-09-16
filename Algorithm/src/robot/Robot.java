@@ -16,9 +16,9 @@ public abstract class Robot {
 	public Robot() {
 		x_coord = START_X_COORD;
 		y_coord = START_Y_COORD;
-		// assuming forward direction of robot is DOWN if right wall hugging 
+		// assuming forward direction of robot is UP if right wall hugging 
 		//in simulation
-		direction = Direction.DOWN;
+		direction = Direction.UP;
 	}
 	
 	// getters and setters
@@ -69,16 +69,16 @@ public abstract class Robot {
 	public void moveForward() {
 		switch(direction){
 			case UP:
-				y_coord -= 1;
-				break;
-			case DOWN:
 				y_coord += 1;
 				break;
+			case DOWN:
+				y_coord -= 1;
+				break;
 			case LEFT:
-				x_coord -= 1;
+				x_coord += 1;
 				break;
 			case RIGHT:
-				x_coord += 1;
+				x_coord -= 1;
 				break;
 			default:
 				break;
@@ -112,6 +112,7 @@ public abstract class Robot {
 	}
 	**/
 	
+	//determine forward pointing direction of robot after turning
 	public Direction HelperDir(Direction dir) {
 		//the left of robot is to look from anti-clockwise direction
 		//the right of robot is to look from clockwise direction
