@@ -102,10 +102,10 @@ public class PathFinder {
             currentDirection = getCurrentDirection(lowestCostGridCell);
             for (Constants.Direction direction: Constants.Direction.values()){
                 //find current direction
-                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList);
+                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd);
             }
 
-            //System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
+            System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
             }
@@ -138,7 +138,7 @@ public class PathFinder {
      * @return
      */
     private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Constants.Direction cardinalDirection, Constants.Direction currentDirection,
-                                                         PriorityQueue<GridCell> openList){
+                                                         PriorityQueue<GridCell> openList, int xEnd, int yEnd){
         GridCell childGridCell;
         int xChild, yChild, parentToChildCost, xParent, yParent;
 
@@ -166,7 +166,7 @@ public class PathFinder {
         //System.out.println("ychild: " + yChild +"xchild: "+xChild);
         //if grid exist
         childGridCell =  map.getGridCell(yChild,xChild);
-        if (childGridCell==null || childGridCell.getObstacle() )
+        if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
             return openList; //no changes to openlist
 
         //cost from parent to child
@@ -234,7 +234,7 @@ public class PathFinder {
 
     }
 
-    public Constants.Direction getCurrentDirection(GridCell gridCell){
+    Constants.Direction getCurrentDirection(GridCell gridCell){
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){
@@ -271,5 +271,32 @@ public class PathFinder {
         //need to add start? no right
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return return true if surrounding grid allows robot to pass through, false if surrounding grid is obstacle
+     */
+    private boolean checkSurroundingGrid(int x, int y, int xEnd, int yEnd){
+        System.out.println("for grid x:" +x +" y:"+y);
+
+        //the boundary unless is waypoint
+        if (x==0||y==0||y==19||x==14){
+            return xEnd == x || xEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
+        }
+
+        /*
+        System.out.println(!map.getGridCell(y+1,x+1).getObstacle());
+        System.out.println(!map.getGridCell(y-1,x-1).getObstacle());
+        System.out.println(!map.getGridCell(y-1,x+1).getObstacle());
+        System.out.println(!map.getGridCell(y+1,x-1).getObstacle());
+        System.out.println(!map.getGridCell(y,x+1).getObstacle());
+        System.out.println(!map.getGridCell(y+1,x).getObstacle());
+        System.out.println(!map.getGridCell(y-1,x).getObstacle());
+        System.out.println(!map.getGridCell(y,x-1).getObstacle());*/
+
+        return (!map.getGridCell(y+1,x+1).getObstacle()&&!map.getGridCell(y-1,x-1).getObstacle()&&!map.getGridCell(y-1,x+1).getObstacle()&&!map.getGridCell(y+1,x-1).getObstacle()
+                &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
+    }
 
 }
