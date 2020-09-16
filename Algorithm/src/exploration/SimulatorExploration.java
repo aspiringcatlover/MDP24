@@ -87,15 +87,15 @@ public class SimulatorExploration extends Exploration {
 		switch (dir) {
 		case UP:
 			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() + 1 + GRID_APART;
+			y_coord = robot.getYCoord() - 1 - GRID_APART;
 		case DOWN:
 			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() - 1 - GRID_APART;
+			y_coord = robot.getYCoord() + 1 + GRID_APART;
 		case LEFT:
-			x_coord = robot.getXCoord() - 1 - GRID_APART;
+			x_coord = robot.getXCoord() + 1 + GRID_APART;
 			y_coord = robot.getYCoord();
 		case RIGHT:
-			x_coord = robot.getXCoord() + 1 + GRID_APART;
+			x_coord = robot.getXCoord() - 1 - GRID_APART;
 			y_coord = robot.getYCoord();
 		default:
 			x_coord = robot.getXCoord();
