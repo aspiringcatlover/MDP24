@@ -30,7 +30,12 @@ public class SimulatorFastestPath {
 	}
 
 	public void sendInstructions(){
-		ArrayList<GridCell> fastestPath = pathFinder.getShortestPath(0,0,14,19);
+		ArrayList<GridCell> fastestPath = pathFinder.getShortestPath(1,1,13,18);
+		System.out.println("num grid in result: "+fastestPath.size());
+		for (GridCell gridCell: fastestPath){
+			System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
+					" fcost: " + gridCell.getfCost() + " gcost:"+gridCell.getgCost()+" hcost:"+gridCell.gethCost());
+		}
 		int xParent=0, yParent=0, x=0, y=0;
 		GridCell parentGrid;
 		Constants.Direction currentDirection;

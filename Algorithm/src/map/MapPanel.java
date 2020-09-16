@@ -34,16 +34,16 @@ public class MapPanel extends JPanel implements ActionListener {
 	}
 
 	// getter and setter
-	public GridCell getGridCell(int ver_coord, int hor_coord) {
-		for (int i = 0; i < gridcells.length; i++) {
-			if (i == ver_coord) {
-				for (int j = 0; j < gridcells[i].length; j++) {
-					if (j == hor_coord)
-						return gridcells[i][j];
-				}
-			}
-		}
-		return gridcells[0][0];
+	public GridCell getGridCell(int y, int x) {
+		//System.out.println("y: "+y+" x: "+x);
+		if ((y<0) || (x<0) ||(y >= gridcells.length) || (x >= gridcells[y].length) )
+			return null;
+
+		return gridcells[y][x];
+	}
+
+	public void setGridCell(int y, int x, GridCell gridCell) {
+		this.gridcells[y][x] = gridCell;
 	}
 
 	// assigns a color depending on whether gridCell is obstacle and
@@ -88,7 +88,7 @@ public class MapPanel extends JPanel implements ActionListener {
 		gridcells[x_coord - 1][y_coord - 1].setRobotColor();
 		gridcells[x_coord][y_coord - 1].setRobotColor();
 		gridcells[x_coord + 1][y_coord - 1].setRobotColor();
-		gridcells[x_coord + 1][y_coord].setRobotColor(); 
+		gridcells[x_coord + 1][y_coord].setRobotColor();
 		gridcells[x_coord + 1][y_coord + 1].setRobotColor();
 		gridcells[x_coord][y_coord + 1].setRobotColor();
 		gridcells[x_coord - 1][y_coord + 1].setRobotColor();

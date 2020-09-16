@@ -26,7 +26,7 @@ public class TestFastestPath {
         }
         System.out.println("----------------------------");*/
 
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(0, 0, 4, 10);
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 13, 18);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
@@ -38,7 +38,7 @@ public class TestFastestPath {
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();
-            path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+            path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             File myObj = new File(path_name);
             Scanner myReader = new Scanner(myObj);
             int col = 0;

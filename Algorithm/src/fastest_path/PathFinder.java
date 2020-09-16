@@ -105,11 +105,12 @@ public class PathFinder {
                 openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd);
             }
 
+            /*
             System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
             }
-            debugCounter++;
+            debugCounter++;*/
 
             //System.out.println("openlist" + Arrays.toString(openList.toArray()));
             lowestCostGridCell = openList.poll();
@@ -278,7 +279,7 @@ public class PathFinder {
      * @return return true if surrounding grid allows robot to pass through, false if surrounding grid is obstacle
      */
     private boolean checkSurroundingGrid(int x, int y, int xEnd, int yEnd){
-        System.out.println("for grid x:" +x +" y:"+y);
+        //System.out.println("for grid x:" +x +" y:"+y);
 
         //the boundary unless is waypoint
         if (x==0||y==0||y==19||x==14){

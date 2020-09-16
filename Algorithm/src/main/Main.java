@@ -43,12 +43,12 @@ public class Main {
 					SimulatorFastestPath simulatorFastestPath = new SimulatorFastestPath(robot, simulatorMap);
 					simulatorFastestPath.sendInstructions(); 
 
-
+					break; //how to make it just calculate 1 time and not keep running and running
 
 					// to fill - fastest path simulation mode
 					
 					//new simulator map generated after finished
-					simulatorMap = new SimulatorMap();
+					//simulatorMap = new SimulatorMap();
 				}
 			}
 
