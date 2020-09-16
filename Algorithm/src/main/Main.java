@@ -1,5 +1,6 @@
 package main;
 
+import fastest_path.SimulatorFastestPath;
 import robot.*;
 import map.*;
 import controller.*;
@@ -38,6 +39,12 @@ public class Main {
 				// if in fastest path simulation mode
 				else {
 					System.out.println("start simulation fastest path");
+					SimulatorRobot robot = new SimulatorRobot();
+					SimulatorFastestPath simulatorFastestPath = new SimulatorFastestPath(robot, simulatorMap);
+					simulatorFastestPath.sendInstructions(); 
+
+
+
 					// to fill - fastest path simulation mode
 					
 					//new simulator map generated after finished
@@ -46,6 +53,7 @@ public class Main {
 			}
 
 			// if in actual mode, includes actual exploration and fastest path
+			/*
 			else if (simulatorMap.getStartActual()) {
 
 				System.out.println("start actual");
@@ -56,7 +64,7 @@ public class Main {
 				
 				//new simulator map generated after finished
 				simulatorMap = new SimulatorMap();
-			}
+			}*/
 			
 			
 			try

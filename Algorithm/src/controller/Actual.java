@@ -14,12 +14,13 @@ public class Actual{
 		this.robot = robot;
 		this.map = map;
 	}
-	
+
+	/*
 	//Starts actual
 	public void startActual() {
 		
 		ActualExploration exploration = new ActualExploration(robot, map);
 		exploration.explore();
-	}
+	}*/
 
 }

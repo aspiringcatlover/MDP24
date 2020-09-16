@@ -9,7 +9,16 @@ import map.GridCell;
 import map.ActualMap;
 
 public class ActualExploration extends Exploration{
-	
+	@Override
+	public void explore() {
+
+	}
+
+	@Override
+	public void rightWallHugging() {
+
+	}
+	/*
 	
 			
 	//constructor
@@ -75,7 +84,7 @@ public class ActualExploration extends Exploration{
 	//realignment of robot position to make sure distance to robot from wall is proper
 	public void closenessRealign() {
 		
-	}
+	}*/
 
 
 }

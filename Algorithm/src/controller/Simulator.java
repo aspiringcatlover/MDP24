@@ -21,7 +21,8 @@ public class Simulator{
 		this.map = map;
 		this.simulatorMap = simulatorMap;
 	}
-	
+
+	/*
 	//Starts exploration simulation
 	public void startExploration() {
 		SimulatorExploration exploration = new SimulatorExploration(robot, simulatorMap, time_limit_ms, map);
@@ -31,6 +32,6 @@ public class Simulator{
 	//Starts fastest path simulation
 	public void startFastestPath() {
 		SimulatorFastestPath fastestPath = new SimulatorFastestPath(robot, simulatorMap, map);
-	}
+	}*/
 	
 }

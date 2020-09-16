@@ -10,7 +10,14 @@ public final class Constants {
 	//robot
 	//assume start point is (0,0)
 	//default steps per sec for actual run
-	public enum Direction{UP, DOWN, LEFT, RIGHT} //forward direction of robot
+	public enum Direction {UP(0),RIGHT(90),  DOWN(180), LEFT(270);
+		public final int bearing;
+		Direction(int i) {
+			this.bearing = i;
+		}
+	}
+
+	//forward direction of robot
 	public enum Movement{MOVE_FORWARD, TURN_RIGHT, TURN_LEFT}
 	public enum checkDirection{LEFT,RIGHT}
 	
