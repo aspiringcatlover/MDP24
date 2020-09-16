@@ -42,7 +42,7 @@ public class GridCell extends JPanel {
 		}
 		//mark unexplored area
 		else {
-			setBackground(Color.BLUE);
+			setBackground(Color.WHITE);
 		}
 		
 		//mark area covered by obstacle
@@ -121,7 +121,7 @@ public class GridCell extends JPanel {
 	//set color for map
 	public void setColor() {
 		if (explored) {
-			setBackground(Color.WHITE);
+			setBackground(Color.BLUE);
 		}
 		if (obstacle){
 			setBackground(Color.RED);

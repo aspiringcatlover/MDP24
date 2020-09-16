@@ -2,15 +2,19 @@ package map;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,12 +22,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.html.ImageView;
 
 import main.*;
 
 public class SimulatorMap extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+//	private static final long serialVersionUID = 1L;
 	private int goal_coverage_perc;
 	private int actual_coverage_perc;
 	private MapPanel map;
@@ -54,6 +59,14 @@ public class SimulatorMap extends JFrame {
 
 		actual_coverage_perc = 0;
 		map = new MapPanel(sample_map);
+		
+//		Box box = new Box(BoxLayout.X_AXIS);
+//		AffineTransform xfrm1 = new AffineTransform();
+//		xfrm1.scale(1, 1);
+//		box.add(map, xfrm1);
+//		AffineTransform xfrm2 = new AffineTransform();
+//		xfrm2.scale(-1, 1);
+//		box.add(map, xfrm2);
 
 		// simulator frame
 		setTitle("Maze Simulator");

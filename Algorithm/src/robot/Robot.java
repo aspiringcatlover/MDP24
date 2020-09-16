@@ -92,8 +92,7 @@ public abstract class Robot {
 	
 	//return direction to the right of the forward direction of robot
 	public Direction robotRightDir() {
-//		return HelperDir(Direction.RIGHT);
-		return Direction.RIGHT;
+		return HelperDir(Direction.RIGHT);
 	}
 	
 	//return direction to the left of the forward direction of robot
@@ -116,32 +115,30 @@ public abstract class Robot {
 	//determine forward pointing direction of robot after turning
 	//dir is the direction that the robot wants to turn to
 	public Direction HelperDir(Direction dir) {
-//		//the left of robot is to look from anti-clockwise direction
-//		//the right of robot is to look from clockwise direction
-//		Direction [] directions = {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
-//		//index gives index based on current direction
-//		int index = 0;
-//		for (int i = 0; i < directions.length; i++) {
-//			if (directions[i] == direction) {
-//				index = i;
-//			}
-//		}
-//		int newIndex;
-//		if (dir == Direction.LEFT) {
-//			//left index gives index based on robot's left direction
-//			newIndex = (index+1)%4;
-//		}
-//		else {
-//			//right index gives index based on robot's right direction
-//			newIndex = (index-1)%4;
-//		}
-//
-//		return directions[newIndex];
+		//the left of robot is to look from anti-clockwise direction
+		//the right of robot is to look from clockwise direction
+		Direction [] directions = {Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
+		//index gives index based on current direction
+		int index = 0;
+		for (int i = 0; i < directions.length; i++) {
+			if (directions[i] == direction) {
+				index = i;
+			}
+		}
+		int newIndex;
+		if (dir == Direction.LEFT) {
+			//left index gives index based on robot's left direction
+			newIndex = (index+1)%4;
+		}
+		else {
+			//right index gives index based on robot's right direction
+			newIndex = (index-1)%4;
+		}
 		
-//		if (dir == Direction.RIGHT)
-//			return Direction.UP;
-//		else 
-//			return Direction.DOWN;
+		if (newIndex == -1)
+			newIndex = 1;
+		
+		return directions[newIndex];
 	}
 
 }

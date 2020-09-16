@@ -46,14 +46,15 @@ public class SimulatorExploration extends Exploration {
 			try {
 				// ms timeout
 				int timeout = (1 / steps_per_sec) * 1000;
-				Thread.sleep(timeout); // Customize your refresh time
+				Thread.sleep(timeout); // Customize your refresh time 
 			} catch (InterruptedException e) {
 			}
 		}
 	}
 
-	public void rightWallHugging() {
-		// if no obstacle on the right, turn right and move forward
+	public void rightWallHugging() { 
+		simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord()); 
+		// if no obstacle on the right, turn right and move forward 
 		if (hasObstacle(robot.robotRightDir()) == false) {
 			robot.turn(robot.robotRightDir());
 			movement.add(Movement.TURN_RIGHT);
@@ -61,7 +62,7 @@ public class SimulatorExploration extends Exploration {
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
 			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord()); 
-			System.out.println("ohhh1");
+			System.out.println("ohhh1"); 
 		}
 		
 		// if can move forward, move forward

@@ -26,12 +26,11 @@ public class Main {
 
 				// if in exploration simulation mode
 				if (simulatorMap.getIsExpSelected()) {
-
 					System.out.println("start simulation exploration");
 					SimulatorRobot robot = new SimulatorRobot();
 					SimulatorExploration simulatorExp = new SimulatorExploration(robot, simulatorMap);
 					simulatorExp.explore();
-					
+		
 					//new simulator map generated after finished
 					simulatorMap = new SimulatorMap();
 				}
@@ -59,9 +58,10 @@ public class Main {
 				simulatorMap = new SimulatorMap();
 			}
 			
+			
 			try
 			{
-			    Thread.sleep(5000);
+			    Thread.sleep(1000);
 			}
 			catch(InterruptedException ex)
 			{
