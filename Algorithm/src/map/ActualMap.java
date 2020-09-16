@@ -22,7 +22,7 @@ public class ActualMap extends JFrame {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(10000, 10000);
-		add(new MapPanel());
+		//add(new MapPanel());
 
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();

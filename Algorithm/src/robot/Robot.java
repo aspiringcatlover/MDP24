@@ -97,6 +97,7 @@ public abstract class Robot {
 	}
 	
 	//return direction to the left of the forward direction of robot
+
 	public Direction robotLeftDir() {
 		return HelperDir(Direction.LEFT);
 	}
@@ -115,6 +116,7 @@ public abstract class Robot {
 	
 	//determine forward pointing direction of robot after turning
 	//dir is the direction that the robot wants to turn to
+
 	public Direction HelperDir(Direction dir) {
 //		//the left of robot is to look from anti-clockwise direction
 //		//the right of robot is to look from clockwise direction
@@ -142,6 +144,7 @@ public abstract class Robot {
 //			return Direction.UP;
 //		else 
 //			return Direction.DOWN;
+		return null;
 	}
 
 }

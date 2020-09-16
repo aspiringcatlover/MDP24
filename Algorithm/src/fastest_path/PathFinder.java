@@ -105,7 +105,7 @@ public class PathFinder {
                 openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList);
             }
 
-            System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
+            //System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
             }
@@ -234,7 +234,7 @@ public class PathFinder {
 
     }
 
-    private Constants.Direction getCurrentDirection(GridCell gridCell){
+    public Constants.Direction getCurrentDirection(GridCell gridCell){
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){
