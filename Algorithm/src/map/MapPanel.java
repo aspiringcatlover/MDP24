@@ -83,17 +83,26 @@ public class MapPanel extends JPanel implements ActionListener {
 	}
 
 	// set robot color
-	public void displayMove(int x_coord, int y_coord) {
-//		if(x_coord)
-		gridcells[x_coord - 1][y_coord - 1].setRobotColor();
-		gridcells[x_coord][y_coord - 1].setRobotColor();
-		gridcells[x_coord + 1][y_coord - 1].setRobotColor();
-		gridcells[x_coord + 1][y_coord].setRobotColor();
-		gridcells[x_coord + 1][y_coord + 1].setRobotColor();
-		gridcells[x_coord][y_coord + 1].setRobotColor();
-		gridcells[x_coord - 1][y_coord + 1].setRobotColor();
-		gridcells[x_coord - 1][y_coord].setRobotColor();
-		gridcells[x_coord][y_coord].setRobotColor();
+	public void displayRobotSpace(int x_coord, int y_coord) {
+		System.out.println(x_coord);
+		System.out.println(y_coord);
+		boolean outOfMap = false;
+		if (y_coord-1 < 0 || y_coord-1 > 20 || x_coord-1 < 0 || x_coord-1 > 15) 
+			outOfMap = true;
+		else
+			outOfMap = false;
+
+		if(!outOfMap) {
+			gridcells[x_coord - 1][y_coord - 1].setRobotColor();
+			gridcells[x_coord][y_coord - 1].setRobotColor();
+			gridcells[x_coord + 1][y_coord - 1].setRobotColor();
+			gridcells[x_coord + 1][y_coord].setRobotColor(); 
+			gridcells[x_coord + 1][y_coord + 1].setRobotColor();
+			gridcells[x_coord][y_coord + 1].setRobotColor();
+			gridcells[x_coord - 1][y_coord + 1].setRobotColor();
+			gridcells[x_coord - 1][y_coord].setRobotColor();
+			gridcells[x_coord][y_coord].setRobotColor();
+		}
 	}
 	
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {

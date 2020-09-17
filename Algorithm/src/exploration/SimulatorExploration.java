@@ -53,7 +53,8 @@ public class SimulatorExploration extends Exploration {
 	}
 
 	public void rightWallHugging() { 
-		simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord()); 
+		simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
+		displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 		// if no obstacle on the right, turn right and move forward 
 		if (hasObstacle(robot.robotRightDir()) == false) {
 			robot.turn(robot.robotRightDir());
@@ -61,7 +62,7 @@ public class SimulatorExploration extends Exploration {
 			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
-			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord()); 
+			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
 			System.out.println("ohhh1"); 
 		}
 		
@@ -69,7 +70,7 @@ public class SimulatorExploration extends Exploration {
 		else if (hasObstacle(robot.getDirection()) == false) {
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
-			simulatorMap.getMap().displayMove(robot.getXCoord(), robot.getYCoord());
+			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
 			System.out.println("ohhh2");
 		}
 		// else, turn left
@@ -79,6 +80,7 @@ public class SimulatorExploration extends Exploration {
 			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			System.out.println("ohhh3");
 		}
+		System.out.println(robot.getDirection());
 	}
 
 	// check if have obstacle in front of it with a difference of GRID_APART
@@ -102,10 +104,13 @@ public class SimulatorExploration extends Exploration {
 			x_coord = robot.getXCoord();
 			y_coord = robot.getYCoord();
 		}
-		if (simulatorMap.getMap().getGridCell(x_coord, y_coord).getObstacle() == true) {
+		
+		if (y_coord-1 < 0 || y_coord+1 > 20 || x_coord-1 < 0 || x_coord+1 > 15) 
+			return true; 
+		else if (simulatorMap.getMap().getGridCell(x_coord, y_coord).getObstacle() == true) 
 			return true;
-		}
-		return false;
+		else
+				return false;
 	}
 
 	// sense map using sensors and update map descriptor where there is
