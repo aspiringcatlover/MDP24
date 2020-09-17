@@ -59,7 +59,7 @@ public class SimulatorExploration extends Exploration {
 		if (hasObstacle(robot.robotRightDir()) == false) {
 			robot.turn(robot.robotRightDir());
 			movement.add(Movement.TURN_RIGHT);
-			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());  //new coordinate of crobot
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
 			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
