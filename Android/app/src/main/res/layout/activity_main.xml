@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarTrackHorizontal="@drawable/border_white_background"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_white_background"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                android:textColor="#000000"
+                android:textColorHint="#FFFFFF"
+                android:textColorLink="#FFFFFF"
+                android:textSize="25sp"
+                tools:layout_conversion_absoluteHeight="59dp"
+                tools:layout_conversion_absoluteWidth="229dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <Button
+                android:id="@+id/bluetoothButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="250dp"
+                android:background="@drawable/border_darkpurple_background"
+                android:foreground="@android:drawable/stat_sys_data_bluetooth" />
+
+            <Button
+                android:id="@+id/mapInfoButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="#5821D8"
+                android:foreground="@drawable/ic_map_info" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="507dp">
+
+            <Button
+                android:id="@+id/f2ActionButton"
+                android:layout_width="76dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="21dp"
+                android:layout_marginLeft="21dp"
+                android:layout_marginTop="41dp"
+                android:background="@drawable/button_background3"
+                android:clickable="true"
+                android:contentDescription="F2"
+                android:focusable="true"
+                android:text="F2"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/f1ActionButton"
+                app:layout_constraintStart_toEndOf="@+id/f1ActionButton"
+                app:layout_constraintTop_toBottomOf="@+id/configureButton" />
+
+            <Button
+                android:id="@+id/f1ActionButton"
+                android:layout_width="77dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="41dp"
+                android:layout_marginBottom="45dp"
+                android:background="@drawable/button_background3"
+                android:clickable="true"
+                android:contentDescription="F1"
+                android:focusable="true"
+                android:text="F1"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toTopOf="@+id/robotStatusTitleTextView"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/configureButton" />
+
+            <Button
+                android:id="@+id/configureButton"
+                android:layout_width="176dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/border_darkpurple_background"
+                android:text="@string/configure"
+                android:textColor="@color/colorWhite"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/printMDFString" />
+
+            <TextView
+                android:id="@+id/robotStatusTextView"
+                android:layout_width="164dp"
+                android:layout_height="69dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginRight="22dp"
+                android:background="#FFFFFF"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:text="Not Available"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/robotStatusTitleTextView" />
+
+            <TextView
+                android:id="@+id/robotStatusTitleTextView"
+                android:layout_width="166dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/border_darkpurple_background"
+                android:text="Robot Status"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.555"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/f1ActionButton" />
+
+            <TextView
+                android:id="@+id/yAxisTextView"
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/yLabelTextView"
+                app:layout_constraintTop_toBottomOf="@+id/directionAxisTextView" />
+
+            <TextView
+                android:id="@+id/yLabelTextView"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="Y:"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/xAxisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/directionAxisTextView" />
+
+            <TextView
+                android:id="@+id/directionLabelTextView"
+                android:layout_width="111dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="60dp"
+                android:gravity="center"
+                android:text="Direction :"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/yLabelTextView"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/xAxisTextView"
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/xLabelTextView"
+                app:layout_constraintTop_toBottomOf="@+id/directionLabelTextView" />
+
+            <TextView
+                android:id="@+id/xLabelTextView"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="X:"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/directionLabelTextView"
+                app:layout_constraintHorizontal_bias="0.095"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/directionLabelTextView" />
+
+            <TextView
+                android:id="@+id/directionAxisTextView"
+                android:layout_width="63dp"
+                android:layout_height="39dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:text="None"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <view
+                android:id="@+id/mapView"
+                class="com.example.mdp_android_grp24.ui.main.GridMap"
+                android:layout_width="394dp"
+                android:layout_height="497dp"
+                android:background="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/printMDFString"
+                android:layout_width="176dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/border_darkpurple_background"
+                android:text="Print MDF String"
+                android:textColor="@color/colorWhite"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/configureButton"
+                app:layout_constraintEnd_toEndOf="@+id/yAxisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/xAxisTextView"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C7B7FE"
+                android:layout_gravity="bottom"
+                app:tabGravity="fill" />
+        </androidx.viewpager.widget.ViewPager>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
