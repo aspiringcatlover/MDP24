@@ -86,6 +86,15 @@ public class GridCell extends JPanel {
 		this.explored = explored;
 	}
 
+	public boolean getWall(int ver_coord, int hor_coord) {
+		if (ver_coord < 0 || ver_coord > 20)
+			return true;
+		else if (hor_coord < 0 || hor_coord > 15)
+			return true;
+		else
+			return false;
+	}
+	
 	public int getgCost() {
 		return gCost;
 	}
