@@ -1,0 +1,4 @@
+#Fri Sep 18 09:48:21 SGT 2020
+base.0=/Users/sherylsaw/Downloads/Android v4/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
