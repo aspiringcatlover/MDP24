@@ -27,8 +27,6 @@ public class MapPanel extends JPanel implements ActionListener {
 			for (int row = 0; row < 20; row++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
-				MapPanel.this.add(gridCell);
-				timer.start();
 			}
 		}
 	}

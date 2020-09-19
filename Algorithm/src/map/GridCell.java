@@ -6,7 +6,6 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 import main.Constants.Direction;
 import robot.*;
-import robot.Robot;
 
 public class GridCell extends JPanel {
 
@@ -31,6 +30,9 @@ public class GridCell extends JPanel {
 		this.hor_coord = hor_coord;
 		if (state.equals("O"))
 			obstacle = true;
+		else
+			obstacle = false;
+		explored = false;
 		
 		//mark start area
 		if (state.equals("S")) {
@@ -87,9 +89,9 @@ public class GridCell extends JPanel {
 	}
 
 	public boolean getWall(int ver_coord, int hor_coord) {
-		if (ver_coord < 0 || ver_coord > 20)
+		if (ver_coord < 0 || ver_coord > 14)
 			return true;
-		else if (hor_coord < 0 || hor_coord > 15)
+		else if (hor_coord < 0 || hor_coord > 19)
 			return true;
 		else
 			return false;

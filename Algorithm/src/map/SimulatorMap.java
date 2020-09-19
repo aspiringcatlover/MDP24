@@ -72,7 +72,6 @@ public class SimulatorMap extends JFrame {
 		actual_coverage_perc = 0;
 		map = new MapPanel(sample_map);
 
-
 		// simulator frame
 		setTitle("Maze Simulator");
 		setLayout(new GridBagLayout());
@@ -80,10 +79,10 @@ public class SimulatorMap extends JFrame {
 		setSize(10000, 10000);
 
 		JPanel settingsContainer = new JPanel();
-		
+
 		add(settingsContainer);
 
-		settingsContainer.setLayout(new GridLayout(0,1));
+		settingsContainer.setLayout(new GridLayout(0, 1));
 		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(8, 0, 0, 0)));
 
 		// drop down menu to select map
@@ -93,13 +92,11 @@ public class SimulatorMap extends JFrame {
 		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
 		mapChoiceMenu.setBackground(Color.PINK);
 		settingsContainer.add(mapChoiceMenu);
-		
-		
+
 		JSeparator s = new JSeparator();
 		s.setOrientation(SwingConstants.HORIZONTAL);
 		settingsContainer.add(s);
-		
-		
+
 		// actual run button
 		JButton actualRun = new JButton("Actual run");
 		actualRun.setBounds(100, 120, 140, 40);
@@ -149,12 +146,12 @@ public class SimulatorMap extends JFrame {
 
 		settingsContainer.add(optionExp);
 		settingsContainer.add(optionFp);
-		
+
 		JSeparator s1 = new JSeparator();
 		s1.setOrientation(SwingConstants.HORIZONTAL);
 		settingsContainer.add(s1);
 //		s1.setBounds(0, 0, 1, 1);
-		
+
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
 		goalCovPer.setText("Enter goal coverage percentage :");
@@ -176,7 +173,7 @@ public class SimulatorMap extends JFrame {
 		JTextField timeField = new JTextField(5);
 		timeField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(timeField);
-		
+
 		// mdf string
 		JLabel mdfString = new JLabel();
 		mdfString.setText("Enter MDF string  :");
@@ -184,13 +181,13 @@ public class SimulatorMap extends JFrame {
 		JTextField mdfField = new JTextField(5);
 		mdfField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(mdfField);
-		
+
 		// apply settings button
 		JButton applySettings = new JButton("Apply");
 		applySettings.setBounds(100, 120, 140, 40);
 		applySettings.setBackground(Color.PINK);
 		settingsContainer.add(applySettings);
-		
+
 		// stop button
 		JButton stop = new JButton("Stop");
 		stop.setBounds(100, 120, 140, 40);
@@ -215,8 +212,8 @@ public class SimulatorMap extends JFrame {
 				int mins = Integer.parseInt(parts[0]);
 				int sec = Integer.parseInt(parts[1]);
 				time_limit_ms = (mins * 60 + sec) * 1000;
-				
-				//map descriptor format string
+
+				// map descriptor format string
 				mdf_string = mdfField.getText();
 
 				// control steps per second of robot
@@ -241,13 +238,13 @@ public class SimulatorMap extends JFrame {
 					mapChoice = 5;
 					break;
 				}
-				
+
 				if (optionExp.isSelected()) {
 					isExpSelected = true;
 				} else if (optionFp.isSelected()) {
 					isExpSelected = false;
 				}
-				
+
 				refreshMap();
 
 				System.out.println("Goal coverage percentage: " + goal_coverage_perc);
@@ -286,34 +283,34 @@ public class SimulatorMap extends JFrame {
 		setVisible(true);
 	}
 
-
 	// get sample map
 	public String[][] getSampleMap(int mapChoice) {
-		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
+		String[][] sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
 //			path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			// path_name = System.getProperty("user.dir") + "/src/sample_map/map" + mapChoice + ".txt";
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
-			int col = 0;
+			int row = 0;
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] arrOfStr = data.split("");
-				for (int row = 0; row < arrOfStr.length; row++) {
-					temp_sample_map[row][col] = arrOfStr[row];
+				for (int col = 0; col < arrOfStr.length; col++) {
+					sample_map[row][col] = arrOfStr[col];
 				}
-				col++;
+				row++;
 			}
 			myReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
-		return temp_sample_map;
+		return sample_map;
 	}
-	
-	//refresh new map according to map choice
+
+	// refresh new map according to map choice
 	public void refreshMap() {
 		getContentPane().remove(map);
 		sample_map = getSampleMap(mapChoice);

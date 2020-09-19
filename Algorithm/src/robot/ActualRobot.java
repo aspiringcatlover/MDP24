@@ -1,46 +1,7 @@
 package robot;
 
-import static main.Constants.START_X_COORD;
-import static main.Constants.START_Y_COORD;
+public class ActualRobot{
 
-import main.Constants.Direction;
-import main.Constants.RangeType;
-import main.Constants.SensorDir;
-import sensor.ActualSensor;
-
-public class ActualRobot extends Robot {
-
-	private ActualSensor[] sensorArr = new ActualSensor[6];
-	private static ActualRobot actualRobot = null;
-	private RobotCamera camera;
-
-	// Singleton
-	public static ActualRobot getInstance() {
-		if (actualRobot == null) {
-			actualRobot = new ActualRobot();
-		}
-		return actualRobot;
-	}
 	
-	//constructor for actual
-	public ActualRobot() {
-		super();
-		// initialize sensors for robot
-		// 3 short for front
-		for (int i=0; i < 3; i ++) {
-			sensorArr[i] = new ActualSensor(RangeType.SHORT, SensorDir.FRONT) ;
-		}
-		// 1 short and 1 long for left
-		sensorArr[3] = new ActualSensor(RangeType.SHORT, SensorDir.LEFT);
-		sensorArr[4] = new ActualSensor(RangeType.LONG, SensorDir.LEFT);
-		//1 short for right
-		sensorArr[5] = new ActualSensor(RangeType.SHORT, SensorDir.RIGHT);
-		RobotCamera camera = new RobotCamera();
-		}
-	
-	//check if robot sensor detects an obstacle in the specified direction
-	public boolean hasObstacle(Direction dir) {
-		return true;
-	};
 	
 }

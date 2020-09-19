@@ -1,214 +1,310 @@
 package exploration;
 
-import map.SimulatorMap;
-import static main.Constants.*;
-
-import java.awt.BorderLayout;
 import java.util.ArrayList;
 
-import javax.swing.plaf.basic.BasicArrowButton;
+import static main.Constants.*;
 
-import main.Constants.Direction;
-import robot.Robot;
-import robot.SimulatorRobot;
 import map.GridCell;
 import map.MapPanel;
+import map.SimulatorMap;
+import robot.SimulatorRobot;
+import sensor.SimulatorSensor;
 
-public class SimulatorExploration extends Exploration {
+public class SimulatorExploration {
+	
+	/*
+	 * for reference
+	 * displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());  
+	 * 
+	 * public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
+		simulatorMap.getMap().displayDirection(ver_coord, hor_coord, dir);
+		
+	 * simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
+	 * simulatorMap.getMap().colorMap(gridCell);
+	 */
 
 	private SimulatorRobot robot;
 	private SimulatorMap simulatorMap;
-	private long startTime;
-	private long endTime;
 	private ArrayList<Movement> movement = new ArrayList<Movement>();
-	private int steps_per_sec;
+	private float goal_percentage;
+	private float actual_percentage;
 
 	// constructor
 	public SimulatorExploration(SimulatorRobot robot, SimulatorMap simulatorMap) {
 		this.robot = robot;
 		this.simulatorMap = simulatorMap;
-		startTime = System.currentTimeMillis();
-		endTime = startTime + simulatorMap.getTimeLimitMs();
-		steps_per_sec = simulatorMap.getStepsPerSec();
+		goal_percentage = 100;
+		actual_percentage = 0;
+
 	}
 
 	// start exploring maze
 	public void explore() {
-		while (simulatorMap.getActualCoveragePerc() < simulatorMap.getGoalCoveragePerc()
-				&& System.currentTimeMillis() != endTime) {
-			// sense map and update map descriptor
-			// true to mean in simulation
-			senseMap(true);
+		// sense map and update map descriptor
+		while (actual_percentage < goal_percentage) {
+			System.out.println(actual_percentage);
+			MapPanel map = simulatorMap.getMap();
+			System.out.println("robot_x:" + robot.getXCoord() + " robot_y:" + robot.getYCoord());
+			System.out.println(robot.getDirection());
+			senseMap();
+			for (int row = 0; row < HEIGHT; row++) {
+				for (int col = 0; col < WIDTH; col++) {
+					printGridCell(map.getGridCell(row, col));
+				}
+				System.out.println();
+			}
 			rightWallHugging();
-			if (stuckInLoop()) {
-				escapeLoop();
-			}
-			try {
-				// ms timeout
-				int timeout = (1 / steps_per_sec) * 1000;
-				Thread.sleep(timeout); // Customize your refresh time 
-			} catch (InterruptedException e) {
-			}
+//			try {
+//				// ms timeout, wait every 1s
+//				int timeout = 1000;
+//				Thread.sleep(timeout); // Customize your refresh time
+//			} catch (InterruptedException e) {
+//			}
+			actual_percentage = getActualPerc();
 		}
 	}
 
-	public void rightWallHugging() { 
-		simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
-		displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
-		// if no obstacle on the right, turn right and move forward 
-		if (hasObstacle(robot.robotRightDir()) == false) {
+	public void rightWallHugging() {
+		System.out.println("has obstacle: " + hasObstacle(robot.getDirection()));
+		// if no obstacle on the right, turn right and move forward
+		if (!hasObstacle(robot.robotRightDir())) {
+			System.out.println("turn right");
 			robot.turn(robot.robotRightDir());
 			movement.add(Movement.TURN_RIGHT);
-			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());  //new coordinate of crobot
+			System.out.println("move forward");
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
-			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord()); 
-			System.out.println("ohhh1"); 
 		}
-		
+
 		// if can move forward, move forward
-		else if (hasObstacle(robot.getDirection()) == false) {
+		else if (!hasObstacle(robot.getDirection())) {
+			System.out.println("move forward");
 			robot.moveForward();
 			movement.add(Movement.MOVE_FORWARD);
-			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
-			System.out.println("ohhh2");
 		}
 		// else, turn left
 		else {
-			robot.turn(robot.robotLeftDir()); 
+			robot.turn(robot.robotLeftDir());
+			System.out.println("turn left");
 			movement.add(Movement.TURN_LEFT);
-			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
-			System.out.println("ohhh3");
 		}
-//		System.out.println(robot.getDirection());
 	}
 
-	// check if have obstacle in front of it with a difference of GRID_APART
+	// check if have obstacle in front of it
 	public boolean hasObstacle(Direction dir) {
 		int x_coord;
 		int y_coord;
+		GridCell gridCell;
 		switch (dir) {
 		case UP:
-			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() + 1 + GRID_APART;
+			// left of front coord
+			x_coord = robot.getXCoord() - 1;
+			y_coord = robot.getYCoord() - 2;
+			for (int i = 0; i < 3; i++) {
+				gridCell = simulatorMap.getMap().getGridCell(y_coord, x_coord + i);
+				if (gridCell == null || gridCell.getObstacle()) {
+					return true;
+				}
+			}
+			break;
 		case DOWN:
-			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() - 1 - GRID_APART;
+			// right of front coord
+			x_coord = robot.getXCoord() - 1;
+			y_coord = robot.getYCoord() + 2;
+			for (int i = 0; i < 3; i++) {
+//				System.out.println(x_coord + i);
+//				System.out.println(y_coord);
+//				System.out.println(simulatorMap.getMap().getGridCell(y_coord, x_coord + i).getObstacle());
+				gridCell = simulatorMap.getMap().getGridCell(y_coord, x_coord + i);
+				if (gridCell == null || gridCell.getObstacle()) {
+					return true;
+				}
+			}
+			break;
 		case LEFT:
-			x_coord = robot.getXCoord() + 1 + GRID_APART;
-			y_coord = robot.getYCoord();
+			// right of front coord
+			x_coord = robot.getXCoord() - 2;
+			y_coord = robot.getYCoord() - 1;
+			for (int i = 0; i < 3; i++) {
+				gridCell = simulatorMap.getMap().getGridCell(y_coord + i, x_coord);
+				if (gridCell == null || gridCell.getObstacle()) {
+					return true;
+				}
+			}
+			break;
 		case RIGHT:
-			x_coord = robot.getXCoord() - 1 - GRID_APART;
-			y_coord = robot.getYCoord();
-		default:
-			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord();
+			// left of front coord
+			x_coord = robot.getXCoord() + 2;
+			y_coord = robot.getYCoord() - 1;
+			for (int i = 0; i < 3; i++) {
+				gridCell = simulatorMap.getMap().getGridCell(y_coord + i, x_coord);
+				if (gridCell == null || gridCell.getObstacle()) {
+					return true;
+				}
+			}
+			break;
 		}
-		
-		if (y_coord < 0 || y_coord > 20 || x_coord < 0 || x_coord > 15) 
-			return true; 
-		if (simulatorMap.getMap().getGridCell(x_coord, y_coord).equals(null)) {
-//			System.out.println("hello"); 
-			return true;
-		}
-		else if (simulatorMap.getMap().getGridCell(x_coord, y_coord).getObstacle() == true) 
-			return true;
-		else
-				return false;
+		return false;
 	}
 
 	// sense map using sensors and update map descriptor where there is
 	// obstacles/free explored space
-	public void senseMap(boolean isSimulation) {
-		switch (robot.getDirection()) {
-		case RIGHT:
-			colorMapLongRange(Direction.RIGHT, isSimulation);
-			colorMapShortRange(Direction.RIGHT, isSimulation);
+	public void senseMap() {
+		Direction direction = robot.getDirection();
+		SimulatorSensor simSensor;
+		GridCell gridCell;
+		switch (direction) {
 		case UP:
-			colorMapLongRange(Direction.UP, isSimulation);
-			colorMapShortRange(Direction.UP, isSimulation);
-		case LEFT:
-			colorMapLongRange(Direction.LEFT, isSimulation);
-			colorMapShortRange(Direction.LEFT, isSimulation);
+			// LEFT_TOP(3), LEFT_MIDDLE(4)
+			for (int loc = 3; loc < 5; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() - i);
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
+			}
+			// UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
+			for (int loc = 0; loc < 3; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() - i, simSensor.getXCoord());
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
+			}
+			// RIGHT_TOP(5)
+			simSensor = robot.getIndividualSensor(5);
+			for (int i = 0; i < simSensor.getGridDistance(); i++) {
+				gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() + i);
+				if (gridCell == null || gridCell.getObstacle())
+					break;
+				gridCell.setExplored(true);
+			}
+			break;
+		case RIGHT:
+			// LEFT_TOP(3), LEFT_MIDDLE(4)
+			for (int loc = 3; loc < 5; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() - i, simSensor.getXCoord());
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
+			}
+			// UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
+			for (int loc = 0; loc < 3; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() + i);
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
+			}
+			// RIGHT_TOP(5)
+			simSensor = robot.getIndividualSensor(5);
+			for (int i = 0; i < simSensor.getGridDistance(); i++) {
+				gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() + i, simSensor.getXCoord());
+				if (gridCell == null || gridCell.getObstacle())
+					break;
+				gridCell.setExplored(true);
+			}
+			break;
 		case DOWN:
-			colorMapLongRange(Direction.DOWN, isSimulation);
-			colorMapShortRange(Direction.DOWN, isSimulation);
-		}
-	}
-
-	// color map for long range sensor
-	public void colorMapLongRange(Direction dir, boolean isSimulation) {
-		int grid;
-		if (isSimulation) {
-			grid = GRID_LONG_RANGE_DISTANCE;
-		} else {
-			grid = LONG_RANGE_DISTANCE / GRID_LENGTH;
-		}
-
-		for (int i = 0; i < grid; i++) {
-			GridCell gridCell;
-			switch (dir) {
-			case RIGHT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() + i);
-			case UP:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
-			case LEFT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() - i);
-			case DOWN:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
-			default:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord());
+			// LEFT_TOP(3), LEFT_MIDDLE(4)
+			for (int loc = 3; loc < 5; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() + i);
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
 			}
-			// if have obstacle, cant see the grid cell behind
-			if (gridCell.getObstacle()) {
-				break;
+			// UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
+			for (int loc = 0; loc < 3; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() + i, simSensor.getXCoord());
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
 			}
-			if (gridCell.equals(null) == false) {
+			// RIGHT_TOP(5)
+			simSensor = robot.getIndividualSensor(5);
+			for (int i = 0; i < simSensor.getGridDistance(); i++) {
+				gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() - i);
+				if (gridCell == null || gridCell.getObstacle())
+					break;
 				gridCell.setExplored(true);
-				// assigns a color depending on whether gridCell is obstacle and
-				// explored/explored
-				simulatorMap.getMap().colorMap(gridCell);
 			}
-		}
-	}
-
-	// color map for front short range sensor
-	public void colorMapShortRange(Direction dir, boolean isSimulation) {
-		int grid;
-		if (isSimulation) {
-			grid = GRID_SHORT_RANGE_DISTANCE;
-		} else {
-			grid = SHORT_RANGE_DISTANCE / GRID_LENGTH;
-		}
-		for (int i = 0; i < grid; i++) {
-			GridCell gridCell;
-			switch (dir) {
-			case RIGHT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() + i);
-			case UP:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() - i, robot.getXCoord());
-			case LEFT:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord() - i);
-			case DOWN:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord() + i, robot.getXCoord());
-			default:
-				gridCell = simulatorMap.getMap().getGridCell(robot.getYCoord(), robot.getXCoord());
+			break;
+		case LEFT:
+			// LEFT_TOP(3), LEFT_MIDDLE(4)
+			for (int loc = 3; loc < 5; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() + i, simSensor.getXCoord());
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
 			}
-			// if have obstacle, cant see the grid cell behind
-			if (gridCell.getObstacle()) {
-				break;
+			// UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
+			for (int loc = 0; loc < 3; loc++) {
+				simSensor = robot.getIndividualSensor(loc);
+				for (int i = 0; i < simSensor.getGridDistance(); i++) {
+					gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord(), simSensor.getXCoord() - i);
+					if (gridCell == null || gridCell.getObstacle())
+						break;
+					gridCell.setExplored(true);
+				}
 			}
-			if (gridCell.equals(null) == false) {
+			// RIGHT_TOP(5)
+			simSensor = robot.getIndividualSensor(5);
+			for (int i = 0; i < simSensor.getGridDistance(); i++) {
+				gridCell = simulatorMap.getMap().getGridCell(simSensor.getYCoord() - i, simSensor.getXCoord());
+				if (gridCell == null || gridCell.getObstacle())
+					break;
 				gridCell.setExplored(true);
-				// assigns a color depending on whether gridCell is obstacle and
-				// explored/explored
-				simulatorMap.getMap().colorMap(gridCell);
 			}
+			break;
+		}
+
+	}
+
+	public void printGridCell(GridCell gridCell) {
+		// O for obstacle
+		// E for explored
+		// U for unexplored
+		if (gridCell.getObstacle()) {
+			System.out.print("O");
+		} else if (gridCell.getExplored()) {
+			System.out.print("E");
+		} else {
+			System.out.print("U");
 		}
 	}
 
-	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
-		simulatorMap.getMap().displayDirection(ver_coord, hor_coord, dir);
+	public float getActualPerc() {
+		int totalGridCells = HEIGHT * WIDTH;
+		int gridCellsCovered = 0;
+		GridCell gridCell;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				gridCell = simulatorMap.getMap().getGridCell(row, col);
+				if (gridCell.getExplored() || gridCell.getObstacle()) {
+					gridCellsCovered += 1;
+				}
+			}
+		}
+		// System.out.println((float) gridCellsCovered / totalGridCells * 100);
+		return (((float) gridCellsCovered / totalGridCells) * 100);
 	}
 
 }
