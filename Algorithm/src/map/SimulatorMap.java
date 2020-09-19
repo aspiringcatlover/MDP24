@@ -1,9 +1,14 @@
 package map;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,15 +25,21 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.html.ImageView;
 
 import main.*;
 
 public class SimulatorMap extends JFrame {
 
-//	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private int goal_coverage_perc;
 	private int actual_coverage_perc;
 	private MapPanel map;
@@ -36,6 +47,7 @@ public class SimulatorMap extends JFrame {
 	private int mapChoice;
 	private int steps_per_sec;
 	private int time_limit_ms;
+	private String mdf_string;
 	private String[][] sample_map;
 	private boolean startSimulation;
 	private boolean startActual;
@@ -59,20 +71,71 @@ public class SimulatorMap extends JFrame {
 
 		actual_coverage_perc = 0;
 		map = new MapPanel(sample_map);
-		
-//		Box box = new Box(BoxLayout.X_AXIS);
-//		AffineTransform xfrm1 = new AffineTransform();
-//		xfrm1.scale(1, 1);
-//		box.add(map, xfrm1);
-//		AffineTransform xfrm2 = new AffineTransform();
-//		xfrm2.scale(-1, 1);
-//		box.add(map, xfrm2);
+
 
 		// simulator frame
 		setTitle("Maze Simulator");
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(10000, 10000);
+
+		JPanel settingsContainer = new JPanel();
+		
+		add(settingsContainer);
+
+		settingsContainer.setLayout(new GridLayout(0,1));
+		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(8, 0, 0, 0)));
+
+		// drop down menu to select map
+		JLabel selectMap = new JLabel("Select map:");
+		settingsContainer.add(selectMap);
+		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
+		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
+		mapChoiceMenu.setBackground(Color.PINK);
+		settingsContainer.add(mapChoiceMenu);
+		
+		
+		JSeparator s = new JSeparator();
+		s.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s);
+		
+		
+		// actual run button
+		JButton actualRun = new JButton("Actual run");
+		actualRun.setBounds(100, 120, 140, 40);
+		actualRun.setBackground(Color.PINK);
+		settingsContainer.add(actualRun);
+
+		// mouse listener for apply settings button
+		actualRun.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// simulation will start
+				startActual = true;
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+		});
 
 		// radio button style for exploration/fastest path selection
 		JRadioButton optionExp = new JRadioButton("Exploration");
@@ -84,47 +147,58 @@ public class SimulatorMap extends JFrame {
 		group.add(optionExp);
 		group.add(optionFp);
 
-		FlowLayout layout1 = new FlowLayout();
-		layout1.setHgap(10);
-		setLayout(layout1);
-
-		add(optionExp);
-		add(optionFp);
-
-		pack();
-
+		settingsContainer.add(optionExp);
+		settingsContainer.add(optionFp);
+		
+		JSeparator s1 = new JSeparator();
+		s1.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s1);
+//		s1.setBounds(0, 0, 1, 1);
+		
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
 		goalCovPer.setText("Enter goal coverage percentage :");
-		add(goalCovPer);
-		JTextField goalCovPerField = new JTextField(10);
-		add(goalCovPerField);
+		settingsContainer.add(goalCovPer);
+		JTextField goalCovPerField = new JTextField(5);
+		settingsContainer.add(goalCovPerField);
 
 		// steps per second field
 		JLabel stepsPerSec = new JLabel();
 		stepsPerSec.setText("Enter steps per second :");
-		add(stepsPerSec);
-		JTextField stepsPerSecField = new JTextField(10);
-		add(stepsPerSecField);
+		settingsContainer.add(stepsPerSec);
+		JTextField stepsPerSecField = new JTextField(5);
+		settingsContainer.add(stepsPerSecField);
 
 		// time field
 		JLabel timePer = new JLabel();
 		timePer.setText("Enter time in mm:ss  :");
-		add(timePer);
-		JTextField timeField = new JTextField(10);
-		add(timeField);
-
-		// drop down menu to select map
-		JLabel selectMap = new JLabel("Select map:");
-		add(selectMap);
-		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
-		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
-		add(mapChoiceMenu);
-
+		settingsContainer.add(timePer);
+		JTextField timeField = new JTextField(5);
+		timeField.setBounds(0, 0, 10, 10);
+		settingsContainer.add(timeField);
+		
+		// mdf string
+		JLabel mdfString = new JLabel();
+		mdfString.setText("Enter MDF string  :");
+		settingsContainer.add(mdfString);
+		JTextField mdfField = new JTextField(5);
+		mdfField.setBounds(0, 0, 10, 10);
+		settingsContainer.add(mdfField);
+		
 		// apply settings button
-		JButton applySettings = new JButton("Apply Settings");
+		JButton applySettings = new JButton("Apply");
 		applySettings.setBounds(100, 120, 140, 40);
-		add(applySettings);
+		applySettings.setBackground(Color.PINK);
+		settingsContainer.add(applySettings);
+		
+		// stop button
+		JButton stop = new JButton("Stop");
+		stop.setBounds(100, 120, 140, 40);
+		stop.setBackground(Color.PINK);
+		settingsContainer.add(stop);
+
+		// add map
+		add(map);
 
 		// mouse listener for apply settings button
 		applySettings.addMouseListener(new MouseListener() {
@@ -141,6 +215,9 @@ public class SimulatorMap extends JFrame {
 				int mins = Integer.parseInt(parts[0]);
 				int sec = Integer.parseInt(parts[1]);
 				time_limit_ms = (mins * 60 + sec) * 1000;
+				
+				//map descriptor format string
+				mdf_string = mdfField.getText();
 
 				// control steps per second of robot
 				steps_per_sec = Integer.parseInt(stepsPerSecField.getText());
@@ -179,46 +256,8 @@ public class SimulatorMap extends JFrame {
 				System.out.println("Map choice: " + mapChoice);
 				System.out.println("Steps per second: " + steps_per_sec);
 				System.out.println("Time limit in ms: " + time_limit_ms);
+				System.out.println("MDF String: " + mdf_string);
 
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-
-		});
-
-		// actual run button
-		JButton actualRun = new JButton("Actual run");
-		actualRun.setBounds(100, 120, 140, 40);
-		add(actualRun);
-		
-		//add map at last row
-		add(map);
-
-		// mouse listener for apply settings button
-		actualRun.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// simulation will start
-				startActual = true;
 			}
 
 			@Override
@@ -253,7 +292,6 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-//			path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);

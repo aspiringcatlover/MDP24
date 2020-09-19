@@ -149,25 +149,25 @@ public class GridCell extends JPanel {
 	public void displayDirection(Direction direction) {
 		switch (direction) {
 		case UP:
-			BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.SOUTH);
+			BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.EAST);
 			add(arrowSouth, BorderLayout.NORTH);
 			revalidate();
 			repaint();
 			break;
 		case DOWN:
-			BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.NORTH);
+			BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.WEST);
 			add(arrowNorth, BorderLayout.NORTH);
 			revalidate();
 			repaint();
 			break;
 		case LEFT:
-			BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.EAST);
+			BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.NORTH);
 			add(arrowEast, BorderLayout.NORTH);
 			revalidate();
 			repaint();
 			break;
 		case RIGHT:
-			BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.WEST);
+			BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.SOUTH);
 			add(arrowWest, BorderLayout.NORTH);
 			revalidate();
 			repaint();

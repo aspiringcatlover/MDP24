@@ -83,7 +83,7 @@ public abstract class Robot {
 			default:
 				break;
 		}
-	}
+	}  
 	
 	//turn robot in a specified direction
 	public void turn(Direction dir) {
@@ -127,9 +127,9 @@ public abstract class Robot {
 				index = i;
 			}
 		}
-		int newIndex;
+		int newIndex; 
 		if (dir == Direction.LEFT) {
-			//left index gives index based on robot's left direction
+			//left index gives index based on robot's left direction 
 			newIndex = (index+1)%4;
 		}
 		else {

@@ -23,8 +23,8 @@ public class MapPanel extends JPanel implements ActionListener {
 	public MapPanel(String[][] sample_map) {
 		setLayout(new GridLayout(20, 15));
 		gridcells = new GridCell[20][15];
-		for (int row = 0; row < 20; row++) {
-			for (int col = 0; col < 15; col++) {
+		for (int row = 0; row < 20; row++) { 
+			for (int col = 15-1; col >= 0; col--) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
 				MapPanel.this.add(gridCell);
@@ -32,7 +32,7 @@ public class MapPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
-
+	
 	// getter and setter
 	public GridCell getGridCell(int y, int x) {
 		//System.out.println("y: "+y+" x: "+x);
@@ -58,9 +58,38 @@ public class MapPanel extends JPanel implements ActionListener {
 	    }
 	}
 
+	//update simulation map
+	public void updateMap() {
+		for (int i = 0; i < gridcells.length; i++) {  
+			for (int j = 0; j < gridcells[i].length; j++) {
+				if ((j == 0 && i == 0) || (j == 0 && i == 1) || (j == 0 && i == 2) || (j == 1 && i == 0)
+						|| (j == 1 && i == 1) || (j == 1 && i == 2) || (j == 2 && i == 0) || (j == 2 && i == 1)
+						|| (j == 2 && i == 2)) {
+					gridcells[j][i].setBackground(Color.YELLOW); //start
+				}
+				else if ((j == 12 && i == 17) || (j == 12 && i == 18) || (j == 12 && i == 19) || (j == 13 && i == 17)
+						|| (j == 13 && i == 18) || (j == 13 && i == 19) || (j == 14 && i == 17) || (j == 14 && i == 18)
+						|| (j == 14 && i == 19)) {
+					gridcells[j][i].setBackground(Color.GREEN); //goal
+				}
+				else {
+					if (gridcells[j][i].getExplored() == true)
+						gridcells[j][i].setBackground(Color.BLUE); //explored
+					else if (gridcells[j][i].getObstacle() == true)
+						gridcells[j][i].setBackground(Color.RED); //blocked
+					else
+						gridcells[j][i].setBackground(Color.WHITE); //unexplored
+						
+				}
+			}
+		}
+		revalidate();
+		repaint();
+	}
+	
 	// clear simulation map
 	public void clearMap() {
-		for (int i = 0; i < gridcells.length; i++) {
+		for (int i = 0; i < gridcells.length; i++) {  
 			for (int j = 0; j < gridcells[i].length; j++) {
 				// mark start area
 				if ((j == 0 && i == 0) || (j == 0 && i == 1) || (j == 0 && i == 2) || (j == 1 && i == 0)
@@ -93,15 +122,15 @@ public class MapPanel extends JPanel implements ActionListener {
 			outOfMap = false;
 
 		if(!outOfMap) {
-			gridcells[x_coord - 1][y_coord - 1].setRobotColor();
-			gridcells[x_coord][y_coord - 1].setRobotColor();
-			gridcells[x_coord + 1][y_coord - 1].setRobotColor();
-			gridcells[x_coord + 1][y_coord].setRobotColor(); 
-			gridcells[x_coord + 1][y_coord + 1].setRobotColor();
-			gridcells[x_coord][y_coord + 1].setRobotColor();
-			gridcells[x_coord - 1][y_coord + 1].setRobotColor();
-			gridcells[x_coord - 1][y_coord].setRobotColor();
-			gridcells[x_coord][y_coord].setRobotColor();
+			gridcells[y_coord - 1][x_coord - 1].setRobotColor();
+			gridcells[y_coord-1][x_coord].setRobotColor();
+			gridcells[y_coord - 1][x_coord + 1].setRobotColor();
+			gridcells[y_coord][x_coord + 1].setRobotColor(); 
+			gridcells[y_coord + 1][x_coord + 1].setRobotColor(); 
+			gridcells[y_coord + 1][x_coord].setRobotColor();
+			gridcells[y_coord + 1][x_coord - 1].setRobotColor();
+			gridcells[y_coord][x_coord - 1].setRobotColor();
+			gridcells[y_coord][x_coord].setRobotColor();
 		}
 	}
 	
@@ -138,59 +167,5 @@ public class MapPanel extends JPanel implements ActionListener {
 //			}
 //			return String.format("%016x", Integer.parseInt(bitStream2));
 //		}
-//		
-//		
-//		public void move(movement m, boolean sendMoveToAndroid) {
-//			//get robot coordinates from sensor
-//	        if (!realBot) {
-//	            try {
-//	                long speed;
-//					TimeUnit.MILLISECONDS.sleep(speed);
-//	            } catch (InterruptedException e) {
-//	                System.out.println("Something went wrong in move()!");
-//	            }
-//	        }
-//
-//	        switch (m) {
-//	            case FORWARD:
-//	                switch (robotDir) {
-//	                    case NORTH:
-//	                        robot.getYCoord()++;
-//	                        break;
-//	                    case EAST:
-//	                    	robot.getXCoord()++;
-//	                        break;
-//	                    case SOUTH:
-//	                    	robot.getYCoord()--;
-//	                        break;
-//	                    case WEST:
-//	                    	robot.getYCoord()--;
-//	                        break;
-//	                }
-//	                break;
-//	            case BACKWARD:
-//	                switch (robotDir) {
-//	                case NORTH:
-//                        robot.getYCoord()--;
-//                        break;
-//                    case EAST:
-//                    	robot.getXCoord()--;
-//                        break;
-//                    case SOUTH:
-//                    	robot.getYCoord()++;
-//                        break;
-//                    case WEST:
-//                    	robot.getYCoord()++;
-//                        break;
-//	                }
-//	                break;
-//	            case CALIBRATE:
-//	                break;
-//	            default:
-//	                System.out.println("Error!");
-//	                break;
-//	        }
-//	        if (realBot) sendMovement(m, sendMoveToAndroid);
-//	    }
 
 }

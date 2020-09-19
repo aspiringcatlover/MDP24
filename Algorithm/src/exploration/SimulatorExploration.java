@@ -75,12 +75,12 @@ public class SimulatorExploration extends Exploration {
 		}
 		// else, turn left
 		else {
-			robot.turn(robot.robotLeftDir());
+			robot.turn(robot.robotLeftDir()); 
 			movement.add(Movement.TURN_LEFT);
 			displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			System.out.println("ohhh3");
 		}
-		System.out.println(robot.getDirection());
+//		System.out.println(robot.getDirection());
 	}
 
 	// check if have obstacle in front of it with a difference of GRID_APART
@@ -90,10 +90,10 @@ public class SimulatorExploration extends Exploration {
 		switch (dir) {
 		case UP:
 			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() - 1 - GRID_APART;
+			y_coord = robot.getYCoord() + 1 + GRID_APART;
 		case DOWN:
 			x_coord = robot.getXCoord();
-			y_coord = robot.getYCoord() + 1 + GRID_APART;
+			y_coord = robot.getYCoord() - 1 - GRID_APART;
 		case LEFT:
 			x_coord = robot.getXCoord() + 1 + GRID_APART;
 			y_coord = robot.getYCoord();
@@ -105,8 +105,12 @@ public class SimulatorExploration extends Exploration {
 			y_coord = robot.getYCoord();
 		}
 		
-		if (y_coord-1 < 0 || y_coord+1 > 20 || x_coord-1 < 0 || x_coord+1 > 15) 
+		if (y_coord < 0 || y_coord > 20 || x_coord < 0 || x_coord > 15) 
 			return true; 
+		if (simulatorMap.getMap().getGridCell(x_coord, y_coord).equals(null)) {
+//			System.out.println("hello"); 
+			return true;
+		}
 		else if (simulatorMap.getMap().getGridCell(x_coord, y_coord).getObstacle() == true) 
 			return true;
 		else

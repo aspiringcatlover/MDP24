@@ -25,15 +25,16 @@ public class Main {
 			// if in simulation mode
 			if (simulatorMap.getStartSimulation()) {
 
-				// if in exploration simulation mode
+				// if in exploration simulation mode 
 				if (simulatorMap.getIsExpSelected()) {
 					System.out.println("start simulation exploration");
 					SimulatorRobot robot = new SimulatorRobot();
 					SimulatorExploration simulatorExp = new SimulatorExploration(robot, simulatorMap);
 					simulatorExp.explore();
 		
-					//new simulator map generated after finished
-					simulatorMap = new SimulatorMap();
+					//update simulator map 
+					simulatorMap.revalidate();
+					simulatorMap.repaint();
 				}
 
 				// if in fastest path simulation mode
