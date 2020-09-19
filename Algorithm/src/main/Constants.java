@@ -41,4 +41,9 @@ public final class Constants {
 	
 	//camera
 	public static final int ANGLE = 90;
+
+	//public static final String IP_ADDRESS = "127.0.0.1";
+	public static final String IP_ADDRESS = "192.168.24.24";
+	public static final int PORT = 8080;
+	public static final int BUFFER_SIZE = 512;
 }

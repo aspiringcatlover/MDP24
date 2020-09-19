@@ -44,13 +44,18 @@ public class Main {
 					SimulatorFastestPath simulatorFastestPath = new SimulatorFastestPath(robot, simulatorMap);
 					simulatorFastestPath.sendInstructions(); 
 
-					break; //how to make it just calculate 1 time and not keep running and running
+					//break; //how to make it just calculate 1 time and not keep running and running
 
 					// to fill - fastest path simulation mode
-					
+
+					simulatorMap.revalidate();
+					simulatorMap.repaint();
 					//new simulator map generated after finished
 					//simulatorMap = new SimulatorMap();
 				}
+
+				simulatorMap.setStartSimulation(false);
+
 			}
 
 			// if in actual mode, includes actual exploration and fastest path

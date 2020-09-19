@@ -11,7 +11,16 @@ import sensor.ActualSensor;
 public class ActualRobot extends Robot {
 
 	private ActualSensor[] sensorArr = new ActualSensor[6];
+	private static ActualRobot actualRobot = null;
 	private RobotCamera camera;
+
+	// Singleton
+	public static ActualRobot getInstance() {
+		if (actualRobot == null) {
+			actualRobot = new ActualRobot();
+		}
+		return actualRobot;
+	}
 	
 	//constructor for actual
 	public ActualRobot() {
