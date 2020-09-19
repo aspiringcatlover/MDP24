@@ -21,14 +21,13 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
-		setLayout(new GridLayout(20, 15));
-		gridcells = new GridCell[20][15];
-		for (int row = 0; row < 20; row++) { 
-			for (int col = 15-1; col >= 0; col--) {
+		setLayout(new GridLayout(HEIGHT, WIDTH));
+		gridcells = new GridCell[HEIGHT][WIDTH];
+		gridcells = new GridCell[HEIGHT][WIDTH];
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
-				MapPanel.this.add(gridCell);
-				timer.start();
 			}
 		}
 	}

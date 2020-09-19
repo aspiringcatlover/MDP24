@@ -3,7 +3,6 @@ package main;
 import fastest_path.SimulatorFastestPath;
 import robot.*;
 import map.*;
-import controller.*;
 import exploration.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -72,15 +71,6 @@ public class Main {
 				simulatorMap = new SimulatorMap();
 			}*/
 			
-			
-			try
-			{
-			    Thread.sleep(2000);
-			}
-			catch(InterruptedException ex)
-			{
-			    Thread.currentThread().interrupt();
-			}
 		}
 		
 	}
