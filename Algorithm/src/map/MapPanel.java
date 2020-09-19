@@ -2,8 +2,8 @@ package map;
 
 import map.GridCell.*;
 import robot.SimulatorRobot;
+import main.Constants;
 
-//import static Main.Constants.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,12 +21,16 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
-		setLayout(new GridLayout(15, 20));
-		gridcells = new GridCell[20][15]; 
-		for (int col = 0; col < 15; col++) { 
-			for (int row = 0; row < 20; row++) {
+		setLayout(new GridLayout(Constants.HEIGHT, Constants.WIDTH));
+		gridcells = new GridCell[Constants.HEIGHT][Constants.WIDTH]; 
+		for (int row = 0; row < Constants.HEIGHT; row++) { 
+			for (int col = 0; col < Constants.WIDTH; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
+				MapPanel.this.add(gridCell);
+//				System.out.println(row + " " + col);
+//				System.out.println(Constants.HEIGHT + " " + Constants.WIDTH);
+				timer.start();
 			}
 		}
 	}
