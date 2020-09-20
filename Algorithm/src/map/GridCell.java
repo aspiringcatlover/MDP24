@@ -134,7 +134,7 @@ public class GridCell extends JPanel {
 		if (explored) {
 			setBackground(Color.BLUE);
 		}
-		if (obstacle){
+		else if (obstacle){
 			setBackground(Color.RED);
 		}
 		revalidate();

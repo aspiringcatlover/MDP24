@@ -1,48 +1,30 @@
-package exploration;
+package test;
 
 import java.util.ArrayList;
 
-import static main.Constants.*;
-
-import map.GridCell;
-import map.MapPanel;
-import map.SimulatorMap;
-import robot.SimulatorRobot;
-import sensor.SimulatorSensor;
+import static test.Constants.*;
 
 public class SimulatorExploration {
-
-	/*
-	 * for reference to display on map
-	 * simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
-	 * simulatorMap.getMap().displayRobotSpace(robot.getXCoord(),robot.getYCoord());
-	 * simulatorMap.getMap().colorMap(gridCell);
-	 */
 
 	private SimulatorRobot robot;
 	private SimulatorMap simulatorMap;
 	private ArrayList<Movement> movement = new ArrayList<Movement>();
 	private float goal_percentage;
 	private float actual_percentage;
-	private long startTime;
-	private long endTime;
-	private int steps_per_sec;
 
 	// constructor
 	public SimulatorExploration(SimulatorRobot robot, SimulatorMap simulatorMap) {
 		this.robot = robot;
 		this.simulatorMap = simulatorMap;
-		goal_percentage = simulatorMap.getGoalCoveragePerc();
+		goal_percentage = 100;
 		actual_percentage = 0;
-		startTime = System.currentTimeMillis();
-		endTime = startTime + simulatorMap.getTimeLimitMs();
-		steps_per_sec = simulatorMap.getStepsPerSec();
+
 	}
 
 	// start exploring maze
 	public void explore() {
 		// sense map and update map descriptor
-		while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
+		while (actual_percentage < goal_percentage) {
 			System.out.println(actual_percentage);
 			MapPanel map = simulatorMap.getMap();
 			System.out.println("robot_x:" + robot.getXCoord() + " robot_y:" + robot.getYCoord());
@@ -50,17 +32,17 @@ public class SimulatorExploration {
 			senseMap();
 			for (int row = 0; row < HEIGHT; row++) {
 				for (int col = 0; col < WIDTH; col++) {
-					simulatorMap.getMap().colorMap(map.getGridCell(row, col));
+					printGridCell(map.getGridCell(row, col));
 				}
 				System.out.println();
 			}
 			rightWallHugging();
-			try {
-				// ms timeout
-				int timeout = (1 / steps_per_sec) * 1000;
-				Thread.sleep(timeout); // Customize your refresh time
-			} catch (InterruptedException e) {
-			}
+//			try {
+//				// ms timeout, wait every 1s
+//				int timeout = 1000;
+//				Thread.sleep(timeout); // Customize your refresh time
+//			} catch (InterruptedException e) {
+//			}
 			actual_percentage = getActualPerc();
 		}
 	}
@@ -71,11 +53,9 @@ public class SimulatorExploration {
 		if (!hasObstacle(robot.robotRightDir())) {
 			System.out.println("turn right");
 			robot.turn(robot.robotRightDir());
-			simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			movement.add(Movement.TURN_RIGHT);
 			System.out.println("move forward");
 			robot.moveForward();
-			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
 			movement.add(Movement.MOVE_FORWARD);
 		}
 
@@ -83,13 +63,11 @@ public class SimulatorExploration {
 		else if (!hasObstacle(robot.getDirection())) {
 			System.out.println("move forward");
 			robot.moveForward();
-			simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
 			movement.add(Movement.MOVE_FORWARD);
 		}
 		// else, turn left
 		else {
 			robot.turn(robot.robotLeftDir());
-			simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 			System.out.println("turn left");
 			movement.add(Movement.TURN_LEFT);
 		}
@@ -152,7 +130,8 @@ public class SimulatorExploration {
 		return false;
 	}
 
-	// sense map using sensors and update explored space on map
+	// sense map using sensors and update map descriptor where there is
+	// obstacles/free explored space
 	public void senseMap() {
 		Direction direction = robot.getDirection();
 		SimulatorSensor simSensor;
@@ -282,6 +261,19 @@ public class SimulatorExploration {
 
 	}
 
+	public void printGridCell(GridCell gridCell) {
+		// O for obstacle
+		// E for explored
+		// U for unexplored
+		if (gridCell.getObstacle()) {
+			System.out.print("O");
+		} else if (gridCell.getExplored()) {
+			System.out.print("E");
+		} else {
+			System.out.print("U");
+		}
+	}
+	
 	public float getActualPerc() {
 		int totalGridCells = HEIGHT * WIDTH;
 		int gridCellsCovered = 0;
@@ -294,8 +286,8 @@ public class SimulatorExploration {
 				}
 			}
 		}
-		// System.out.println((float) gridCellsCovered / totalGridCells * 100);
-		return (((float) gridCellsCovered / totalGridCells) * 100);
+		//System.out.println((float) gridCellsCovered / totalGridCells * 100);
+		return (( (float) gridCellsCovered / totalGridCells) * 100);
 	}
 
 }

@@ -28,6 +28,8 @@ public class Main {
 				if (simulatorMap.getIsExpSelected()) {
 					System.out.println("start simulation exploration");
 					SimulatorRobot robot = new SimulatorRobot();
+					simulatorMap.getMap().displayRobotSpace(robot.getXCoord(),robot.getYCoord());
+					simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 					SimulatorExploration simulatorExp = new SimulatorExploration(robot, simulatorMap);
 					simulatorExp.explore();
 		
@@ -56,20 +58,17 @@ public class Main {
 				simulatorMap.setStartSimulation(false);
 
 			}
-
-			// if in actual mode, includes actual exploration and fastest path
-			/*
 			else if (simulatorMap.getStartActual()) {
 
 				System.out.println("start actual");
-				ActualMap map = new ActualMap();
-				ActualRobot robot = new ActualRobot();
-				Actual actual = new Actual(robot, map);
-				actual.startActual();
-				
-				//new simulator map generated after finished
-				simulatorMap = new SimulatorMap();
-			}*/
+//				ActualMap map = new ActualMap();
+//				ActualRobot robot = new ActualRobot();
+//				Actual actual = new Actual(robot, map);
+//				actual.startActual();
+//				
+//				//new simulator map generated after finished
+//				simulatorMap = new SimulatorMap();
+			}
 			
 		}
 		
