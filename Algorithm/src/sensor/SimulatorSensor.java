@@ -1,95 +1,61 @@
 package sensor;
+import map.MapPanel;
+
+import java.util.ArrayList;
+import java.util.Map;
+
 import static main.Constants.*;
 
-public class SimulatorSensor{
-	
-	private RangeType type;
-	private SensorLocation location;
-	private int gridDistance;
-	private int x_coord;
-	private int y_coord;
+public class SimulatorSensor extends Sensor{
+
+	private MapPanel map;
+	private Direction direction;
 
 	// constructor
 	public SimulatorSensor(RangeType type, SensorLocation location) {
-		this.type = type;
-		this.location = location;
-		switch (type) {
-		case LONG:
-			gridDistance = GRID_LONG_RANGE_DISTANCE;
-			break;
-		case SHORT:
-			gridDistance = GRID_SHORT_RANGE_DISTANCE;
-			break;
-		default:
-			// System.out.println("Cannot detect sensor");
+		super(type, location);
+	}
+
+	@Override
+	public void updateSensor(ArrayList<Boolean> isObstacle) {
+		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		for (int i=0; i<gridDistance;i++){
+			sensorResult.add(false);
 		}
-		//assuming forward direction of robot wrt map is DOWN
-		switch(location) {
-		case LEFT_TOP:
-			x_coord = 3;
-			y_coord = 2;
-			break;
-		case LEFT_MIDDLE:
-			x_coord = 3;
-			y_coord = 1;
-			break;
-		case UP_LEFT:
-			x_coord = 2;
-			y_coord = 3;
-			break;
-		case UP_MIDDLE:
-			x_coord = 1;
-			y_coord = 3;
-			break;
-		case UP_RIGHT:
-			x_coord = 0;
-			y_coord = 3;
-			break;
-		case RIGHT_TOP:
-			x_coord = -1;
-			y_coord = 2;
-			break;
+		/*
+		switch (direction){
+			case NORTH:
+				switch (location){
+					case LEFT_TOP:
+				}
+		}*/
+	}
+
+	public void setSensorInformation(){
+		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		for (int i=0; i<gridDistance;i++){
+			sensorResult.add(false);
 		}
+		this.obstaclePresent = sensorResult;
 	}
 
-
-	// getters and setters
-	public void setXCoord(int x_coord) {
-		this.x_coord = x_coord;
+	public void updateRobotDirection(Direction direction){
+		this.direction= direction;
 	}
 
-	public int getXCoord() {
-		return x_coord;
-	}
-
-	public void setYCoord(int y_coord) {
-		this.y_coord = y_coord;
-	}
-
-	public int getYCoord() {
-		return y_coord;
-	}
-	
-	public void setType(RangeType type) {
-		this.type = type;
-	}
-
-	public RangeType getType() {
-		return type;
-	}
-
-	public void setLocation(SensorLocation location) {
-		this.location = location;
-	}
-
-	public SensorLocation getLocation() {
-		return location;
-	}
-	
-	public int getGridDistance() {
-		return gridDistance;
-	}
-	
+	/*
+	public ArrayList<Boolean> senseObstacleFromMap(Direction direction){
+		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		switch (location){
+			case LEFT_TOP:
+				for (int i=0; i<5;i++){
+					sensorResult.add(map.getGridCell(y, x).getObstacle());
+				}
+				break;
+			case LEFT_MIDDLE:
+				for (int)
+		}
+	}*/
 	
 
 }

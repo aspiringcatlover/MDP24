@@ -101,7 +101,7 @@ public class SimulatorExploration {
 		int y_coord;
 		GridCell gridCell;
 		switch (dir) {
-		case UP:
+		case NORTH:
 			// left of front coord
 			x_coord = robot.getXCoord() - 1;
 			y_coord = robot.getYCoord() - 2;
@@ -112,7 +112,7 @@ public class SimulatorExploration {
 				}
 			}
 			break;
-		case DOWN:
+		case SOUTH:
 			// right of front coord
 			x_coord = robot.getXCoord() - 1;
 			y_coord = robot.getYCoord() + 2;
@@ -126,7 +126,7 @@ public class SimulatorExploration {
 				}
 			}
 			break;
-		case LEFT:
+		case WEST:
 			// right of front coord
 			x_coord = robot.getXCoord() - 2;
 			y_coord = robot.getYCoord() - 1;
@@ -137,7 +137,7 @@ public class SimulatorExploration {
 				}
 			}
 			break;
-		case RIGHT:
+		case EAST:
 			// left of front coord
 			x_coord = robot.getXCoord() + 2;
 			y_coord = robot.getYCoord() - 1;
@@ -158,7 +158,7 @@ public class SimulatorExploration {
 		SimulatorSensor simSensor;
 		GridCell gridCell;
 		switch (direction) {
-		case UP:
+		case NORTH:
 			// LEFT_TOP(3), LEFT_MIDDLE(4)
 			for (int loc = 3; loc < 5; loc++) {
 				simSensor = robot.getIndividualSensor(loc);
@@ -188,7 +188,7 @@ public class SimulatorExploration {
 				gridCell.setExplored(true);
 			}
 			break;
-		case RIGHT:
+		case EAST:
 			// LEFT_TOP(3), LEFT_MIDDLE(4)
 			for (int loc = 3; loc < 5; loc++) {
 				simSensor = robot.getIndividualSensor(loc);
@@ -218,7 +218,7 @@ public class SimulatorExploration {
 				gridCell.setExplored(true);
 			}
 			break;
-		case DOWN:
+		case SOUTH:
 			// LEFT_TOP(3), LEFT_MIDDLE(4)
 			for (int loc = 3; loc < 5; loc++) {
 				simSensor = robot.getIndividualSensor(loc);
@@ -248,7 +248,7 @@ public class SimulatorExploration {
 				gridCell.setExplored(true);
 			}
 			break;
-		case LEFT:
+		case WEST:
 			// LEFT_TOP(3), LEFT_MIDDLE(4)
 			for (int loc = 3; loc < 5; loc++) {
 				simSensor = robot.getIndividualSensor(loc);
