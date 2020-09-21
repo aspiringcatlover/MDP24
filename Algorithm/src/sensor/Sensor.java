@@ -19,6 +19,7 @@ public abstract class Sensor {
     public Sensor(RangeType type, SensorLocation location) {
         this.type = type;
         this.location = location;
+        this.direction = Direction.EAST;
         switch (type) {
             case LONG:
                 gridDistance = GRID_LONG_RANGE_DISTANCE;
@@ -33,28 +34,28 @@ public abstract class Sensor {
         //assuming forward direction of robot wrt map is DOWN
         switch(location) {
             case LEFT_TOP:
-                x = -1;
-                y = 2;
-                break;
-            case LEFT_MIDDLE:
-                x = -1;
-                y = 1;
-                break;
-            case UP_LEFT:
-                x = 0;
-                y = 3;
-                break;
-            case UP_MIDDLE:
-                x = 1;
-                y = 3;
-                break;
-            case UP_RIGHT:
                 x = 2;
                 y = 3;
                 break;
-            case RIGHT_TOP:
+            case LEFT_MIDDLE:
+                x = 1;
+                y = 3;
+                break;
+            case UP_LEFT:
                 x = 3;
                 y = 2;
+                break;
+            case UP_MIDDLE:
+                x = 3;
+                y = 1;
+                break;
+            case UP_RIGHT:
+                x = 3;
+                y = 0;
+                break;
+            case RIGHT_TOP:
+                x = 2;
+                y = -1;
                 break;
         }
     }

@@ -15,7 +15,6 @@ public class SimulatorSensor extends Sensor{
 	public SimulatorSensor(RangeType type, SensorLocation location, MapPanel map) {
 		super(type, location);
 		this.map = map;
-		this.direction = Direction.NORTH;
 		setSensorInformation();
 		//setSensorInformationAllFalse();
 	}
