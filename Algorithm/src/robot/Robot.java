@@ -21,7 +21,13 @@ public abstract class Robot {
 
     public abstract void moveForward();
     public abstract void turn(Direction dir);
+    public abstract void calibrate();
+    public abstract Direction robotRightDir();
+    public abstract Direction robotLeftDir();
+    public abstract SimulatorSensor getIndividualSensor(int loc);
 
+
+    //getter and setter
     public Direction getDirection() {
         return direction;
     }
@@ -62,8 +68,5 @@ public abstract class Robot {
         this.sensorArr = sensorArr;
     }
 
-    public abstract Direction robotRightDir();
-    public abstract Direction robotLeftDir();
 
-    public abstract SimulatorSensor getIndividualSensor(int loc);
 }
