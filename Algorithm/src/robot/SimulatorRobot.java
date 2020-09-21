@@ -1,214 +1,274 @@
 package robot;
 
 import static main.Constants.*;
+import static main.Constants.Direction.*;
 
+import map.MapPanel;
+import map.SimulatorMap;
+import sensor.Sensor;
 import sensor.SimulatorSensor;
 
-public class SimulatorRobot{
-	
-	int x_coord; // wrt middle of robot
-	int y_coord;
-	Direction direction; // map direction wrt robot's forward direction
-	private SimulatorSensor[] sensorArr = new SimulatorSensor[6];
+public class SimulatorRobot extends Robot{
+
+
+	private SimulatorMap simulatorMap; //this is the simulator itself maybe can rename or smth
 
 	// constructor
-	public SimulatorRobot() {
-		x_coord = START_X_COORD;
-		y_coord = START_Y_COORD;
+	public SimulatorRobot(MapPanel map) {
+		super(Direction.NORTH,START_X_COORD, START_Y_COORD);
+		//map for the maze to simulate
+		this.map = map;
+		x = START_X_COORD;
+		y = START_Y_COORD;
 		// assuming forward direction of robot is DOWN if right wall hugging
 		// in simulation
-		direction = Direction.DOWN;
+		direction = Direction.NORTH;
 		// initialize sensors for robot
 		// 3 short for front
-		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT);
-		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE);
-		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT);
+		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, map);
+		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, map);
+		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, map);
 		// 1 short and 1 long for left
-		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_TOP);
-		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.LEFT_MIDDLE);
+		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_TOP, map);
+		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.LEFT_MIDDLE, map);
 		// 1 short for right
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_TOP);
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_TOP, map);
+
+		simulatorMap = new SimulatorMap();
+		simulatorMap.setMap(new MapPanel(SimulatorMap.getSampleMap(1)));
+		//simulator map is the one that shld be updated
 	}
 
-	// getters and setters
-
-	public void setXCoord(int x_coord) {
-		this.x_coord = x_coord;
-	}
-
-	public int getXCoord() {
-		return x_coord;
-	}
-
-	public void setYCoord(int y_coord) {
-		this.y_coord = y_coord;
-	}
-
-	public int getYCoord() {
-		return y_coord;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-
-	public Direction getDirection() {
-		return direction;
+	public MapPanel getMap(){
+		return simulatorMap.getMap();
 	}
 
 	public SimulatorSensor getIndividualSensor(int i) {
-		return sensorArr[i];
+		return (SimulatorSensor) sensorArr[i];
 	}
 
 	// helper functions
-	// move robot forward
+	// move robot forward, set sensor coordinate and direction
 	public void moveForward() {
+		SimulatorSensor simulatorSensor;
 		switch (direction) {
-		case UP:
-			y_coord -= 1;
-			for (int i = 0; i < sensorArr.length; i++) {
-				sensorArr[i].setYCoord(sensorArr[i].getYCoord() - 1);
-			}
-			break;
-		case DOWN:
-			y_coord += 1;
-			for (int i = 0; i < sensorArr.length; i++) {
-				sensorArr[i].setYCoord(sensorArr[i].getYCoord() + 1);
-			}
-			break;
-		case LEFT:
-			x_coord -= 1;
-			for (int i = 0; i < sensorArr.length; i++) {
-				sensorArr[i].setXCoord(sensorArr[i].getXCoord() - 1);
-			}
-			break;
-		case RIGHT:
-			x_coord += 1;
-			for (int i = 0; i < sensorArr.length; i++) {
-				sensorArr[i].setXCoord(sensorArr[i].getXCoord() + 1);
-			}
-			break;
+			case WEST:
+				x -= 1;
+				for (Sensor sensor : sensorArr) {
+
+					//here should update simulator map!!
+					sensor.setXCoord(sensor.getXCoord() - 1);
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case EAST:
+				x += 1;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setXCoord(sensor.getXCoord() + 1);
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case SOUTH:
+				y -= 1;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setYCoord(sensor.getYCoord() - 1);
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case NORTH:
+				y += 1;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setYCoord(sensor.getYCoord() + 1);
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
 		default:
 			break;
 		}
+
 	}
 
 	// turn robot in a specified direction
 	public void turn(Direction dir) {
+		SimulatorSensor simulatorSensor;
 		direction = dir;
+		System.out.println("Direction" + direction);
 		switch (direction) {
-		case UP:
-			// LEFT_TOP(3)
-			sensorArr[3].setXCoord(x_coord - 2);
-			sensorArr[3].setYCoord(y_coord - 1);
-			// LEFT_MIDDLE(4)
-			sensorArr[4].setXCoord(x_coord - 2);
-			sensorArr[4].setYCoord(y_coord);
-			// UP_LEFT(0)
-			sensorArr[0].setXCoord(x_coord - 1);
-			sensorArr[0].setYCoord(y_coord - 2);
-			// UP_MIDDLE(1)
-			sensorArr[1].setXCoord(x_coord);
-			sensorArr[1].setYCoord(y_coord - 2);
-			// UP_RIGHT(2)
-			sensorArr[2].setXCoord(x_coord + 1);
-			sensorArr[2].setYCoord(y_coord - 2);
-			// RIGHT_TOP(5)
-			sensorArr[5].setXCoord(x_coord + 2);
-			sensorArr[5].setYCoord(y_coord - 1);
-			break;
-		case DOWN:
-			// LEFT_TOP(3)
-			sensorArr[3].setXCoord(x_coord + 2);
-			sensorArr[3].setYCoord(y_coord + 1);
-			// LEFT_MIDDLE(4)
-			sensorArr[4].setXCoord(x_coord + 2);
-			sensorArr[4].setYCoord(y_coord);
-			// UP_LEFT(0)
-			sensorArr[0].setXCoord(x_coord + 1);
-			sensorArr[0].setYCoord(y_coord + 2);
-			// UP_MIDDLE(1)
-			sensorArr[1].setXCoord(x_coord);
-			sensorArr[1].setYCoord(y_coord + 2);
-			// UP_RIGHT(2)
-			sensorArr[2].setXCoord(x_coord - 1);
-			sensorArr[2].setYCoord(y_coord + 2);
-			// RIGHT_TOP(5)
-			sensorArr[5].setXCoord(x_coord - 2);
-			sensorArr[5].setYCoord(y_coord + 1);
-			break;
-		case LEFT:
-			// LEFT_TOP(3)
-			sensorArr[3].setXCoord(x_coord - 1);
-			sensorArr[3].setYCoord(y_coord + 2);
-			// LEFT_MIDDLE(4)
-			sensorArr[4].setXCoord(x_coord);
-			sensorArr[4].setYCoord(y_coord + 2);
-			// UP_LEFT(0)
-			sensorArr[0].setXCoord(x_coord - 2);
-			sensorArr[0].setYCoord(y_coord + 1);
-			// UP_MIDDLE(1)
-			sensorArr[1].setXCoord(x_coord - 2);
-			sensorArr[1].setYCoord(y_coord);
-			// UP_RIGHT(2)
-			sensorArr[2].setXCoord(x_coord - 2);
-			sensorArr[2].setYCoord(y_coord - 1);
-			// RIGHT_TOP(5)
-			sensorArr[5].setXCoord(x_coord - 1);
-			sensorArr[5].setYCoord(y_coord - 2);
-			break;
-		case RIGHT:
-			// LEFT_TOP(3)
-			sensorArr[3].setXCoord(x_coord + 1);
-			sensorArr[3].setYCoord(y_coord - 2);
-			System.out.println(sensorArr[3].getXCoord());
-			System.out.println(sensorArr[3].getYCoord());
-			// LEFT_MIDDLE(4)
-			sensorArr[4].setXCoord(x_coord);
-			sensorArr[4].setYCoord(y_coord - 2);
-			System.out.println(sensorArr[4].getXCoord());
-			System.out.println(sensorArr[4].getYCoord());
-			// UP_LEFT(0)
-			sensorArr[0].setXCoord(x_coord + 2);
-			sensorArr[0].setYCoord(y_coord - 1);
-			System.out.println(sensorArr[0].getXCoord());
-			System.out.println(sensorArr[0].getYCoord());
-			// UP_MIDDLE(1)
-			sensorArr[1].setXCoord(x_coord + 2);
-			sensorArr[1].setYCoord(y_coord);
-			System.out.println(sensorArr[1].getXCoord());
-			System.out.println(sensorArr[1].getYCoord());
-			// UP_RIGHT(2)
-			sensorArr[2].setXCoord(x_coord + 2);
-			sensorArr[2].setYCoord(y_coord + 1);
-			System.out.println(sensorArr[2].getXCoord());
-			System.out.println(sensorArr[2].getYCoord());
-			// RIGHT_TOP(5)
-			sensorArr[5].setXCoord(x_coord + 1);
-			sensorArr[5].setYCoord(y_coord + 2);
-			System.out.println(sensorArr[5].getXCoord());
-			System.out.println(sensorArr[5].getYCoord());
-			break;
+			case WEST:
+				// LEFT_TOP(3)
+				sensorArr[3].setXCoord(x - 1);
+				sensorArr[3].setYCoord(y - 2);
+				// LEFT_MIDDLE(4)
+				sensorArr[4].setXCoord(x);
+				sensorArr[4].setYCoord(y - 2);
+				// UP_LEFT(0)
+				sensorArr[0].setXCoord(x - 2);
+				sensorArr[0].setYCoord(y - 1);
+				// UP_MIDDLE(1)
+				sensorArr[1].setXCoord(x - 2);
+				sensorArr[1].setYCoord(y);
+				// UP_RIGHT(2)
+				sensorArr[2].setXCoord(x -2);
+				sensorArr[2].setYCoord(y +1);
+				// RIGHT_TOP(5)
+				sensorArr[5].setXCoord(x -1);
+				sensorArr[5].setYCoord(y +2);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case EAST:
+				// LEFT_TOP(3)
+				sensorArr[3].setXCoord(x + 1);
+				sensorArr[3].setYCoord(y + 2);
+				// LEFT_MIDDLE(4)
+				sensorArr[4].setXCoord(x);
+				sensorArr[4].setYCoord(y+2);
+				// UP_LEFT(0)
+				sensorArr[0].setXCoord(x + 2);
+				sensorArr[0].setYCoord(y + 1);
+				// UP_MIDDLE(1)
+				sensorArr[1].setXCoord(x+2);
+				sensorArr[1].setYCoord(y);
+				// UP_RIGHT(2)
+				sensorArr[2].setXCoord(x +2);
+				sensorArr[2].setYCoord(y -1);
+				// RIGHT_TOP(5)
+				sensorArr[5].setXCoord(x +1);
+				sensorArr[5].setYCoord(y -2);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case SOUTH:
+				// LEFT_TOP(3)
+				sensorArr[3].setXCoord(x +2);
+				sensorArr[3].setYCoord(y -1);
+				// LEFT_MIDDLE(4)
+				sensorArr[4].setXCoord(x +2);
+				sensorArr[4].setYCoord(y);
+				// UP_LEFT(0)
+				sensorArr[0].setXCoord(x +1);
+				sensorArr[0].setYCoord(y -2);
+				// UP_MIDDLE(1)
+				sensorArr[1].setXCoord(x);
+				sensorArr[1].setYCoord(y-2);
+				// UP_RIGHT(2)
+				sensorArr[2].setXCoord(x - 1);
+				sensorArr[2].setYCoord(y - 2);
+				// RIGHT_TOP(5)
+				sensorArr[5].setXCoord(x - 2);
+				sensorArr[5].setYCoord(y - 1);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
+			case NORTH:
+				// LEFT_TOP(3)
+				sensorArr[3].setXCoord(x -2);
+				sensorArr[3].setYCoord(y +1);
+				//System.out.println(sensorArr[3].getXCoord());
+				//System.out.println(sensorArr[3].getYCoord());
+				// LEFT_MIDDLE(4)
+				sensorArr[4].setXCoord(x-2);
+				sensorArr[4].setYCoord(y);
+				//System.out.println(sensorArr[4].getXCoord());
+				//System.out.println(sensorArr[4].getYCoord());
+				// UP_LEFT(0)
+				sensorArr[0].setXCoord(x -1);
+				sensorArr[0].setYCoord(y +2);
+				//System.out.println(sensorArr[0].getXCoord());
+				//System.out.println(sensorArr[0].getYCoord());
+				// UP_MIDDLE(1)
+				sensorArr[1].setXCoord(x);
+				sensorArr[1].setYCoord(y+2);
+				//System.out.println(sensorArr[1].getXCoord());
+				//System.out.println(sensorArr[1].getYCoord());
+				// UP_RIGHT(2)
+				sensorArr[2].setXCoord(x + 1);
+				sensorArr[2].setYCoord(y + 2);
+				//System.out.println(sensorArr[2].getXCoord());
+				//System.out.println(sensorArr[2].getYCoord());
+				// RIGHT_TOP(5)
+				sensorArr[5].setXCoord(x + 2);
+				sensorArr[5].setYCoord(y + 1);
+				//System.out.println(sensorArr[5].getXCoord());
+				//System.out.println(sensorArr[5].getYCoord());
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				break;
 		}
 	}
 
 	// return map direction to the right of the forward direction of robot
 	public Direction robotRightDir() {
-		return HelperDir(Direction.RIGHT);
+		return HelperDir(Movement.TURN_RIGHT);
 	}
 
 	// return map direction to the left of the forward direction of robot
 	public Direction robotLeftDir() {
-		return HelperDir(Direction.LEFT);
+		return HelperDir(Movement.TURN_LEFT);
 	}
+
+
+
+	/* --> to translate from coordinate to movement
+	public Movement HelperDir(Direction dir){
+		if (direction.equals(dir))
+			return Movement.MOVE_FORWARD;
+		else if (direction.bearing - dir.bearing==90 || direction.bearing - dir.bearing==-270)
+			return Movement.TURN_LEFT;
+		else
+			return Movement.TURN_RIGHT;
+	}*/
 
 	// determine forward pointing direction of robot wrt map after turning
 	// dir is the direction that the robot wants to turn to
+	//--> get robot direction, when robot turn ___
+	public Direction HelperDir(Movement movement){
+		int bearing;
+		if (movement.equals(Movement.TURN_RIGHT)){
+			bearing = direction.bearing + 90;
+		}
+		else{
+			bearing = direction.bearing - 90;
+			System.out.println("bearing" + bearing);
+		}
+		switch (bearing){
+			case 0:
+			case 360:
+				return Direction.NORTH;
+			case 90: return  Direction.EAST;
+			case 180: return SOUTH;
+			case 270:
+			case -90:
+				return WEST;
+			default: return  null;
+		}
+	}
 
+	/*
 	public Direction HelperDir(Direction dir) {
 		// the left of robot is to look from anti-clockwise direction
 		// the right of robot is to look from clockwise direction
-		Direction[] directions = { Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT };
+		Direction[] directions = { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 		// index gives index based on current direction
 		int index = 0;
 		for (int i = 0; i < directions.length; i++) {
@@ -217,7 +277,7 @@ public class SimulatorRobot{
 			}
 		}
 		int newIndex;
-		if (dir == Direction.LEFT) {
+		if (dir == Direction.WEST) {
 			// left index gives index based on robot's left direction
 			newIndex = (index == 0) ? directions.length - 1 : index - 1;
 		} else {
@@ -226,7 +286,65 @@ public class SimulatorRobot{
 		}
 
 		return directions[newIndex];
+	}*/
+	
+	public void initMap(MapPanel map){
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				simulatorMap.getMap().colorMap(map.getGridCell(row, col));
+			}
+			System.out.println();
+		}
 	}
-	
-	
+
+
+	/*
+	//set color for map
+	public void setColor() {
+		if (explored) {
+			setBackground(Color.BLUE);
+		}
+		else if (obstacle){
+			setBackground(Color.RED);
+		}
+		revalidate();
+		repaint();
+	}
+
+	//set color for robot
+	public void setRobotColor() {
+		setBackground(Color.ORANGE);
+		revalidate();
+		repaint();
+	}*/
+
+	/*
+	public void displayDirection(Direction direction) {
+		switch (direction) {
+			case NORTH:
+				BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.EAST);
+				add(arrowSouth, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case SOUTH:
+				BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.WEST);
+				add(arrowNorth, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case WEST:
+				BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.NORTH);
+				add(arrowEast, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case EAST:
+				BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.SOUTH);
+				add(arrowWest, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+		}
+	}*/
 }

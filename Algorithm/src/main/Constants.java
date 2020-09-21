@@ -9,7 +9,7 @@ public final class Constants {
 
 	// map direction wrt robot's forward direction
 	public enum Direction {
-		UP(0), RIGHT(90), DOWN(180), LEFT(270);
+		NORTH(0), EAST(90), SOUTH(180), WEST(270);
 
 		public final int bearing;
 
@@ -30,8 +30,8 @@ public final class Constants {
 	// map
 	// TO NOTE!!!!!
 	// fix height (row) to be 15 and width (col) to be 20 acc to sample_map
-	public static final int HEIGHT = 15; // in terms of no. of grid
-	public static final int WIDTH = 20;
+	public static final int HEIGHT = 20; // in terms of no. of grid
+	public static final int WIDTH = 15;
 	public static final int GRID_LENGTH = 10; // 10cm
 	public static final int GRID_APART = 1; // min distance between obstacle and robot
 

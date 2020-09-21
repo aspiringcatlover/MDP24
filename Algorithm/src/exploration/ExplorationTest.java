@@ -1,39 +1,22 @@
-package fastest_path;
+package exploration;
 
 import main.Constants;
-import map.GridCell;
 import map.MapPanel;
+import robot.Robot;
+import robot.SimulatorRobot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class TestFastestPath {
+public class ExplorationTest {
     public static void main(String[] args) {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
-        PathFinder pathFinder = new PathFinder(map);
 
-        //System.out.println("grid x-1, y-1: " + map.getGridCell(-1,-1));
-
-        /*
-        print map layout
-        System.out.println(map.getGridCell(0,7).getVerCoord() + "x :" +map.getGridCell(0,7).getHorCoord() +map.getGridCell(0,7).getObstacle() );
-
-        for (int i=0;i<20;i++){
-            for (int r=0;r<15;r++){
-                System.out.println("y:" + map.getGridCell(i,r).getVerCoord() + "x :" +map.getGridCell(i,r).getHorCoord() +map.getGridCell(i,r).getObstacle() );
-            }
-        }
-        System.out.println("----------------------------");*/
-
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 13, 18);
-        System.out.println("num grid in result: "+result.size());
-        for (GridCell gridCell: result){
-            System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
-                    " fcost: " + gridCell.getfCost() + " gcost:"+gridCell.getgCost()+" hcost:"+gridCell.gethCost());
-        }
+        Robot robot = new SimulatorRobot(map);
+        Exploration exploration = new Exploration(robot, 360000,100,2);
+        exploration.explore();
     }
 
     private static String[][] getSampleMap(int mapChoice){

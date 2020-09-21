@@ -2,11 +2,8 @@ package fastest_path;
 
 import main.Constants;
 import map.GridCell;
-import map.MapPanel;
 import map.SimulatorMap;
 import robot.SimulatorRobot;
-import map.ActualMap;
-import robot.ActualRobot;
 
 import java.util.ArrayList;
 
@@ -61,25 +58,25 @@ public class SimulatorFastestPath {
 				if (x==xParent){
 					if (y>yParent){
 						//move up
-						movement.add(getRobotMovement(currentDirection, UP));
-						displayDirection(yParent,xParent, UP);
+						movement.add(getRobotMovement(currentDirection, NORTH));
+						displayDirection(yParent,xParent, NORTH);
 					}
 					else{
 						//move down
-						movement.add(getRobotMovement(currentDirection, DOWN));
-						displayDirection(yParent,xParent, DOWN);
+						movement.add(getRobotMovement(currentDirection, SOUTH));
+						displayDirection(yParent,xParent, SOUTH);
 					}
 				}
 				else{
 					if (x>xParent){
 						//move right
-						movement.add(getRobotMovement(currentDirection, LEFT));
-						displayDirection(yParent,xParent, LEFT);
+						movement.add(getRobotMovement(currentDirection, WEST));
+						displayDirection(yParent,xParent, WEST);
 					}
 					else{
 						//move left
-						movement.add(getRobotMovement(currentDirection, RIGHT));
-						displayDirection(yParent,xParent, RIGHT);
+						movement.add(getRobotMovement(currentDirection, EAST));
+						displayDirection(yParent,xParent, EAST);
 					}
 
 				}
@@ -95,12 +92,12 @@ public class SimulatorFastestPath {
 
 	public Constants.Movement getMovement(int bearing) throws InterruptedException {
 		switch (bearing){
-			case 0: robot.turn(UP);
+			case 0: robot.turn(NORTH);
 				return Constants.Movement.MOVE_FORWARD;
-			case 90: robot.turn(LEFT);
+			case 90: robot.turn(WEST);
 				Thread.sleep((1/steps_per_sec)*2000); //for turning
 				return Constants.Movement.TURN_LEFT;
-			case 270: robot.turn(RIGHT);
+			case 270: robot.turn(EAST);
 				Thread.sleep((1/steps_per_sec)*2000); //for turning
 				return Constants.Movement.TURN_RIGHT;
 			default: return null;

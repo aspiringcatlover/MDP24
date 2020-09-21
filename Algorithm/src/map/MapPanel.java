@@ -43,6 +43,18 @@ public class MapPanel extends JPanel implements ActionListener {
 		return gridcells[y][x];
 	}
 
+	public void setObstacleForGridCell(int y,int x, Boolean obstacle){
+		if (y<0||y>19||x<0||x>14||obstacle==null)
+			return;
+		this.gridcells[y][x].setObstacle(obstacle);
+	}
+
+	public void setExploredForGridCell(int y, int x, Boolean explored){
+		if (y<0||y>19||x<0||x>14||explored==null)
+			return;
+		this.gridcells[y][x].setExplored(explored);
+	}
+
 	public void setGridCell(int y, int x, GridCell gridCell) {
 		this.gridcells[y][x] = gridCell;
 	}
@@ -50,7 +62,7 @@ public class MapPanel extends JPanel implements ActionListener {
 	// assigns a color depending on whether gridCell is obstacle and
 	// explored/explored
 	public void colorMap(GridCell gridCell) {
-		gridCell.setColor();
+		//gridCell.setColor();
 	}
 
 	public void actionPerformed(ActionEvent ev) {
@@ -121,6 +133,7 @@ public class MapPanel extends JPanel implements ActionListener {
 //			outOfMap = false;
 //
 //		if(!outOfMap) {
+		/*
 		gridcells[y_coord - 1][x_coord - 1].setRobotColor();
 		gridcells[y_coord - 1][x_coord].setRobotColor();
 		gridcells[y_coord - 1][x_coord + 1].setRobotColor();
@@ -129,12 +142,12 @@ public class MapPanel extends JPanel implements ActionListener {
 		gridcells[y_coord + 1][x_coord].setRobotColor();
 		gridcells[y_coord + 1][x_coord - 1].setRobotColor();
 		gridcells[y_coord][x_coord - 1].setRobotColor();
-		gridcells[y_coord][x_coord].setRobotColor();
+		gridcells[y_coord][x_coord].setRobotColor();*/
 //		}
 	}
 
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
-		gridcells[ver_coord][hor_coord].displayDirection(dir);
+		//gridcells[ver_coord][hor_coord].displayDirection(dir);
 	}
 
 //	    //Generate map descriptor part 1

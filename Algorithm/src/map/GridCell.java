@@ -1,11 +1,9 @@
 package map;
 import java.awt.*;
-import robot.SimulatorRobot;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import main.Constants.Direction;
-import robot.*;
 
 public class GridCell extends JPanel {
 
@@ -76,6 +74,10 @@ public class GridCell extends JPanel {
 		return hor_coord;
 	}
 
+	public void setObstacle(boolean obstacle) {
+		this.obstacle = obstacle;
+	}
+
 	public boolean getObstacle() {
 		return obstacle;
 	}
@@ -129,52 +131,5 @@ public class GridCell extends JPanel {
 		this.parent = parent;
 	}
 
-	//set color for map
-	public void setColor() {
-		if (explored) {
-			setBackground(Color.BLUE);
-		}
-		else if (obstacle){
-			setBackground(Color.RED);
-		}
-		revalidate();
-		repaint();
-	}
-	
-	//set color for robot
-	public void setRobotColor() {
-		setBackground(Color.ORANGE);
-		revalidate();
-		repaint();
-	}
-
-	public void displayDirection(Direction direction) {
-		switch (direction) {
-		case UP:
-			BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.EAST);
-			add(arrowSouth, BorderLayout.NORTH);
-			revalidate();
-			repaint();
-			break;
-		case DOWN:
-			BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.WEST);
-			add(arrowNorth, BorderLayout.NORTH);
-			revalidate();
-			repaint();
-			break;
-		case LEFT:
-			BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.NORTH);
-			add(arrowEast, BorderLayout.NORTH);
-			revalidate();
-			repaint();
-			break;
-		case RIGHT:
-			BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.SOUTH);
-			add(arrowWest, BorderLayout.NORTH);
-			revalidate();
-			repaint();
-			break;
-		}
-	}
 	
 }

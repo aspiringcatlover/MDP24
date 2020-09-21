@@ -17,6 +17,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 
+		/*
 		SimulatorMap simulatorMap = new SimulatorMap();
 		
 		while (true) {
@@ -70,7 +71,7 @@ public class Main {
 //				simulatorMap = new SimulatorMap();
 			}
 			
-		}
+		}*/
 		
 	}
 }

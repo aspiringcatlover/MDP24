@@ -148,16 +148,16 @@ public class PathFinder {
         //get coordinates of grid to explore
         //note: cardinal direction is the direction based on the x & y axis
         switch (cardinalDirection){
-            case DOWN: xChild =xParent;
+            case SOUTH: xChild =xParent;
                         yChild = yParent-1;
                         break;
-            case UP: xChild = xParent;
+            case NORTH: xChild = xParent;
                     yChild = yParent+1;
                     break;
-            case LEFT: xChild = xParent-1;
+            case WEST: xChild = xParent-1;
                         yChild = yParent;
                         break;
-            case RIGHT: xChild = xParent+1;
+            case EAST: xChild = xParent+1;
                         yChild = yParent;
                         break;
             default:
@@ -239,7 +239,7 @@ public class PathFinder {
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){
-            return Constants.Direction.UP;
+            return Constants.Direction.NORTH;
         }
 
         //calculate
@@ -248,18 +248,18 @@ public class PathFinder {
         if (parentGridCell.getVerCoord()==gridCell.getVerCoord()){
 
             if (gridCell.getHorCoord()-parentGridCell.getHorCoord()>0){
-                return Constants.Direction.RIGHT;
+                return Constants.Direction.EAST;
             }
             else
-                return Constants.Direction.LEFT;
+                return Constants.Direction.WEST;
         }
         //move y
         else {
             if (gridCell.getVerCoord()-parentGridCell.getVerCoord()>0){
-                return Constants.Direction.UP;
+                return Constants.Direction.NORTH;
             }
             else
-                return Constants.Direction.DOWN;
+                return Constants.Direction.SOUTH;
         }
     }
 
