@@ -19,6 +19,11 @@ public abstract class Robot {
         this.y = y;
     }
 
+    public Robot() {
+
+    }
+
+
     public abstract void moveForward();
     public abstract void turn(Direction dir);
     public abstract void calibrate();
