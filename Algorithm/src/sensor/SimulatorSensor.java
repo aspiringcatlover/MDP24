@@ -14,14 +14,11 @@ public class SimulatorSensor extends Sensor{
 	// constructor
 	public SimulatorSensor(RangeType type, SensorLocation location) {
 		super(type, location);
+		setSensorInformation();
 	}
 
 	@Override
 	public void updateSensor(ArrayList<Boolean> isObstacle) {
-		ArrayList<Boolean> sensorResult = new ArrayList<>();
-		for (int i=0; i<gridDistance;i++){
-			sensorResult.add(false);
-		}
 		/*
 		switch (direction){
 			case NORTH:

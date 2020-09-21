@@ -100,6 +100,7 @@ public class SimulatorRobot extends Robot{
 	// turn robot in a specified direction
 	public void turn(Direction dir) {
 		direction = dir;
+		System.out.println("Direction" + direction);
 		switch (direction) {
 			case WEST:
 				// LEFT_TOP(3)
@@ -228,6 +229,7 @@ public class SimulatorRobot extends Robot{
 		}
 		else{
 			bearing = direction.bearing - 90;
+			System.out.println("bearing" + bearing);
 		}
 		switch (bearing){
 			case 0:
@@ -235,7 +237,9 @@ public class SimulatorRobot extends Robot{
 				return Direction.NORTH;
 			case 90: return  Direction.EAST;
 			case 180: return Direction.SOUTH;
-			case 270: return Direction.WEST;
+			case 270:
+			case -90:
+				return Direction.WEST;
 			default: return  null;
 		}
 	}
