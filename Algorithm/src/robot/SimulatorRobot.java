@@ -22,7 +22,7 @@ public class SimulatorRobot extends Robot{
 		y = START_Y_COORD;
 		// assuming forward direction of robot is DOWN if right wall hugging
 		// in simulation
-		direction = Direction.NORTH;
+		direction = EAST;
 		// initialize sensors for robot
 		// 3 short for front
 		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, map);
@@ -219,7 +219,7 @@ public class SimulatorRobot extends Robot{
 
 	@Override
 	public void calibrate() {
-		
+
 	}
 
 	// return map direction to the right of the forward direction of robot
