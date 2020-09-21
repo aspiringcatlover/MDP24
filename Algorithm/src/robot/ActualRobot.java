@@ -2,8 +2,9 @@ package robot;
 
 import main.Constants;
 import sensor.ActualSensor;
+import sensor.SimulatorSensor;
 
-public class ActualRobot{
+public class ActualRobot extends Robot{
     private ActualSensor[] sensorArr = new ActualSensor[6];
     private static ActualRobot actualRobot = null;
     private RobotCamera camera;
@@ -19,6 +20,7 @@ public class ActualRobot{
     //constructor for actual
     public ActualRobot() {
         super();
+
         // initialize sensors for robot
         // 3 short for front
         /*
@@ -38,6 +40,35 @@ public class ActualRobot{
         return true;
     };
 
+    @Override
+    public void moveForward() {
+
+    }
+
+    @Override
+    public void turn(Constants.Direction dir) {
+
+    }
+
+    @Override
+    public void calibrate() {
+
+    }
+
+    @Override
+    public Constants.Direction robotRightDir() {
+        return null;
+    }
+
+    @Override
+    public Constants.Direction robotLeftDir() {
+        return null;
+    }
+
+    @Override
+    public SimulatorSensor getIndividualSensor(int loc) {
+        return null;
+    }
 
 
 }
