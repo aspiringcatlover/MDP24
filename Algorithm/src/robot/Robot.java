@@ -1,6 +1,7 @@
 package robot;
 
 import main.Constants.*;
+import map.MapPanel;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
@@ -9,6 +10,7 @@ public abstract class Robot {
     int x;
     int y;
     Sensor[] sensorArr= new Sensor[6];
+    MapPanel map;
 
 
     public Robot(Direction direction, int x, int y) {
@@ -42,6 +44,14 @@ public abstract class Robot {
 
     public void setYCoord(int y) {
         this.y = y;
+    }
+
+    public MapPanel getMap() {
+        return map;
+    }
+
+    public void setMap(MapPanel map) {
+        this.map = map;
     }
 
     public Sensor[] getSensorArr() {

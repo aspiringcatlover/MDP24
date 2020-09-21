@@ -14,6 +14,7 @@ public abstract class Sensor {
     int x;
     int y;
     ArrayList<Boolean> obstaclePresent;
+    Direction direction; // the direction the sensor is facing
 
     public Sensor(RangeType type, SensorLocation location) {
         this.type = type;
@@ -56,6 +57,24 @@ public abstract class Sensor {
                 y = 2;
                 break;
         }
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    /**
+     *
+     * @param direction direction the robot is moving to
+     */
+    public void robotMove(Direction direction){
+        //update direction of the sensor
+
+        //set sensor information (for simulator)
     }
 
     public ArrayList<Boolean> getSensorInformation(){

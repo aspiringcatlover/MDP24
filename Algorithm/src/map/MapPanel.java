@@ -43,11 +43,15 @@ public class MapPanel extends JPanel implements ActionListener {
 		return gridcells[y][x];
 	}
 
-	public void setObstacleForGridCell(int y,int x, boolean obstacle){
+	public void setObstacleForGridCell(int y,int x, Boolean obstacle){
+		if (y<0||y>19||x<0||x>14||obstacle==null)
+			return;
 		this.gridcells[y][x].setObstacle(obstacle);
 	}
 
-	public void setExploredForGridCell(int y, int x, boolean explored){
+	public void setExploredForGridCell(int y, int x, Boolean explored){
+		if (y<0||y>19||x<0||x>14||explored==null)
+			return;
 		this.gridcells[y][x].setExplored(explored);
 	}
 

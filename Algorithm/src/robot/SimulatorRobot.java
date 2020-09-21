@@ -1,13 +1,12 @@
 package robot;
 
 import static main.Constants.*;
+import static main.Constants.Direction.*;
 
 import map.MapPanel;
 import map.SimulatorMap;
+import sensor.Sensor;
 import sensor.SimulatorSensor;
-
-import javax.swing.plaf.basic.BasicArrowButton;
-import java.awt.*;
 
 public class SimulatorRobot extends Robot{
 
@@ -15,8 +14,10 @@ public class SimulatorRobot extends Robot{
 	private SimulatorMap simulatorMap; //this is the simulator itself maybe can rename or smth
 
 	// constructor
-	public SimulatorRobot() {
+	public SimulatorRobot(MapPanel map) {
 		super(Direction.NORTH,START_X_COORD, START_Y_COORD);
+		//map for the maze to simulate
+		this.map = map;
 		x = START_X_COORD;
 		y = START_Y_COORD;
 		// assuming forward direction of robot is DOWN if right wall hugging
@@ -24,40 +25,22 @@ public class SimulatorRobot extends Robot{
 		direction = Direction.NORTH;
 		// initialize sensors for robot
 		// 3 short for front
-		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT);
-		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE);
-		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT);
+		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, map);
+		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, map);
+		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, map);
 		// 1 short and 1 long for left
-		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_TOP);
-		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.LEFT_MIDDLE);
+		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_TOP, map);
+		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.LEFT_MIDDLE, map);
 		// 1 short for right
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_TOP);
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_TOP, map);
+
+		simulatorMap = new SimulatorMap();
+		simulatorMap.setMap(new MapPanel(SimulatorMap.getSampleMap(1)));
+		//simulator map is the one that shld be updated
 	}
 
-	// getters and setters
-
-	public void setXCoord(int x) {
-		this.x = x;
-	}
-
-	public int getXCoord() {
-		return x;
-	}
-
-	public void setYCoord(int y) {
-		this.y = y;
-	}
-
-	public int getYCoord() {
-		return y;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-
-	public Direction getDirection() {
-		return direction;
+	public MapPanel getMap(){
+		return simulatorMap.getMap();
 	}
 
 	public SimulatorSensor getIndividualSensor(int i) {
@@ -65,40 +48,57 @@ public class SimulatorRobot extends Robot{
 	}
 
 	// helper functions
-	// move robot forward
+	// move robot forward, set sensor coordinate and direction
 	public void moveForward() {
+		SimulatorSensor simulatorSensor;
 		switch (direction) {
 			case WEST:
 				x -= 1;
-				for (sensor.Sensor sensor : sensorArr) {
+				for (Sensor sensor : sensorArr) {
+
+					//here should update simulator map!!
 					sensor.setXCoord(sensor.getXCoord() - 1);
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
 				}
 				break;
 			case EAST:
 				x += 1;
 				for (sensor.Sensor sensor : sensorArr) {
 					sensor.setXCoord(sensor.getXCoord() + 1);
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
 				}
 				break;
 			case SOUTH:
 				y -= 1;
 				for (sensor.Sensor sensor : sensorArr) {
 					sensor.setYCoord(sensor.getYCoord() - 1);
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
 				}
 				break;
 			case NORTH:
 				y += 1;
 				for (sensor.Sensor sensor : sensorArr) {
 					sensor.setYCoord(sensor.getYCoord() + 1);
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
 				}
 				break;
 		default:
 			break;
 		}
+
 	}
 
 	// turn robot in a specified direction
 	public void turn(Direction dir) {
+		SimulatorSensor simulatorSensor;
 		direction = dir;
 		System.out.println("Direction" + direction);
 		switch (direction) {
@@ -121,6 +121,11 @@ public class SimulatorRobot extends Robot{
 				// RIGHT_TOP(5)
 				sensorArr[5].setXCoord(x -1);
 				sensorArr[5].setYCoord(y +2);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
 				break;
 			case EAST:
 				// LEFT_TOP(3)
@@ -141,6 +146,11 @@ public class SimulatorRobot extends Robot{
 				// RIGHT_TOP(5)
 				sensorArr[5].setXCoord(x +1);
 				sensorArr[5].setYCoord(y -2);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
 				break;
 			case SOUTH:
 				// LEFT_TOP(3)
@@ -161,6 +171,11 @@ public class SimulatorRobot extends Robot{
 				// RIGHT_TOP(5)
 				sensorArr[5].setXCoord(x - 2);
 				sensorArr[5].setYCoord(y - 1);
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
 				break;
 			case NORTH:
 				// LEFT_TOP(3)
@@ -193,6 +208,11 @@ public class SimulatorRobot extends Robot{
 				sensorArr[5].setYCoord(y + 1);
 				//System.out.println(sensorArr[5].getXCoord());
 				//System.out.println(sensorArr[5].getYCoord());
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; //downcasting
+					simulatorSensor.setSensorInformation();
+				}
 				break;
 		}
 	}
@@ -236,10 +256,10 @@ public class SimulatorRobot extends Robot{
 			case 360:
 				return Direction.NORTH;
 			case 90: return  Direction.EAST;
-			case 180: return Direction.SOUTH;
+			case 180: return SOUTH;
 			case 270:
 			case -90:
-				return Direction.WEST;
+				return WEST;
 			default: return  null;
 		}
 	}

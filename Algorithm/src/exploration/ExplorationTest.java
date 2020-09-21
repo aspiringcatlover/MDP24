@@ -14,9 +14,9 @@ public class ExplorationTest {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
 
-        Robot robot = new SimulatorRobot();
+        Robot robot = new SimulatorRobot(map);
         Exploration exploration = new Exploration(robot, 360000,100,2);
-        exploration.explore(map);
+        exploration.explore();
     }
 
     private static String[][] getSampleMap(int mapChoice){

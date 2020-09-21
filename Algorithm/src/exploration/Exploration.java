@@ -33,10 +33,11 @@ public class Exploration {
         startTime = System.currentTimeMillis();
         endTime = startTime + timeLimitMs;
         this.steps_per_sec = steps_per_sec;
+        this.map = robot.getMap();
     }
 
-    public void explore(MapPanel map){
-        this.map = map;
+
+    public void explore(){
         while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
             //System.out.println(actual_percentage);
             //MapPanel map = simulatorMap.getMap();
@@ -52,6 +53,8 @@ public class Exploration {
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
             rightWallHugging();
+
+            //uncomment to follow time
             /*
             try {
                 // ms timeout
@@ -161,11 +164,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (x<0||x>14)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (y-i<0 || y-i>19)
-                            continue;
                         //update information from sensor
                         map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
 
@@ -179,11 +178,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (y<0||y>19)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (x-i<0||x-i>14)
-                            continue;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
@@ -193,11 +188,7 @@ public class Exploration {
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
-                if (x<0||x>14)
-                    break;
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (y+i<0||y+i>19)
-                        continue;
                     map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                 }
@@ -209,12 +200,8 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x=sensor.getXCoord();
                     y=sensor.getYCoord();
-                    if (y<0||y>19)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (x-i<0 || x-i>19)
-                            continue;
-                        System.out.println("sensor corrdinate: " + sensor.getXCoord() + ", "+y+ "sensor result " + sensorResult.get(i));
+                        System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResult.get(i));
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
@@ -225,12 +212,8 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (x<0||x>14)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (y+i<0||y+i>19)
-                            continue;
-                        System.out.println("sensor corrdinate: " + sensor.getXCoord() + ", "+y+ "sensor result "+ sensorResult.get(i));
+                        System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResult.get(i));
                         map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
@@ -240,11 +223,7 @@ public class Exploration {
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
-                if (y<0||y>19)
-                    break;
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (x+i<0||x+i>14)
-                        continue;
                     map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                 }
@@ -256,11 +235,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (x<0||x>14)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (y+i<0||y+i>19)
-                            continue;
                         map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
@@ -271,11 +246,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (y<0||y>19)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (x+i<0||x+i>14)
-                            continue;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     }
@@ -285,11 +256,7 @@ public class Exploration {
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
-                if (x<0||x>14)
-                    break;
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (y-i<0||y-i>19)
-                        continue;
                     map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                 }
@@ -301,11 +268,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (y<0||y>19)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (x+i<0||x+i>14)
-                            continue;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     }
@@ -316,11 +279,7 @@ public class Exploration {
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
-                    if (x<0||x>14)
-                        continue;
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (y-i<0||y-i>19)
-                            continue;
                         map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                     }
@@ -328,13 +287,7 @@ public class Exploration {
                 // RIGHT_TOP(5)
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
-                x = sensor.getXCoord();
-                y = sensor.getYCoord();
-                if (y<0||y>19)
-                    break;
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (x-i<0||x-i>14)
-                        continue;
                     map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                 }
