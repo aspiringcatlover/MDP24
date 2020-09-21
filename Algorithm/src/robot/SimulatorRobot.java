@@ -217,6 +217,11 @@ public class SimulatorRobot extends Robot{
 		}
 	}
 
+	@Override
+	public void calibrate() {
+		
+	}
+
 	// return map direction to the right of the forward direction of robot
 	public Direction robotRightDir() {
 		return HelperDir(Movement.TURN_RIGHT);
