@@ -38,7 +38,7 @@ public class PathFinder {
     private int calculateHeuristicCost(int xNow, int yNow, int xEnd, int yEnd){
         //manhattan heuristic
         return (Math.abs(xNow-xEnd) + Math.abs(yNow-yEnd));
-    }
+}
 
     private void calculateHeuristicCostOfMap(int xEnd, int yEnd){
         //System.out.println("height" + map.getX()+"width"+map.getWidth());
@@ -283,7 +283,7 @@ public class PathFinder {
 
         //the boundary unless is waypoint
         if (x==0||y==0||y==19||x==14){
-            return xEnd == x || xEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
+            return xEnd == x || yEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
         }
 
         /*

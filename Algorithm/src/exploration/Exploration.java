@@ -1,5 +1,6 @@
 package exploration;
 
+import fastest_path.PathFinder;
 import main.Constants;
 import map.GridCell;
 import map.MapPanel;
@@ -9,6 +10,7 @@ import sensor.Sensor;
 import sensor.SimulatorSensor;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import static main.Constants.HEIGHT;
 import static main.Constants.WIDTH;
@@ -19,25 +21,23 @@ public class Exploration {
     private ArrayList<Constants.Movement> movement = new ArrayList<Constants.Movement>();
     private float goal_percentage;
     private float actual_percentage;
-    private long startTime;
     private long endTime;
-    private int steps_per_sec;
     private MapPanel map;
 
 
     //TODO: KIV CONSTRUCTOR
-    public Exploration(Robot robot, int timeLimitMs, int coveragePercentage, int steps_per_sec){
+    public Exploration(Robot robot, int timeLimitMs, int coveragePercentage){
         this.robot = robot;
         goal_percentage = coveragePercentage;
         actual_percentage = 0;
-        startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         endTime = startTime + timeLimitMs;
-        this.steps_per_sec = steps_per_sec;
         this.map = robot.getMap();
     }
 
 
     public void explore(){
+        GridCell nearestUnexploredGrid;
         while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
             //System.out.println(actual_percentage);
             //MapPanel map = simulatorMap.getMap();
@@ -53,6 +53,8 @@ public class Exploration {
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
             rightWallHugging();
+            //fastest path to nearest unexplored grid
+
 
             //uncomment to follow time
             /*
@@ -64,6 +66,22 @@ public class Exploration {
             }*/
             actual_percentage = getActualPerc();
         }
+        PriorityQueue<GridCell> unexploredGrids = getUnexploredGrid();
+        PathFinder pathFinder = new PathFinder(robot.getMap());
+
+        while (!unexploredGrids.isEmpty()){
+            nearestUnexploredGrid = unexploredGrids.poll();
+            pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), nearestUnexploredGrid.getX(), nearestUnexploredGrid.getY());
+            /*
+            go to unexplored grid & continue to senseMap
+            find out grid is obstacle or what
+            then unexploredGrids = getUnexploredGrid();
+             */
+            actual_percentage = getActualPerc();
+        }
+        //if robot not at start point get shortest path to start point & move to start point
+
+
     }
 
 
@@ -294,6 +312,32 @@ public class Exploration {
                 break;
         }
 
+    }
+
+    public PriorityQueue<GridCell> getUnexploredGrid(){
+        PriorityQueue<GridCell> unexploredGrid = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.gethCost(), o2.gethCost()));
+        int curX = robot.getXCoord();
+        int curY= robot.getYCoord();
+        int cost;
+        GridCell gridCell;
+        MapPanel map = robot.getMap();
+        for (int y =0; y<19;y++){
+            for (int x=0; x<14; x++){
+                gridCell = map.getGridCell(y,x);
+                if (!gridCell.getExplored()){
+                    cost = calculateHeuristicCost(curX,curY,x,y);
+                    //update h cost
+                    gridCell.sethCost(cost);
+                    unexploredGrid.add(gridCell);
+                }
+            }
+        }
+        return unexploredGrid;
+    }
+
+    private int calculateHeuristicCost(int xNow, int yNow, int xEnd, int yEnd){
+        //manhattan heuristic
+        return (Math.abs(xNow-xEnd) + Math.abs(yNow-yEnd));
     }
 
     public float getActualPerc() {
