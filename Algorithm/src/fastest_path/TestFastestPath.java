@@ -13,6 +13,11 @@ public class TestFastestPath {
     public static void main(String[] args) {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
+        for (int i=0;i<14;i++){
+            for (int r=0;r<19;r++){
+                map.setExploredForGridCell(r,i,true);
+            }
+        }
         PathFinder pathFinder = new PathFinder(map);
 
         //System.out.println("grid x-1, y-1: " + map.getGridCell(-1,-1));
@@ -28,7 +33,7 @@ public class TestFastestPath {
         }
         System.out.println("----------------------------");*/
 
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 13, 18);
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(13, 1, 12, 13);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +

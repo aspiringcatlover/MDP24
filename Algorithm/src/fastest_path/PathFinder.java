@@ -1,8 +1,11 @@
 package fastest_path;
 
-import main.Constants;
+import main.Constants.*;
 import map.GridCell;
 import map.MapPanel;
+import robot.Robot;
+import robot.SimulatorRobot;
+
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -25,6 +28,129 @@ public class PathFinder {
         search(xStart, yStart,xEnd,yEnd);
         return pathList;
     }
+
+    public ArrayList<Movement> getRobotInstructions(ArrayList<GridCell> path, Direction curDirection, int xStart, int yStart){
+        Direction sampleRobot = curDirection; //this robot is just to provide reference of robot current direction, no link to simulator robot or real robot
+        int xCoord, yCoord;
+        xCoord = xStart;
+        yCoord = yStart;
+        //Robot sampleRobot = new SimulatorRobot(map);
+        ArrayList<Movement> robotInstructions = new ArrayList<>();
+        //sampleRobot.setDirection(curDirection);
+        boolean init=false;
+        //System.out.println("path coordinates:" + gridCell.getHorCoord() + gridCell.getVerCoord());
+        System.out.println("robot direction" + curDirection);
+        for (GridCell gridCell: path){
+            System.out.println("getting robot instruction current grid: from " + xCoord +" " + yCoord +" to: " + gridCell.getHorCoord()+" " +gridCell.getVerCoord());
+            switch (sampleRobot){
+                case NORTH:
+                    if (gridCell.getVerCoord()-yCoord==0){
+                        if (gridCell.getHorCoord()-xCoord==1){
+                            //turn right
+                            robotInstructions.add(Movement.TURN_RIGHT);
+                            sampleRobot = Direction.EAST;
+                            System.out.println("right");
+                        }
+                        else {
+                            //turn left
+                            robotInstructions.add(Movement.TURN_LEFT);
+                            sampleRobot = Direction.WEST;
+                            System.out.println("left");
+                        }
+                    }
+                    else if (gridCell.getVerCoord()-yCoord==-1){
+                        //turn right x 2
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        sampleRobot = Direction.SOUTH;
+                        System.out.println("rightx2");
+                    }
+
+                    robotInstructions.add(Movement.MOVE_FORWARD);
+                    System.out.println("forward");
+                    break;
+                case SOUTH:
+                    if (gridCell.getVerCoord()-yCoord==0){
+                        if (gridCell.getHorCoord()-xCoord==1){
+                            //turn left
+                            robotInstructions.add(Movement.TURN_LEFT);
+                            sampleRobot = Direction.EAST;
+                            System.out.println("left");
+                        }
+                        else{
+                            //turn right
+                            robotInstructions.add(Movement.TURN_RIGHT);
+                            sampleRobot=Direction.WEST;
+                            System.out.println("right");
+                        }
+                    }
+                    else if (gridCell.getVerCoord()-yCoord==1){
+                        //move right*2
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        sampleRobot = Direction.NORTH;
+                        System.out.println("rightx2");
+                    }
+                    robotInstructions.add(Movement.MOVE_FORWARD);
+                    System.out.println("forward");
+                    break;
+                case EAST:
+                    if (gridCell.getVerCoord()-yCoord!=0){
+                        if (gridCell.getVerCoord()-yCoord==1){
+                            //turn left
+                            robotInstructions.add(Movement.TURN_LEFT);
+                            sampleRobot = Direction.NORTH;
+                            System.out.println("left");
+                        }
+                        else{
+                            //turn right
+                            robotInstructions.add(Movement.TURN_RIGHT);
+                            sampleRobot = Direction.SOUTH;
+                            System.out.println("right");
+                        }
+                    }
+                    else if (gridCell.getHorCoord()-xCoord==-1){
+                        //turn right *2
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        sampleRobot=Direction.WEST;
+                        System.out.println("rightx2");
+                    }
+                    robotInstructions.add(Movement.MOVE_FORWARD);
+                    System.out.println("forward");
+                    break;
+                case WEST:
+                    if (gridCell.getVerCoord()-yCoord!=0){
+                        if (gridCell.getVerCoord()-yCoord==1){
+                            //turn right
+                            robotInstructions.add(Movement.TURN_RIGHT);
+                            sampleRobot = Direction.NORTH;
+                            System.out.println("right");
+                        }
+                        else{
+                            //turn left
+                            robotInstructions.add(Movement.TURN_LEFT);
+                            sampleRobot = Direction.SOUTH;
+                            System.out.println("left");
+                        }
+                    }
+                    else if (gridCell.getHorCoord()-xCoord==1){
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        robotInstructions.add(Movement.TURN_RIGHT);
+                        sampleRobot=Direction.EAST;
+                        System.out.println("rightx2");
+                    }
+                    robotInstructions.add(Movement.MOVE_FORWARD);
+                    System.out.println("forward");
+                    break;
+            }
+            xCoord = gridCell.getHorCoord();
+            yCoord = gridCell.getVerCoord();
+        }
+
+        return robotInstructions;
+    }
+
 
     /*
 	map --> completed explored map, got obstacles
@@ -54,7 +180,8 @@ public class PathFinder {
      * after heuristic cost is calculated, then a* search will be performed
      */
     private void search(int xStart, int yStart, int xEnd, int yEnd) {
-
+        boolean strict;
+        strict = false; //this should be param, to be added to make sure tat the actual a* search can find path
         /*
         At each iteration, we will:
         Select the node from our open set that has the lowest estimated total score
@@ -82,7 +209,7 @@ public class PathFinder {
         openList.add(startGrid);
 
         GridCell lowestCostGridCell;
-        Constants.Direction currentDirection;
+        Direction currentDirection;
         lowestCostGridCell = openList.poll();
 
         int debugCounter=1;
@@ -100,11 +227,12 @@ public class PathFinder {
             closedList.add(lowestCostGridCell);
 
             currentDirection = getCurrentDirection(lowestCostGridCell);
-            for (Constants.Direction direction: Constants.Direction.values()){
+            for (Direction direction: Direction.values()){
                 //find current direction
                 openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd);
             }
 
+            //System.out.println("check");
             /*
             System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
@@ -116,11 +244,20 @@ public class PathFinder {
             lowestCostGridCell = openList.poll();
         }
 
+        System.out.println("yohz");
         //last grid cell in closed list is end point
         GridCell endPoint=closedList.get(closedList.size() - 1);
+        if (strict){
+            if (endPoint.getHorCoord()!=xEnd||endPoint.getVerCoord()!=yEnd){
+                System.out.println("no path");
+                this.pathList=null;
+                return;
+            }
+        }
+
 
         retracePath(endPoint);
-
+        System.out.println(endPoint.getHorCoord());
         /*
         while (endNode.parent != null) {
             Node currentNode = endNode;
@@ -138,7 +275,7 @@ public class PathFinder {
      * @param openList
      * @return
      */
-    private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Constants.Direction cardinalDirection, Constants.Direction currentDirection,
+    private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Direction cardinalDirection, Direction currentDirection,
                                                          PriorityQueue<GridCell> openList, int xEnd, int yEnd){
         GridCell childGridCell;
         int xChild, yChild, parentToChildCost, xParent, yParent;
@@ -169,6 +306,9 @@ public class PathFinder {
         childGridCell =  map.getGridCell(yChild,xChild);
         if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
             return openList; //no changes to openlist
+
+        if (!childGridCell.getExplored()&&childGridCell.getVerCoord()!=yEnd&&childGridCell.getHorCoord()!=xEnd)
+            return openList;
 
         //cost from parent to child
         if (cardinalDirection==currentDirection)
@@ -216,6 +356,7 @@ public class PathFinder {
             }
         }
 
+
         else if (openList.contains(childGridCell)  && closedList.contains(childGridCell)){
             int fCost = parentGridCell.gethCost() + parentToChildCost + childGridCell.gethCost();
             if (childGridCell.getfCost()>fCost){
@@ -235,11 +376,11 @@ public class PathFinder {
 
     }
 
-    Constants.Direction getCurrentDirection(GridCell gridCell){
+   Direction getCurrentDirection(GridCell gridCell){
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){
-            return Constants.Direction.NORTH;
+            return Direction.NORTH;
         }
 
         //calculate
@@ -248,24 +389,26 @@ public class PathFinder {
         if (parentGridCell.getVerCoord()==gridCell.getVerCoord()){
 
             if (gridCell.getHorCoord()-parentGridCell.getHorCoord()>0){
-                return Constants.Direction.EAST;
+                return Direction.EAST;
             }
             else
-                return Constants.Direction.WEST;
+                return Direction.WEST;
         }
         //move y
         else {
             if (gridCell.getVerCoord()-parentGridCell.getVerCoord()>0){
-                return Constants.Direction.NORTH;
+                return Direction.NORTH;
             }
             else
-                return Constants.Direction.SOUTH;
+                return Direction.SOUTH;
         }
     }
 
 
     private void retracePath(GridCell current){
         while (current.getParentGrid()!=null){
+            //System.out.println("retrace");
+            //System.out.println(current.getHorCoord()+ " "+current.getVerCoord());
             this.pathList.add(0,current);
             current = current.getParentGrid();
         }

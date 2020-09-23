@@ -38,9 +38,16 @@ public class Exploration {
 
     public void explore(){
         GridCell nearestUnexploredGrid;
+        ArrayList<GridCell> path;
+        ArrayList<Movement> moveInstructions;
+        boolean terminate=false;
+
+        //init start grid to be explored alr
+
+
         while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
             //System.out.println(actual_percentage);
-            //MapPanel map = simulatorMap.getMap();
+            //MapPanel map = simulatorMap.getMap(); //map for the simulator
             //System.out.println("robot_x:" + robot.getXCoord() + " robot_y:" + robot.getYCoord());
             //System.out.println(robot.getDirection());
             senseMap();
@@ -64,23 +71,174 @@ public class Exploration {
                 Thread.sleep(timeout); // Customize your refresh time
             } catch (InterruptedException e) {
             }*/
+
             actual_percentage = getActualPerc();
         }
+        System.out.println("percentage covered:" + actual_percentage);
+        /*
+        senseMap();
+        int[] unexplored=unexplored();
         PriorityQueue<GridCell> unexploredGrids = getUnexploredGrid();
-        PathFinder pathFinder = new PathFinder(robot.getMap());
+
+        int unexploredGridX, unexploredGridY;
+        PathFinder pathFinder;
+        int robotX, robotY;
 
         while (!unexploredGrids.isEmpty()){
-            nearestUnexploredGrid = unexploredGrids.poll();
-            pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), nearestUnexploredGrid.getX(), nearestUnexploredGrid.getY());
             /*
             go to unexplored grid & continue to senseMap
             find out grid is obstacle or what
             then unexploredGrids = getUnexploredGrid();
              */
-            actual_percentage = getActualPerc();
-        }
-        //if robot not at start point get shortest path to start point & move to start point
 
+            /*
+            nearestUnexploredGrid = unexploredGrids.poll();
+            unexploredGridX = nearestUnexploredGrid.getHorCoord();
+            unexploredGridY = nearestUnexploredGrid.getVerCoord();
+            System.out.println("unexplored grid:" + nearestUnexploredGrid.getHorCoord()+" " +nearestUnexploredGrid.getVerCoord());*/
+            /*pathFinder = new PathFinder(robot.getMap()); //do singleton or smth
+            //System.out.println("what happen start:" + robot.getXCoord()+" "+ robot.getYCoord()+" end:"+  nearestUnexploredGrid.getHorCoord()+" "+  nearestUnexploredGrid.getVerCoord());
+            path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), unexplored[1], unexplored[0]);
+            //path = checkPath(path);
+
+            /*
+            while (path==null){
+                clearParent();
+                if (unexploredGrids.isEmpty()){
+                    //shouldnt happen at all
+                    terminate=true;
+                    break;
+
+                }
+                nearestUnexploredGrid = unexploredGrids.poll();
+                path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), nearestUnexploredGrid.getHorCoord(), nearestUnexploredGrid.getVerCoord());
+                if (terminate==true)
+                    break;
+            }*/
+
+            /*clearParent();
+            System.out.println("path:");
+            /*
+            for (GridCell gridCell:path){
+                System.out.println(gridCell.getHorCoord()+" "+gridCell.getVerCoord());
+            }*/
+            /*System.out.println("************");
+            if (path!=null){
+                moveInstructions = pathFinder.getRobotInstructions(path, robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
+                System.out.println("^^^^^movement length"+moveInstructions.size());
+
+                for (Movement movement: moveInstructions){
+                    System.out.println("fuck u");
+                    if (movement.equals(Movement.MOVE_FORWARD)){
+                        if (hasObstacle(robot.getDirection())){
+                            //terminate=true;
+                            break;
+                        }
+                        System.out.println("^^^^move forward, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                        robot.moveForward();
+                        senseMap();
+                    }
+                    else if (movement.equals(Movement.TURN_RIGHT)){
+                        System.out.println("^^^^turn right, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                        robot.turn(robot.robotRightDir());
+                        senseMap();
+
+                    }
+                    else{
+                        System.out.println("^^^^move left, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                        robot.turn(robot.robotLeftDir());
+                        senseMap();
+                    }
+                /*
+                switch (movement){
+                    case MOVE_FORWARD: if (hasObstacle(robot.getDirection())){
+                                            terminate=true;
+                                            break;
+                                        }
+                                        System.out.println("^^^^move forward, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                                        robot.moveForward();
+                                        senseMap();
+                                        break;
+                    case TURN_RIGHT: /*if (hasObstacle(robot.robotRightDir())){
+                                            terminate=true;
+                                            break;
+                                        }*/
+                        /*System.out.println("^^^^turn right, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                                        robot.turn(robot.robotRightDir());
+                                        senseMap();
+                                        break;
+                    case TURN_LEFT: /*if (hasObstacle(robot.robotLeftDir())){
+                                        terminate=true;
+                                        break;
+                                    }*/
+                        /*System.out.println("^^^^move left, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
+                                    robot.turn(robot.robotLeftDir());
+                                        senseMap();
+                                        break;
+                    default: System.out.println("fuck u");
+                }
+
+                if (terminate)
+                    break;
+                */
+
+
+                    /*System.out.println(movement);
+                    System.out.println("robot where u at: "+robot.getXCoord()+ " "+ robot.getYCoord());
+
+                    if ( map.getGridCell(unexplored[0],unexplored[1]).getExplored()) //constantly seeing if the unexplored grid is explored alr in case is a obstacle then the last move cmi
+                        break;
+                    if ((robot.getYCoord()+1==unexplored[0]||robot.getYCoord()-1==unexplored[0])&&(robot.getXCoord()+1==unexplored[1]||robot.getXCoord()-1==unexplored[1])) //if any part of the robot is in the grid
+                        break;
+
+                }
+            }
+
+            System.out.println("knn");
+            //unexploredGrids = getUnexploredGrid();
+
+            unexploredGrids = getUnexploredGrid();
+            actual_percentage = getActualPerc();
+            for (int col = 0; col < WIDTH; col++) {
+                for (int row = 0; row < HEIGHT; row++){
+                    printGridCell(map.getGridCell(row, col));
+                }
+                System.out.println();
+            }
+            System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
+            System.out.println("percentage covered:" + actual_percentage);
+            System.out.println("------------------------------------------------------");
+        }*/
+
+
+           System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
+        //if robot not at start point get shortest path to start point & move to start point
+        if (robot.getXCoord()!=1||robot.getYCoord()!=1){
+            PathFinder pathFinder;
+            pathFinder = new PathFinder(robot.getMap());
+            path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(),1,1);
+            if (path==null) //shouldnt happen at all
+                return;
+            System.out.println("path size"+path.size());
+             for(GridCell gridCell:path){
+                 System.out.println(gridCell.getHorCoord()+" "+gridCell.getVerCoord());
+             }
+            moveInstructions = pathFinder.getRobotInstructions(path,robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
+            System.out.println("move instruction"+moveInstructions.size());
+            for (Movement movement: moveInstructions){
+                switch (movement){
+                    case MOVE_FORWARD: robot.moveForward();
+                        break;
+                    case TURN_RIGHT: robot.turn(robot.robotRightDir());
+                        break;
+                    case TURN_LEFT: robot.turn(robot.robotLeftDir());
+                        break;
+                }
+
+            }
+            clearParent();
+        }
+        System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
 
     }
 
@@ -183,6 +341,9 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+
+                        if (sensorResult.get(i)==null)
+                            break;
                         //update information from sensor
                         map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
 
@@ -197,6 +358,8 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
@@ -207,6 +370,8 @@ public class Exploration {
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
+                    if (sensorResult.get(i)==null)
+                        break;
                     map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                 }
@@ -220,6 +385,8 @@ public class Exploration {
                     y=sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
                         System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResult.get(i));
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
@@ -232,6 +399,8 @@ public class Exploration {
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
                         System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResult.get(i));
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
@@ -242,6 +411,8 @@ public class Exploration {
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
+                    if (sensorResult.get(i)==null)
+                        break;
                     map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                 }
@@ -254,6 +425,9 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        //System.out.println("hmm" + i);
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
@@ -265,6 +439,8 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     }
@@ -275,6 +451,8 @@ public class Exploration {
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
+                    if (sensorResult.get(i)==null)
+                        break;
                     map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                 }
@@ -287,6 +465,8 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     }
@@ -298,6 +478,8 @@ public class Exploration {
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i)==null)
+                            break;
                         map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                     }
@@ -306,6 +488,8 @@ public class Exploration {
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
+                    if (sensorResult.get(i)==null)
+                        break;
                     map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                 }
@@ -314,24 +498,53 @@ public class Exploration {
 
     }
 
+    private int[] unexplored() {
+        MapPanel map = robot.getMap();
+        int lowest_cost = 9999;
+        int[] cheapest_pos = null;
+        for (int i=0; i<19; i++) {
+            for (int j=0; j<14; j++) {
+                if (!map.getGridCell(i,j).getExplored()) {
+                    int cost = Math.abs(robot.getYCoord() - i) + Math.abs(robot.getXCoord() - j);
+                    if (cost < lowest_cost) {
+                        cheapest_pos = new int[] {i, j};
+                        lowest_cost = cost;
+                    }
+                }
+            }
+        }
+        return cheapest_pos;
+    }
+
+
     public PriorityQueue<GridCell> getUnexploredGrid(){
-        PriorityQueue<GridCell> unexploredGrid = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.gethCost(), o2.gethCost()));
+        PriorityQueue<GridCell> unexploredGrid = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.getgCost(), o2.getgCost()));
+        System.out.println("unexplored grid....pq");
         int curX = robot.getXCoord();
         int curY= robot.getYCoord();
+        System.out.println("start from: "+curX+" "+curY);
         int cost;
         GridCell gridCell;
         MapPanel map = robot.getMap();
-        for (int y =0; y<19;y++){
-            for (int x=0; x<14; x++){
+        for (int y =1; y<18;y++){
+            for (int x=1; x<13; x++){
                 gridCell = map.getGridCell(y,x);
                 if (!gridCell.getExplored()){
                     cost = calculateHeuristicCost(curX,curY,x,y);
-                    //update h cost
-                    gridCell.sethCost(cost);
+                    //update g cost
+                    gridCell.setgCost(cost);
                     unexploredGrid.add(gridCell);
                 }
             }
         }
+        /*
+        if (!unexploredGrid.isEmpty())
+            System.out.println("peek pq"+unexploredGrid.peek().getHorCoord() + " " +unexploredGrid.peek().getVerCoord());
+        System.out.println("----------------------------------get unexplored grid");
+        for (GridCell gridCell1:unexploredGrid){
+            System.out.println("NOT EXPLORED" + gridCell1.getHorCoord() +" "+gridCell1.getVerCoord());
+        }*/
+
         return unexploredGrid;
     }
 
@@ -368,4 +581,29 @@ public class Exploration {
             System.out.print("U");
         }
     }
+
+    public void clearParent(){
+        GridCell gridCell;
+        for (int i=0;i<14;i++){
+            for (int r=0; r<19;r++){
+                gridCell= map.getGridCell(r,i);
+                gridCell.setParentGrid(null);
+                map.setGridCell(r,i,gridCell);
+            }
+        }
+    }
+
+    public ArrayList<GridCell> checkPath(ArrayList<GridCell> path){
+        ArrayList<GridCell> checkedPath = new ArrayList<>();
+        for(GridCell gridCell:path){
+            if (gridCell.getExplored()&&!gridCell.getObstacle()){
+                checkedPath.add(gridCell);
+            }
+            else
+                break;
+        }
+        return checkedPath;
+    }
+
+
 }

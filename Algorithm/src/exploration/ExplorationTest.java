@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ExplorationTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(2);
+        String[][] sampleMap = getSampleMap(4);
         MapPanel map = new MapPanel(sampleMap);
 
         Robot robot = new SimulatorRobot(map);

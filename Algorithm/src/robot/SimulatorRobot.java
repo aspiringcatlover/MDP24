@@ -35,7 +35,14 @@ public class SimulatorRobot extends Robot{
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_TOP, map);
 
 		simulatorMap = new SimulatorMap();
-		simulatorMap.setMap(new MapPanel(SimulatorMap.getSampleMap(1)));
+		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+
+		for (int i=0;i<3;i++){
+			for (int r=0;r<3;r++){
+				emptyMap.setExploredForGridCell(i,r,true);
+			}
+		}
+		simulatorMap.setMap(emptyMap);
 		//simulator map is the one that shld be updated
 	}
 

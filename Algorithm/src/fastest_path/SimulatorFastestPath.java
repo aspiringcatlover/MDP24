@@ -31,7 +31,7 @@ public class SimulatorFastestPath {
 		System.out.println("steps per sec: " + steps_per_sec);
 	}
 
-	public void sendInstructions() throws InterruptedException {
+	public ArrayList<Constants.Movement> sendInstructions() throws InterruptedException {
 		ArrayList<GridCell> fastestPath = pathFinder.getShortestPath(1,1,13,18);
 		System.out.println("num grid in result: "+fastestPath.size());
 		for (GridCell gridCell: fastestPath){
@@ -83,7 +83,7 @@ public class SimulatorFastestPath {
 			}
 			Thread.sleep((1/steps_per_sec)*1000); //move for each second
 		}
-
+		return movement;
 	}
 
 	private Constants.Movement getRobotMovement(Constants.Direction currentDirection, Constants.Direction cardinalDirection) throws InterruptedException {
