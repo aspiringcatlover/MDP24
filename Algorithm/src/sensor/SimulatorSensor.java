@@ -33,104 +33,308 @@ public class SimulatorSensor extends Sensor{
 
 	public void setSensorInformation(){
 		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		boolean sensorResultGrid;
+		boolean sensorBlock;
 		switch (direction){
 			case WEST:
 				switch (location){
 					case LEFT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<5;i++){
-							sensorResult.add(getObstacleForSensor(y-i,x));
+							sensorResultGrid = getObstacleForSensor(y-i,x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y-i,x));
 						}
 						break;
 					case LEFT_MIDDLE:
+						sensorBlock = false;
 						for (int i=0;i<2;i++){
-							sensorResult.add(getObstacleForSensor(y-i,x));
+							sensorResultGrid = getObstacleForSensor(y-i,x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+
+							//sensorResult.add(getObstacleForSensor(y-i,x));
 						}
 						break;
 					case UP_LEFT:
 					case UP_MIDDLE:
 					case UP_RIGHT:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y, x-i));
+							sensorResultGrid = getObstacleForSensor(y, x-i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x-i));
 						}
 						break;
 					case RIGHT_TOP:
+						sensorBlock = false;
 						for (int i=0;i<2;i++){
-							sensorResult.add(getObstacleForSensor(y+i,x));
+							sensorResultGrid = getObstacleForSensor(y+i,x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y+i,x));
 						}
 						break;
 				}
 			case SOUTH:
 				switch (location){
 					case LEFT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<5; i++){
-							sensorResult.add(getObstacleForSensor(y, x+i));
+							sensorResultGrid = getObstacleForSensor(y, x+i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x+i));
 						}
 						break;
 					case LEFT_MIDDLE:
+						sensorBlock = false;
 						for (int i=0;i<2;i++){
-							sensorResult.add(getObstacleForSensor(y, x+i));
+							sensorResultGrid = getObstacleForSensor(y, x+i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x+i));
 						}
 						break;
 					case UP_LEFT:
 					case UP_RIGHT:
 					case UP_MIDDLE:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y-i, x));
+							sensorResultGrid = getObstacleForSensor(y-i, x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y-i, x));
 						}
 						break;
 					case RIGHT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y,x-i));
+							sensorResultGrid = getObstacleForSensor(y,x-i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y,x-i));
 						}
 						break;
 				}
 			case EAST:
 				switch (location){
 					case LEFT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<5; i++){
-							sensorResult.add(getObstacleForSensor(y+i, x));
+							sensorResultGrid = getObstacleForSensor(y+i, x);
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+
+
+							//if obstacle present, means sensor block
+
+							//sensorResult.add(getObstacleForSensor(y+i, x));
 						}
+						sensorResult.add(true);
+						/*
+						System.out.println("result length:" + sensorResult.size());
+						for (Boolean b:sensorResult){
+							System.out.println("sensor result: "+b);
+						}*/
 						break;
 					case LEFT_MIDDLE:
+						sensorBlock = false;
 						for (int i=0;i<2;i++){
-							sensorResult.add(getObstacleForSensor(y+i, x));
+							sensorResultGrid = getObstacleForSensor(y+i, x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y+i, x));
 						}
 						break;
 					case UP_MIDDLE:
 					case UP_RIGHT:
 					case UP_LEFT:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y, x+i));
+							sensorResultGrid = getObstacleForSensor(y, x+i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x+i));
 						}
 						break;
 					case RIGHT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y-i,x));
+							sensorResultGrid = getObstacleForSensor(y-i,x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y-i,x));
 						}
 						break;
 				}
 			case NORTH:
 				switch (location){
 					case LEFT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<5; i++){
-							sensorResult.add(getObstacleForSensor(y, x-i));
+							sensorResultGrid = getObstacleForSensor(y, x-i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x-i));
 						}
 						break;
 					case LEFT_MIDDLE:
+						sensorBlock = false;
 						for (int i=0;i<2;i++){
-							sensorResult.add(getObstacleForSensor(y, x-i));
+							sensorResultGrid = getObstacleForSensor(y, x-i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y, x-i));
 						}
 						break;
 					case UP_LEFT:
 					case UP_MIDDLE:
 					case UP_RIGHT:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y+i, x));
+							sensorResultGrid = getObstacleForSensor(y+i, x);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y+i, x));
 						}
 						break;
 					case RIGHT_TOP:
+						sensorBlock = false;
 						for (int i=0; i<2;i++){
-							sensorResult.add(getObstacleForSensor(y,x+i));
+							sensorResultGrid = getObstacleForSensor(y,x+i);
+
+							if (sensorBlock){
+								sensorResult.add(null);
+								continue;
+							}
+
+							if (sensorResultGrid){
+								sensorBlock = true;
+							}
+							sensorResult.add(sensorResultGrid);
+							//sensorResult.add(getObstacleForSensor(y,x+i));
 						}
 						break;
 				}

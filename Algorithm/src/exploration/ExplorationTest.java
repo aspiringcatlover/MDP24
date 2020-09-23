@@ -15,7 +15,7 @@ public class ExplorationTest {
         MapPanel map = new MapPanel(sampleMap);
 
         Robot robot = new SimulatorRobot(map);
-        Exploration exploration = new Exploration(robot, 360000,100,2);
+        Exploration exploration = new Exploration(robot, 360000,100, 2,false);
         exploration.explore();
     }
 

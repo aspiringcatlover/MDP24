@@ -1,13 +1,18 @@
 package robot;
 
+import connection.SocketConnection;
 import main.Constants;
+import map.MapPanel;
+import map.SimulatorMap;
 import sensor.ActualSensor;
+import sensor.Sensor;
 import sensor.SimulatorSensor;
 
 public class ActualRobot extends Robot{
     private ActualSensor[] sensorArr = new ActualSensor[6];
     private static ActualRobot actualRobot = null;
     private RobotCamera camera;
+    private SocketConnection socketConnection = SocketConnection.getInstance();
 
     // Singleton
     public static ActualRobot getInstance() {
@@ -23,16 +28,22 @@ public class ActualRobot extends Robot{
 
         // initialize sensors for robot
         // 3 short for front
-        /*
-        for (int i=0; i < 3; i ++) {
-            sensorArr[i] = new ActualSensor(Constants.RangeType.SHORT, SensorDir.FRONT) ;
-        }
+        sensorArr[0] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_LEFT);
+        sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE);
+        sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT);
         // 1 short and 1 long for left
-        sensorArr[3] = new ActualSensor(Constants.RangeType.SHORT, SensorDir.LEFT);
-        sensorArr[4] = new ActualSensor(Constants.RangeType.LONG, SensorDir.LEFT);
-        //1 short for right
-        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, SensorDir.RIGHT);
-        RobotCamera camera = new RobotCamera();*/
+        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_TOP);
+        sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.LEFT_MIDDLE);
+        // 1 short for right
+        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_TOP );
+        MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+
+        for (int i=0;i<3;i++){
+            for (int r=0;r<3;r++){
+                emptyMap.setExploredForGridCell(i,r,true);
+            }
+        }
+        this.map = emptyMap;
     }
 
     //check if robot sensor detects an obstacle in the specified direction
@@ -42,7 +53,8 @@ public class ActualRobot extends Robot{
 
     @Override
     public void moveForward() {
-
+        socketConnection.sendMessage("W" + 1+ "|");
+        senseMap();
     }
 
     @Override
@@ -62,12 +74,18 @@ public class ActualRobot extends Robot{
 
     @Override
     public Constants.Direction robotLeftDir() {
+        //send instruction to arduino to turn left
         return null;
     }
 
     @Override
-    public SimulatorSensor getIndividualSensor(int loc) {
-        return null;
+    public Sensor getIndividualSensor(int loc) {
+        return sensorArr[loc];
+    }
+
+    public void senseMap(){
+        //get sensor value
+        //update map
     }
 
 

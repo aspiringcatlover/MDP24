@@ -11,6 +11,7 @@ public abstract class Robot {
     int y;
     Sensor[] sensorArr= new Sensor[6];
     MapPanel map;
+    String[] mdfString;
 
 
     public Robot(Direction direction, int x, int y) {
@@ -29,10 +30,20 @@ public abstract class Robot {
     public abstract void calibrate();
     public abstract Direction robotRightDir();
     public abstract Direction robotLeftDir();
-    public abstract SimulatorSensor getIndividualSensor(int loc);
+    public abstract Sensor getIndividualSensor(int loc);
 
 
     //getter and setter
+
+
+    public String[] getMdfString() {
+        return mdfString;
+    }
+
+    public void setMdfString(String[] mdfString) {
+        this.mdfString = mdfString;
+    }
+
     public Direction getDirection() {
         return direction;
     }
