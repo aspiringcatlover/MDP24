@@ -51,6 +51,9 @@ public class ConnectionManager {
     public void start() {
         running.set(true);
         while(running.get()) {
+            //run exploration
+            //call the app
+
             /*
             if (ExplorationThread.getRunning() || FastestPathThread.getRunning()) {
                 try {

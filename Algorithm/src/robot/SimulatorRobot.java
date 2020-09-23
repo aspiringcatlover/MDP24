@@ -18,6 +18,7 @@ public class SimulatorRobot extends Robot{
 		super(Direction.NORTH,START_X_COORD, START_Y_COORD);
 		//map for the maze to simulate
 		this.map = map;
+		this.mdfString = map.getMdfString();
 		x = START_X_COORD;
 		y = START_Y_COORD;
 		// assuming forward direction of robot is DOWN if right wall hugging
@@ -50,8 +51,8 @@ public class SimulatorRobot extends Robot{
 		return simulatorMap.getMap();
 	}
 
-	public SimulatorSensor getIndividualSensor(int i) {
-		return (SimulatorSensor) sensorArr[i];
+	public Sensor getIndividualSensor(int i) {
+		return sensorArr[i];
 	}
 
 	// helper functions

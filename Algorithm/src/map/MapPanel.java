@@ -17,6 +17,8 @@ import main.Constants.Direction;
 public class MapPanel extends JPanel implements ActionListener {
 	private GridCell[][] gridcells;
 	Timer timer = new Timer(1000, this);
+	String[] mdfString;
+	boolean changed;
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
@@ -35,6 +37,70 @@ public class MapPanel extends JPanel implements ActionListener {
 	}
 
 	// getter and setter
+
+
+	public String[] getMdfString() {
+		if (!changed) {
+			return this.mdfString;
+		}
+
+		changed = false;
+
+		StringBuilder MDFBitStringPart1 = new StringBuilder();
+		StringBuilder MDFBitStringPart2 = new StringBuilder();
+
+		MDFBitStringPart1.append("11");
+		String[] MDFHexString = new String[] {"","",""};
+
+		for (int y = 0; y < Constants.HEIGHT; y++) {
+			for (int x = 0; x < Constants.WIDTH; x++) {
+
+				if (gridcells[y][x].getObstacle()) { // Obstacle
+					MDFBitStringPart1.append("1");
+					MDFBitStringPart2.append("1");
+
+				}
+				else if (gridcells[y][x].getExplored()) { // Unexplored
+					MDFBitStringPart1.append("0");
+				}
+				else {
+					MDFBitStringPart1.append("1");
+					MDFBitStringPart2.append("0");
+				}
+
+			}
+		}
+		MDFBitStringPart1.append("11");
+
+		for (int i = 0; i < MDFBitStringPart1.length(); i += 4) {
+			MDFHexString[0] += Integer.toString(Integer.parseInt(MDFBitStringPart1.substring(i, i + 4), 2), 16);
+		}
+
+		if ((MDFBitStringPart2.length() % 4) != 0){ // Only pad if the MDF Bit string is not a multiple of 4
+			MDFBitStringPart2.insert(0, "0".repeat(4 - (MDFBitStringPart2.length() % 4)));
+		}
+
+		for (int i = 0; i < MDFBitStringPart2.length(); i += 4) {
+			MDFHexString[2] += Integer.toString(Integer.parseInt(MDFBitStringPart2.substring(i, i + 4), 2), 16);
+		}
+
+		int length = 0;
+		for (int y = 0; y < Constants.HEIGHT; y++) {
+			for (int x = 0; x < Constants.WIDTH; x++) {
+				if (!gridcells[x][y].getExplored()) {
+					//TODO:: CHECK FOR THIS ONE
+					length++;
+				}
+			}
+		}
+
+		MDFHexString[1] = Integer.toString(length);
+
+		this.mdfString = MDFHexString;
+		return MDFHexString;
+
+	}
+
 	public GridCell getGridCell(int y, int x) {
 		// System.out.println("y: "+y+" x: "+x);
 		if ((y < 0) || (x < 0) || (y >= gridcells.length) || (x >= gridcells[y].length))
@@ -44,18 +110,21 @@ public class MapPanel extends JPanel implements ActionListener {
 	}
 
 	public void setObstacleForGridCell(int y,int x, Boolean obstacle){
+		changed=true;
 		if (y<0||y>19||x<0||x>14||obstacle==null)
 			return;
 		this.gridcells[y][x].setObstacle(obstacle);
 	}
 
 	public void setExploredForGridCell(int y, int x, Boolean explored){
+		changed=true;
 		if (y<0||y>19||x<0||x>14||explored==null)
 			return;
 		this.gridcells[y][x].setExplored(explored);
 	}
 
 	public void setGridCell(int y, int x, GridCell gridCell) {
+		changed=true;
 		this.gridcells[y][x] = gridCell;
 	}
 

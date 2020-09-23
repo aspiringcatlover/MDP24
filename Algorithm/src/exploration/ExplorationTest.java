@@ -11,11 +11,11 @@ import java.util.Scanner;
 
 public class ExplorationTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(4);
+        String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
 
         Robot robot = new SimulatorRobot(map);
-        Exploration exploration = new Exploration(robot, 360000,100);
+        Exploration exploration = new Exploration(robot, 360000,100, 2,false);
         exploration.explore();
     }
 

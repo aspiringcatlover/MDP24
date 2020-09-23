@@ -6,6 +6,7 @@ import map.GridCell;
 import map.MapPanel;
 import map.SimulatorMap;
 import robot.Robot;
+import robot.SimulatorRobot;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
@@ -23,16 +24,20 @@ public class Exploration {
     private float actual_percentage;
     private long endTime;
     private MapPanel map;
+    private int steps_per_sec;
+    private boolean imageRecognition;
 
 
     //TODO: KIV CONSTRUCTOR
-    public Exploration(Robot robot, int timeLimitMs, int coveragePercentage){
+    public Exploration(Robot robot, int timeLimitMs, int coveragePercentage, int steps_per_sec, boolean imageRecognition){
         this.robot = robot;
         goal_percentage = coveragePercentage;
         actual_percentage = 0;
         long startTime = System.currentTimeMillis();
         endTime = startTime + timeLimitMs;
         this.map = robot.getMap();
+        this.steps_per_sec = steps_per_sec;
+        this.imageRecognition = imageRecognition;
     }
 
 
@@ -44,7 +49,7 @@ public class Exploration {
 
         //init start grid to be explored alr
 
-
+        boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
         while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
             //System.out.println(actual_percentage);
             //MapPanel map = simulatorMap.getMap(); //map for the simulator
@@ -59,18 +64,21 @@ public class Exploration {
                 System.out.println();
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
+            System.out.println("percentage covered:" + actual_percentage);
             rightWallHugging();
             //fastest path to nearest unexplored grid
 
 
             //uncomment to follow time
-            /*
-            try {
-                // ms timeout
-                int timeout = (1 / steps_per_sec) * 1000;
-                Thread.sleep(timeout); // Customize your refresh time
-            } catch (InterruptedException e) {
-            }*/
+            if (isSimulated){
+                try {
+                    // ms timeout
+                    int timeout = (1 / steps_per_sec) * 1000;
+                    Thread.sleep(timeout); // Customize your refresh time
+                } catch (InterruptedException e) {
+                }
+            }
+
 
             actual_percentage = getActualPerc();
         }

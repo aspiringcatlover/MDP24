@@ -69,4 +69,20 @@ public final class Constants {
 	public static final String IP_ADDRESS = "192.168.24.24";
 	public static final int PORT = 8080;
 	public static final int BUFFER_SIZE = 512;
+
+	public static final String START_EXPLORATION = "ES|";
+	public static final String FASTEST_PATH = "FS|";
+	public static final String IMAGE_STOP = "I";
+	public static final String SEND_ARENA = "SendArena";
+	public static final String INITIALISING = "starting";
+	public static final String SETWAYPOINT = "waypoint";
+	public static final String SENSE_ALL = "Z|";
+	public static final String TURN_LEFT = "A|";
+	public static final String TURN_RIGHT = "D|";
+	public static final String CALIBRATE = "L|";
+	public static final String RIGHTALIGN = "B|";
+	public static final String END_TOUR = "N";
+
+	// Connection Acknowledge
+	public static final String IMAGE_ACK = "D";
 }
