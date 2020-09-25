@@ -257,14 +257,11 @@ public class Exploration {
         if (!hasObstacle(robot.robotRightDir())) {
             System.out.println("turn right");
             robot.turn(robot.robotRightDir());
+            map.displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
             senseMap();
-            //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
-
             movement.add(Constants.Movement.TURN_RIGHT);
             System.out.println("move forward");
             robot.moveForward();
-
-            // simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
             movement.add(Constants.Movement.MOVE_FORWARD);
         }
 
@@ -272,18 +269,16 @@ public class Exploration {
         else if (!hasObstacle(robot.getDirection())) {
             System.out.println("move forward");
             robot.moveForward();
-
-            //simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
             movement.add(Constants.Movement.MOVE_FORWARD);
         }
         // else, turn left
         else {
             robot.turn(robot.robotLeftDir());
-
-            //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
+            map.displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
             System.out.println("turn left");
             movement.add(Constants.Movement.TURN_LEFT);
         }
+       map.updateMap(robot.getXCoord(), robot.getYCoord());
     }
 
     public boolean hasObstacle(Direction dir){
