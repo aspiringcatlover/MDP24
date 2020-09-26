@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class TestFastestPath {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(6);
+        String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
         for (int i=0;i<14;i++){
             for (int r=0;r<19;r++){
@@ -33,7 +33,7 @@ public class TestFastestPath {
         }
         System.out.println("----------------------------");*/
 
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 6, 9);
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 6, 19);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
