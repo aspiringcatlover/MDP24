@@ -212,6 +212,12 @@ public class PathFinder {
         Direction currentDirection;
         lowestCostGridCell = openList.poll();
 
+        //check if map is fully explored.
+        boolean mapExplored=false;
+        if (map.getActualPerc()==100)
+            mapExplored=true;
+
+
         int debugCounter=1;
         while (true){
 
@@ -229,7 +235,7 @@ public class PathFinder {
             currentDirection = getCurrentDirection(lowestCostGridCell);
             for (Direction direction: Direction.values()){
                 //find current direction
-                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd);
+                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd, mapExplored);
             }
 
             //System.out.println("check");
@@ -247,13 +253,12 @@ public class PathFinder {
         System.out.println("yohz");
         //last grid cell in closed list is end point
         GridCell endPoint=closedList.get(closedList.size() - 1);
-        if (strict){
-            if (endPoint.getHorCoord()!=xEnd||endPoint.getVerCoord()!=yEnd){
-                System.out.println("no path");
-                this.pathList=null;
-                return;
-            }
+        if (endPoint.getHorCoord()!=xEnd||endPoint.getVerCoord()!=yEnd){
+            System.out.println("no path");
+            this.pathList=null;
+            return;
         }
+
 
 
         retracePath(endPoint);
@@ -276,7 +281,7 @@ public class PathFinder {
      * @return
      */
     private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Direction cardinalDirection, Direction currentDirection,
-                                                         PriorityQueue<GridCell> openList, int xEnd, int yEnd){
+                                                         PriorityQueue<GridCell> openList, int xEnd, int yEnd, boolean mapComplete){
         GridCell childGridCell;
         int xChild, yChild, parentToChildCost, xParent, yParent;
 
@@ -304,19 +309,42 @@ public class PathFinder {
         //System.out.println("ychild: " + yChild +"xchild: "+xChild);
         //if grid exist
         childGridCell =  map.getGridCell(yChild,xChild);
-        if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
-            return openList; //no changes to openlist
+        if (mapComplete){
+            if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
+                return openList; //no changes to openlist
+        }
+        else{
+            //to find fastest path for exploration
+            if (childGridCell==null )
+                return openList;
 
-        if (!childGridCell.getExplored()&&childGridCell.getVerCoord()!=yEnd&&childGridCell.getHorCoord()!=xEnd)
-            return openList;
+            if ( childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd)){
+                    //childgridcell not explored and is not the end target
+                    if ((!childGridCell.getExplored()&&childGridCell.getHorCoord()!=xEnd&&childGridCell.getVerCoord()!=yEnd))
+                    {
+                        //System.out.println("child grid cell that are unexplored and robot cannot go thru"+childGridCell.getHorCoord() +" "+childGridCell.getVerCoord());
+                        //check if the surrounding cells explored or not
+                        return openList; //no changes to openlist
+                    }
+                    //childgrid cell is the end target, check surroundgrid to see if robot can pass through
+                    else if (!childGridCell.getExplored()&&childGridCell.getHorCoord()==xEnd&&childGridCell.getVerCoord()==yEnd){
+
+                         if (!checkSurroundingGrid(xChild,yChild, xEnd, yEnd)){
+                             return openList;
+                         }
+                    }
+                    else{
+                        return openList;
+                    }
+            }
+        }
+
 
         //cost from parent to child
         if (cardinalDirection==currentDirection)
             parentToChildCost = 1;
         else
             parentToChildCost = 4; //2 for turning, 1 for moving in front --> here is with the assumption of there is no uturn, tried 3 will have some issue
-
-
 
 
         /*
@@ -443,4 +471,7 @@ public class PathFinder {
                 &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
     }
 
+    /*
+    public boolean checkSurroundingGridExplored(){
+    }*/
 }

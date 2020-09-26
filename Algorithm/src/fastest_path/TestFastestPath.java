@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class TestFastestPath {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(2);
+        String[][] sampleMap = getSampleMap(6);
         MapPanel map = new MapPanel(sampleMap);
         for (int i=0;i<14;i++){
             for (int r=0;r<19;r++){
@@ -33,7 +33,7 @@ public class TestFastestPath {
         }
         System.out.println("----------------------------");*/
 
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(13, 1, 12, 13);
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 6, 9);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
@@ -45,8 +45,9 @@ public class TestFastestPath {
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();
-            path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
-            //path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+            path_name = System.getProperty("user.dir")+"/algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+            System.out.println(path_name);
+            //path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             File myObj = new File(path_name);
             Scanner myReader = new Scanner(myObj);
             int col = 0;

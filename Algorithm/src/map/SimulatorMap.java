@@ -288,8 +288,8 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
-			//path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
 			int col = 0;

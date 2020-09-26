@@ -14,6 +14,9 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 import main.Constants.Direction;
 
+import static main.Constants.HEIGHT;
+import static main.Constants.WIDTH;
+
 public class MapPanel extends JPanel implements ActionListener {
 	private GridCell[][] gridcells;
 	Timer timer = new Timer(1000, this);
@@ -37,6 +40,22 @@ public class MapPanel extends JPanel implements ActionListener {
 	}
 
 	// getter and setter
+
+	public float getActualPerc() {
+		int totalGridCells = Constants.HEIGHT * Constants.WIDTH;
+		int gridCellsCovered = 0;
+		GridCell gridCell;
+		for (int row = 0; row < Constants.HEIGHT; row++) {
+			for (int col = 0; col < Constants.WIDTH; col++) {
+				gridCell = gridcells[row][col];
+				if (gridCell.getExplored() || gridCell.getObstacle()) {
+					gridCellsCovered += 1;
+				}
+			}
+		}
+		// System.out.println((float) gridCellsCovered / totalGridCells * 100);
+		return (((float) gridCellsCovered / totalGridCells) * 100);
+	}
 
 
 	public String[] getMdfString() {
