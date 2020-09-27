@@ -221,9 +221,9 @@ public class MapTabFragment extends Fragment {
                 manualUpdateRequest = true;
                 showLog("Exiting updateButton");
                 try {
-                    //String message = "{\"map\":[{\"explored\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"length\":300,\"obstacle\":\"0000000000003f000000004000800100000043c08081000220084020f880100000000000080\"}]}";
+                    String message = "{\"map\":[{\"explored\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"length\":300,\"obstacle\":\"0000000000003f000000004000800100000043c08081000220084020f880100000000000080\"}]}";
 
-                   // gridMap.setReceivedJsonObject(new JSONObject(message));
+                    gridMap.setReceivedJsonObject(new JSONObject(message));
                     gridMap.updateMapInformation();
                 } catch (Exception e) {
                     e.printStackTrace();
