@@ -22,15 +22,15 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
-		setLayout(new GridLayout(Constants.HEIGHT, Constants.WIDTH));
-		gridcells = new GridCell[Constants.HEIGHT][Constants.WIDTH];
-		for (int row = 0; row < Constants.HEIGHT; row++) {
-			for (int col = 0; col < Constants.WIDTH; col++) {
+		setLayout(new GridLayout(Constants.WIDTH, Constants.HEIGHT));
+		gridcells = new GridCell[Constants.WIDTH][Constants.HEIGHT];
+		for (int row = 0; row < Constants.WIDTH; row++) {
+			for (int col = 0; col < Constants.HEIGHT; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
 				MapPanel.this.add(gridCell);
 //				System.out.println(row + " " + col);
-//				System.out.println(Constants.HEIGHT + " " + Constants.WIDTH);
+//				System.out.println(Constants.WIDTH + " " + Constants.HEIGHT);
 				timer.start();
 			}
 		}
@@ -49,7 +49,7 @@ public class MapPanel extends JPanel implements ActionListener {
 		StringBuilder MDFBitStringPart2 = new StringBuilder();
 
 		MDFBitStringPart1.append("11");
-		String[] MDFHexString = new String[] { "", "", "" };
+		String[] MDFHexString = new String[] {"","",""};
 
 		for (int y = 0; y < Constants.HEIGHT; y++) {
 			for (int x = 0; x < Constants.WIDTH; x++) {
@@ -58,9 +58,11 @@ public class MapPanel extends JPanel implements ActionListener {
 					MDFBitStringPart1.append("1");
 					MDFBitStringPart2.append("1");
 
-				} else if (gridcells[y][x].getExplored()) { // Unexplored
+				}
+				else if (gridcells[y][x].getExplored()) { // Unexplored
 					MDFBitStringPart1.append("0");
-				} else {
+				}
+				else {
 					MDFBitStringPart1.append("1");
 					MDFBitStringPart2.append("0");
 				}
@@ -73,7 +75,7 @@ public class MapPanel extends JPanel implements ActionListener {
 			MDFHexString[0] += Integer.toString(Integer.parseInt(MDFBitStringPart1.substring(i, i + 4), 2), 16);
 		}
 
-		if ((MDFBitStringPart2.length() % 4) != 0) { // Only pad if the MDF Bit string is not a multiple of 4
+		if ((MDFBitStringPart2.length() % 4) != 0){ // Only pad if the MDF Bit string is not a multiple of 4
 			MDFBitStringPart2.insert(0, "0".repeat(4 - (MDFBitStringPart2.length() % 4)));
 		}
 
@@ -85,7 +87,7 @@ public class MapPanel extends JPanel implements ActionListener {
 		for (int y = 0; y < Constants.HEIGHT; y++) {
 			for (int x = 0; x < Constants.WIDTH; x++) {
 				if (!gridcells[x][y].getExplored()) {
-					// TODO:: CHECK FOR THIS ONE
+					//TODO:: CHECK FOR THIS ONE
 					length++;
 				}
 			}
@@ -106,29 +108,29 @@ public class MapPanel extends JPanel implements ActionListener {
 		return gridcells[y][x];
 	}
 
-	public void setObstacleForGridCell(int y, int x, Boolean obstacle) {
-		changed = true;
-		if (y < 0 || y > 19 || x < 0 || x > 14 || obstacle == null)
+	public void setObstacleForGridCell(int y,int x, Boolean obstacle){
+		changed=true;
+		if (y<0||y>19||x<0||x>14||obstacle==null)
 			return;
 		this.gridcells[y][x].setObstacle(obstacle);
 	}
 
-	public void setExploredForGridCell(int y, int x, Boolean explored) {
-		changed = true;
-		if (y < 0 || y > 19 || x < 0 || x > 14 || explored == null)
+	public void setExploredForGridCell(int y, int x, Boolean explored){
+		changed=true;
+		if (y<0||y>19||x<0||x>14||explored==null)
 			return;
 		this.gridcells[y][x].setExplored(explored);
 	}
 
 	public void setGridCell(int y, int x, GridCell gridCell) {
-		changed = true;
+		changed=true;
 		this.gridcells[y][x] = gridCell;
 	}
 
 	// assigns a color depending on whether gridCell is obstacle and
 	// explored/explored
 	public void colorMap(GridCell gridCell) {
-		// gridCell.setColor();
+		//gridCell.setColor();
 	}
 
 	public void actionPerformed(ActionEvent ev) {
@@ -196,62 +198,34 @@ public class MapPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
+	
+	 //set robot color
+//	public void displayRobotSpace(int x_coord, int y_coord) {
+//		System.out.println(x_coord);
+//		System.out.println(y_coord);
+//		boolean outOfMap = false;
+//		if (y_coord-1 < 0 || y_coord-1 > HEIGHT || x_coord-1 < 0 || x_coord-1 > WIDTH) 
+//			outOfMap = true;
+//		else
+//			outOfMap = false;
+//
+//		if(!outOfMap) {
+		/*
+		gridcells[y_coord - 1][x_coord - 1].setRobotColor();
+		gridcells[y_coord - 1][x_coord].setRobotColor();
+		gridcells[y_coord - 1][x_coord + 1].setRobotColor();
+		gridcells[y_coord][x_coord + 1].setRobotColor();
+		gridcells[y_coord + 1][x_coord + 1].setRobotColor();
+		gridcells[y_coord + 1][x_coord].setRobotColor();
+		gridcells[y_coord + 1][x_coord - 1].setRobotColor();
+		gridcells[y_coord][x_coord - 1].setRobotColor();
+		gridcells[y_coord][x_coord].setRobotColor();*/
+//		}
+//	}
+	
 
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
-		switch (dir) {
-		case SOUTH:
-			BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.SOUTH);
-			gridcells[ver_coord][hor_coord].add(arrowSouth, BorderLayout.NORTH);
-			gridcells[ver_coord][hor_coord].revalidate();
-			gridcells[ver_coord][hor_coord].repaint();
-			break;
-		case NORTH:
-			BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.NORTH);
-			gridcells[ver_coord][hor_coord].add(arrowNorth, BorderLayout.NORTH);
-			gridcells[ver_coord][hor_coord].revalidate();
-			gridcells[ver_coord][hor_coord].repaint();
-			break;
-		case EAST:
-			BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.EAST);
-			gridcells[ver_coord][hor_coord].add(arrowEast, BorderLayout.NORTH);
-			gridcells[ver_coord][hor_coord].revalidate();
-			gridcells[ver_coord][hor_coord].repaint();
-			break;
-		case WEST:
-			BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.WEST);
-			gridcells[ver_coord][hor_coord].add(arrowWest, BorderLayout.NORTH);
-			gridcells[ver_coord][hor_coord].revalidate();
-			gridcells[ver_coord][hor_coord].repaint();
-		}
+//		gridcells[ver_coord][hor_coord].displayDirection(dir);
 	}
-}
 
-//	    //Generate map descriptor part 1
-//		public String generateMapDes1() {
-//			Component[] components = this.getComponents();
-//			String bitStream1 = "11";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) 
-//					bitStream1 = bitStream1 + "0";
-//				else 
-//					bitStream1 = bitStream1 + "1";
-//				}
-//			bitStream1 = bitStream1 + "11";
-//			return String.format("%016x", Integer.parseInt(bitStream1));
-//		}
-//		
-//		
-//		//Generate map descriptor part 2
-//		public String generateMapDes2() {
-//			Component[] components = this.getComponents();
-//			String bitStream2 = "";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) {
-//						if (components[i] instanceof JPanel && components[i].getState() == State.BLOCKED)
-//							bitStream2 = bitStream2 + "1";
-//						else
-//							bitStream2 = bitStream2 + "1";
-//				}
-//			}
-//			return String.format("%016x", Integer.parseInt(bitStream2));
-//		}
+}
