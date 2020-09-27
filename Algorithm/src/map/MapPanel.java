@@ -22,6 +22,8 @@ public class MapPanel extends JPanel implements ActionListener {
 	Timer timer = new Timer(1000, this);
 	String[] mdfString;
 	boolean changed;
+	private int[] waypoint = new int[] {-1, -1};
+
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
@@ -209,6 +211,37 @@ public class MapPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
+
+
+
+	public void setWayPoint(int x, int y) {
+		//boolean verbose = new Exception().getStackTrace()[1].getClassName().equals("robot.Robot");
+
+		if (x >= Constants.WIDTH - 1 || x <= 0 || y >= Constants.HEIGHT - 1 || y <= 0)
+				 {
+			if (!(waypoint[0] == -1 && waypoint[1] == -1)) {
+				this.waypoint[0] = -1;
+				this.waypoint[1] = -1;
+				/*
+				if (verbose) {
+					System.out.println("The current waypoint is set as: " + "-1" + "," + "-1");
+				}*/
+			}
+			return;
+		}
+		this.waypoint[0] = x;
+		this.waypoint[1] = y;
+		/*if (verbose) {
+			System.out.println("Successfully set the waypoint: " + x + "," + y);
+		}*/
+	}
+
+	public int[] getWayPoint() {
+		return waypoint;
+	}
+
+
+
 
 	// set robot color
 	public void displayRobotSpace(int x_coord, int y_coord) {

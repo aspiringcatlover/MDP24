@@ -556,4 +556,8 @@ public class PathFinder {
             return false;
         return true;
     }
+
+    public void updateMap(MapPanel map){
+        this.map = map;
+    }
 }

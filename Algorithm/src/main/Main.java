@@ -52,11 +52,12 @@ public class Main {
 
 		if (realRun) {
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
+			/*
 			if (debug == JOptionPane.YES_OPTION) {
-				/*
+
 				ConnectionSocket.setDebugTrue();
-				System.out.println("Debug is " + ConnectionSocket.getDebug());*/
-			}
+				System.out.println("Debug is " + ConnectionSocket.getDebug());
+			}*/
 
 			boolean connected = false;
 			while (!connected) {

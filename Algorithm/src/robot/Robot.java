@@ -1,9 +1,12 @@
 package robot;
 
+import main.Constants;
 import main.Constants.*;
 import map.MapPanel;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
+
+import static main.Constants.Direction.*;
 
 public abstract class Robot {
     Direction direction; //robot current direction
@@ -22,6 +25,57 @@ public abstract class Robot {
 
     public Robot() {
 
+    }
+
+    // Initialise the robot direction, position and the file to debug if applicable
+    public void initialise(int x, int y, int direction) {
+        /*
+        directions: north = 0 , east =1, south = 2, west = 3
+         */
+
+        this.x = checkValidX(x);
+        this.y = checkValidY(y);
+
+        switch (direction){
+            case 0: this.direction=NORTH;
+            case 1: this.direction=EAST;
+            case 2: this.direction=SOUTH;
+            case 3: this.direction = WEST;
+        }
+
+       // this.validObstacleValue = false;
+        /*
+        if (ConnectionSocket.getDebug()) {
+            try {
+                this.writer = new OutputStreamWriter( new FileOutputStream("Output.txt"), "UTF-8");
+                writer.write("");
+            }
+            catch (Exception e) {
+                System.out.println("Unable to write into output");
+            }
+        }*/
+    }
+
+    protected int checkValidX(int x) {
+        if (x >= Constants.WIDTH - 1) {
+            x = Constants.WIDTH - 2;
+        }
+        if (x <= 0) {
+            x = 1;
+        }
+
+        return x;
+    }
+
+    protected int checkValidY(int y) {
+        if (y >= Constants.HEIGHT - 1) {
+            y = Constants.HEIGHT - 2;
+        }
+
+        if (y <= 0) {
+            y = 1;
+        }
+        return y;
     }
 
 
@@ -82,6 +136,10 @@ public abstract class Robot {
 
     public void setSensorArr(Sensor[] sensorArr) {
         this.sensorArr = sensorArr;
+    }
+
+    public void setWaypoint(int x, int y){
+        map.setWayPoint(x,y);
     }
 
 

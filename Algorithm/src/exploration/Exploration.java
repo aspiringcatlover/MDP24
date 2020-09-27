@@ -41,7 +41,7 @@ public class Exploration {
     }
 
 
-    public void explore(){
+    public Robot explore(){
         GridCell nearestUnexploredGrid;
         ArrayList<GridCell> path;
         ArrayList<Movement> moveInstructions;
@@ -320,7 +320,7 @@ public class Exploration {
             pathFinder = new PathFinder(robot.getMap());
             path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(),1,1);
             if (path==null) //shouldnt happen at all
-                return;
+                return null;
             System.out.println("path size"+path.size());
              for(GridCell gridCell:path){
                  System.out.println(gridCell.getHorCoord()+" "+gridCell.getVerCoord());
@@ -340,7 +340,14 @@ public class Exploration {
             }
             clearParent();
         }
+
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
+        //update robot map
+        robot.setMap(map);
+        //return robot
+        return robot;
+
+
 
     }
 
