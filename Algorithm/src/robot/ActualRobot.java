@@ -216,7 +216,12 @@ public class ActualRobot extends Robot{
 
     @Override
     public void calibrate() {
-
+        socketConnection.sendMessage(Constants.CALIBRATE);
+        /*
+        if (sr != null) {
+            sr.displayMessage("Sent message: " + Constant.CALIBRATE, 1);
+        }
+        acknowledge();*/
     }
 
     @Override
