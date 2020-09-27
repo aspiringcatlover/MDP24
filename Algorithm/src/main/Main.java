@@ -74,14 +74,13 @@ public class Main {
 				connectionManager.start();
 			} catch (Exception e) {
 				connectionManager.stopCM();
-				
 				System.out.println("ConnectionManager is stopped");
 			}
 
 		} else {
 			SimulatorMap simulatorMap = new SimulatorMap();
 			while (true) {
-				if (simulate) {
+				if (simulatorMap.getStartSimulation()) {
 					int mapNum = simulatorMap.getMapChoice();
 					int time = simulatorMap.getTimeLimitMs();
 					int percentage = simulatorMap.getGoalCoveragePerc();
@@ -91,8 +90,8 @@ public class Main {
 					String[][] sampleMap = getSampleMap(mapNum);
 					MapPanel map = new MapPanel(sampleMap);
 					Robot simRobot = new SimulatorRobot(map);
-					ExplorationApp explorationApp = ExplorationApp.getInstance(simRobot, time, percentage, stepsPerSecond, imageReg);
-					explorationApp.run();
+					ExplorationApp explorationApp = ExplorationApp.getInstance(simRobot, time, percentage,
+							stepsPerSecond, imageReg);
 				}
 			}
 		}

@@ -29,7 +29,7 @@ public final class Constants {
 
 	// map
 	// TO NOTE!!!!!
-	// fix height (col/y) to be 20 and width (row/x) to be 15 acc to sample_map
+	// fix height (row) to be 15 and width (col) to be 20 acc to sample_map
 	public static final int HEIGHT = 20; // in terms of no. of grid
 	public static final int WIDTH = 15;
 	public static final int GRID_LENGTH = 10; // 10cm

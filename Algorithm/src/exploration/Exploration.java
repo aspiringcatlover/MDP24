@@ -51,9 +51,10 @@ public class Exploration {
 
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
         while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
-//            System.out.println(actual_percentage);
-//            System.out.println("robot_x:" + robot.getXCoord() + " robot_y:" + robot.getYCoord());
-//            System.out.println(robot.getDirection());
+            //System.out.println(actual_percentage);
+            //MapPanel map = simulatorMap.getMap(); //map for the simulator
+            //System.out.println("robot_x:" + robot.getXCoord() + " robot_y:" + robot.getYCoord());
+            //System.out.println(robot.getDirection());
             senseMap();
 
             for (int col = 0; col < WIDTH; col++) {
