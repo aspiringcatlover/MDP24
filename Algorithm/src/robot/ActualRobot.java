@@ -39,10 +39,10 @@ public class ActualRobot extends Robot{
         sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE);
         sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT);
         // 1 short and 1 long for left
-        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_TOP);
-        sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.LEFT_MIDDLE);
+        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE);
+        sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.LEFT_DOWN);
         // 1 short for right
-        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_TOP );
+        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE);
         MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
         for (int i=0;i<3;i++){
