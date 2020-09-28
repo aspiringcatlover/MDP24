@@ -1,22 +1,33 @@
-package exploration;
+package main;
 
-import main.Constants;
+import exploration.Exploration;
+import fastest_path.PathFinder;
+import map.GridCell;
 import map.MapPanel;
 import robot.Robot;
 import robot.SimulatorRobot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ExplorationTest {
+public class ExplorationAndFastestPathTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(6);
+        String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
 
         Robot robot = new SimulatorRobot(map);
         Exploration exploration = new Exploration(robot, 360000,100, 2,false);
-        exploration.explore();
+        robot = exploration.explore();
+
+        PathFinder  pathFinder = new PathFinder(robot.getMap());
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 14, 19);
+        System.out.println("num grid in result: "+result.size());
+        for (GridCell gridCell: result){
+            System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
+                    " fcost: " + gridCell.getfCost() + " gcost:"+gridCell.getgCost()+" hcost:"+gridCell.gethCost());
+        }
     }
 
     private static String[][] getSampleMap(int mapChoice){

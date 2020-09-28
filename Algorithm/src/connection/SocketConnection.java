@@ -75,6 +75,38 @@ public class SocketConnection {
         }
     }
 
+    public String receiveMessage() {
+
+        byte[] byteData = new byte[Constants.BUFFER_SIZE];
+        try {
+            int size = 0;
+            while (din.available() == 0 && connected.get()) {
+                try {
+                    ConnectionManager.getInstance();
+                }
+                catch(Exception e) {
+                    System.out.println("Error in receive message");
+                }
+            }
+            din.read(byteData);
+
+            // This is to get rid of junk bytes
+            while (size < Constants.BUFFER_SIZE) {
+                if (byteData[size] == 0) {
+                    break;
+                }
+                size++;
+            }
+            String message = new String(byteData, 0, size, "UTF-8");
+
+            return message;
+        }
+        catch (IOException IOEx) {
+            System.out.println("IOException in ConnectionSocket receiveMessage Function");
+        }
+        return "Error";
+    }
+
     /*
     // Get message from buffer
     public String receiveMessage() {

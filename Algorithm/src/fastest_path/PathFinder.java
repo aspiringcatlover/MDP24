@@ -26,6 +26,8 @@ public class PathFinder {
         calculateHeuristicCostOfMap(xEnd, yEnd);
         //System.out.println("check hcost: " + map.getGridCell(10,10).gethCost());
         search(xStart, yStart,xEnd,yEnd);
+        //checkPath(xEnd,yEnd);
+
         return pathList;
     }
 
@@ -201,7 +203,7 @@ public class PathFinder {
         //Compares 2 Node objects stored in the PriorityQueue and Reorders the Queue according to the object which has the lowest fValue
         PriorityQueue<GridCell> openList = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.getfCost(), o2.getfCost()));
 
-
+        boolean endpointCanAccess = checkEndpointCanAccess(xEnd, yEnd);
 
         //Adds the Starting grid inside the openList
         GridCell startGrid = map.getGridCell(yStart, xStart);
@@ -211,6 +213,12 @@ public class PathFinder {
         GridCell lowestCostGridCell;
         Direction currentDirection;
         lowestCostGridCell = openList.poll();
+
+        //check if map is fully explored.
+        boolean mapExplored=false;
+        if (map.getActualPerc()==100)
+            mapExplored=true;
+
 
         int debugCounter=1;
         while (true){
@@ -224,16 +232,65 @@ public class PathFinder {
                 break;
             }
 
+            if (!endpointCanAccess){
+                if (xEnd==14&&yEnd==19){
+                    if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd-1){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if(xEnd==0&&yEnd==19){
+                    if (lowestCostGridCell.getHorCoord()==xEnd+1 && lowestCostGridCell.getVerCoord()==yEnd-1){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if(xEnd==14&&yEnd==0){
+                    if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd+1){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if (xEnd==14){
+                    if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if (yEnd==19){
+                    if (lowestCostGridCell.getHorCoord()==xEnd && lowestCostGridCell.getVerCoord()==yEnd-1){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if (xEnd==0){
+                    if (lowestCostGridCell.getHorCoord()==xEnd+1 && lowestCostGridCell.getVerCoord()==yEnd){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+                else if (yEnd==0){
+                    if (lowestCostGridCell.getHorCoord()==xEnd && lowestCostGridCell.getVerCoord()==yEnd+1){
+                        closedList.add(lowestCostGridCell);
+                        break;
+                    }
+                }
+
+
+
+            }
+
             closedList.add(lowestCostGridCell);
 
             currentDirection = getCurrentDirection(lowestCostGridCell);
             for (Direction direction: Direction.values()){
                 //find current direction
-                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd);
+                openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd, mapExplored);
             }
 
-            //System.out.println("check");
             /*
+            System.out.println("check");
+
             System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
@@ -247,13 +304,16 @@ public class PathFinder {
         System.out.println("yohz");
         //last grid cell in closed list is end point
         GridCell endPoint=closedList.get(closedList.size() - 1);
-        if (strict){
+
+        if (endpointCanAccess){
             if (endPoint.getHorCoord()!=xEnd||endPoint.getVerCoord()!=yEnd){
                 System.out.println("no path");
                 this.pathList=null;
                 return;
             }
         }
+
+
 
 
         retracePath(endPoint);
@@ -276,7 +336,7 @@ public class PathFinder {
      * @return
      */
     private PriorityQueue<GridCell> exploreNeighbourGrid(GridCell parentGridCell, Direction cardinalDirection, Direction currentDirection,
-                                                         PriorityQueue<GridCell> openList, int xEnd, int yEnd){
+                                                         PriorityQueue<GridCell> openList, int xEnd, int yEnd, boolean mapComplete){
         GridCell childGridCell;
         int xChild, yChild, parentToChildCost, xParent, yParent;
 
@@ -304,19 +364,42 @@ public class PathFinder {
         //System.out.println("ychild: " + yChild +"xchild: "+xChild);
         //if grid exist
         childGridCell =  map.getGridCell(yChild,xChild);
-        if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
-            return openList; //no changes to openlist
+        if (mapComplete){
+            if (childGridCell==null || childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd))
+                return openList; //no changes to openlist
+        }
+        else{
+            //to find fastest path for exploration
+            if (childGridCell==null )
+                return openList;
 
-        if (!childGridCell.getExplored()&&childGridCell.getVerCoord()!=yEnd&&childGridCell.getHorCoord()!=xEnd)
-            return openList;
+            if ( childGridCell.getObstacle() || !checkSurroundingGrid(xChild,yChild, xEnd, yEnd)){
+                    //childgridcell not explored and is not the end target
+                    if ((!childGridCell.getExplored()&&childGridCell.getHorCoord()!=xEnd&&childGridCell.getVerCoord()!=yEnd))
+                    {
+                        //System.out.println("child grid cell that are unexplored and robot cannot go thru"+childGridCell.getHorCoord() +" "+childGridCell.getVerCoord());
+                        //check if the surrounding cells explored or not
+                        return openList; //no changes to openlist
+                    }
+                    //childgrid cell is the end target, check surroundgrid to see if robot can pass through
+                    else if (!childGridCell.getExplored()&&childGridCell.getHorCoord()==xEnd&&childGridCell.getVerCoord()==yEnd){
+
+                         if (!checkSurroundingGrid(xChild,yChild, xEnd, yEnd)){
+                             return openList;
+                         }
+                    }
+                    else{
+                        return openList;
+                    }
+            }
+        }
+
 
         //cost from parent to child
         if (cardinalDirection==currentDirection)
             parentToChildCost = 1;
         else
             parentToChildCost = 4; //2 for turning, 1 for moving in front --> here is with the assumption of there is no uturn, tried 3 will have some issue
-
-
 
 
         /*
@@ -425,8 +508,16 @@ public class PathFinder {
         //System.out.println("for grid x:" +x +" y:"+y);
 
         //the boundary unless is waypoint
+        if (x==xEnd&&y==yEnd){
+            System.out.println("CHECK SURROUNDING GRID END POINT");
+
+            return true;
+        }
+
+
+
         if (x==0||y==0||y==19||x==14){
-            return xEnd == x || yEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
+            return xEnd == x && yEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
         }
 
         /*
@@ -443,4 +534,30 @@ public class PathFinder {
                 &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
     }
 
+    private boolean checkPath(int xEnd, int yEnd){
+        //if end is at the corners (x=0/14 or y=0/19) --> then remove last grid
+        int length;
+        if (xEnd==0 || xEnd==14||yEnd==0||yEnd==19){
+            length=pathList.size();
+            pathList.remove(length-1);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * check if end point is accesible by mid of robot
+     * @param xEnd
+     * @param yEnd
+     * @return true if can access, false is cannot
+     */
+    public boolean checkEndpointCanAccess(int xEnd, int yEnd){
+        if (xEnd==0 || xEnd==14||yEnd==0||yEnd==19)
+            return false;
+        return true;
+    }
+
+    public void updateMap(MapPanel map){
+        this.map = map;
+    }
 }

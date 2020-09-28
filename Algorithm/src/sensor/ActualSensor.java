@@ -14,6 +14,6 @@ public class ActualSensor extends Sensor{
 
     @Override
     public void updateSensor(ArrayList<Boolean> isObstacle) {
-
+        this.obstaclePresent = isObstacle;
     }
 }

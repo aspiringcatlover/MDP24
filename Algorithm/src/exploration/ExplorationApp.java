@@ -16,11 +16,10 @@ public class ExplorationApp {
 
     private static final AtomicBoolean running = new AtomicBoolean(false);
     private static final AtomicBoolean completed = new AtomicBoolean(false);
-    private static ExplorationApp explorationApp;
     //private static ExplorationThread thread = null;
 
 
-    private ExplorationApp(Robot robot, int time, int percentage, int speed, boolean image_recognition) {
+    public ExplorationApp(Robot robot, int time, int percentage, int speed, boolean image_recognition) {
         //super("ExplorationThread");
         this.robot = robot;
         this.time = time;
@@ -36,7 +35,7 @@ public class ExplorationApp {
         // Check if it is the simulator mode
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
         Exploration exploration = new Exploration(robot,time, percentage, speed, image_recognition);
-        exploration.explore();
+        robot = exploration.explore();
         //exploration.Exploration(robot, time, percentage, speed, image_recognition);
         if (running.get()) {
             completed.set(true);
@@ -57,13 +56,9 @@ public class ExplorationApp {
         }
     }
 
-    public static ExplorationApp getInstance(Robot r, int time, int percentage, int speed, boolean image_recognition) {
-        if (explorationApp == null) {
-            explorationApp = new ExplorationApp(r, time, percentage, speed, image_recognition);
-        }
-        return explorationApp;
+    public Robot getRobot(){
+        return robot;
     }
-
     public static boolean getRunning() {
         return running.get();
     }
