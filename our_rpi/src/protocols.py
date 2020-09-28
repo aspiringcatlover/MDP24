@@ -45,7 +45,7 @@ class AndroidToRPi:
     CALIBRATE_SENSOR = 'SS|'.encode()
 
 
-class AlgorithmToAndroid:
+class AlgorithmToArduino:
     MOVE_FORWARD = '1'.encode()[0]
     TURN_LEFT = 'L'.encode()[0]
     TURN_RIGHT = 'R'.encode()[0]
@@ -54,6 +54,7 @@ class AlgorithmToAndroid:
     ALIGN_RIGHT = 'B'.encode()[0]
     ALIGN_FRONT = 'V'.encode()[0]
 
+class AlgorithmToAndroid:
     MDF_STRING = 'M'.encode()[0]
 
 
