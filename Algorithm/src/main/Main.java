@@ -91,7 +91,7 @@ public class Main {
 					String[][] sampleMap = getSampleMap(mapNum);
 					MapPanel map = new MapPanel(sampleMap);
 					Robot simRobot = new SimulatorRobot(map);
-					ExplorationApp explorationApp = ExplorationApp.getInstance(simRobot, time, percentage,
+					ExplorationApp explorationApp = new ExplorationApp(simRobot, time, percentage,
 							stepsPerSecond, imageReg);
 				}
 			}
