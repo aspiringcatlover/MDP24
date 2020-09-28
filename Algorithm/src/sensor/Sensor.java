@@ -33,12 +33,12 @@ public abstract class Sensor {
 
         //assuming forward direction of robot wrt map is DOWN
         switch(location) {
-            case LEFT_TOP:
-                x = 2;
-                y = 3;
-                break;
             case LEFT_MIDDLE:
                 x = 1;
+                y = 3;
+                break;
+            case LEFT_DOWN:
+                x =0;
                 y = 3;
                 break;
             case UP_LEFT:
@@ -53,8 +53,8 @@ public abstract class Sensor {
                 x = 3;
                 y = 0;
                 break;
-            case RIGHT_TOP:
-                x = 2;
+            case RIGHT_MIDDLE:
+                x = 1;
                 y = -1;
                 break;
         }
