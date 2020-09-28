@@ -18,10 +18,10 @@ class Status:
 
 
 class AndroidToArduino:
-    MOVE_FORWARD = 'W1|'.encode()
-    MOVE_BACK = 'S1|'.encode()
-    TURN_LEFT = 'A|'.encode()
-    TURN_RIGHT = 'D|'.encode()
+    MOVE_FORWARD = '1|'.encode()
+    MOVE_BACK = 'U|'.encode()
+    TURN_LEFT = 'L|'.encode()
+    TURN_RIGHT = 'R|'.encode()
     DO_SHORTCUT_1 = 'F1|'.encode()
     DO_SHORTCUT_2 = 'F2|'.encode()
 
@@ -46,9 +46,9 @@ class AndroidToRPi:
 
 
 class AlgorithmToAndroid:
-    MOVE_FORWARD = 'W'.encode()[0]
-    TURN_LEFT = 'A'.encode()[0]
-    TURN_RIGHT = 'D'.encode()[0]
+    MOVE_FORWARD = '1'.encode()[0]
+    TURN_LEFT = 'L'.encode()[0]
+    TURN_RIGHT = 'R'.encode()[0]
     CALIBRATING_CORNER = 'L'.encode()[0]
     SENSE_ALL = 'Z'.encode()[0]
     ALIGN_RIGHT = 'B'.encode()[0]
@@ -74,7 +74,7 @@ class RPiToAndroid:
     STATUS_MOVING_FORWARD = '{"status":"moving forward"}'.encode()
     STATUS_ALIGN_RIGHT = '{"status":"align right"}'.encode()
     STATUS_ALIGN_FRONT = '{"status":"align front"}'.encode()
-    
+
     MOVE_UP = '{"move":[{"direction":"forward"}]}'.encode()
     TURN_LEFT = '{"move":[{"direction":"left"}]}'.encode()
     TURN_RIGHT = '{"move":[{"direction":"right"}]}'.encode()

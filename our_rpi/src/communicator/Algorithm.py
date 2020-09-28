@@ -22,7 +22,7 @@ class Algorithm:
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((self.host, self.port))
         self.socket.listen(1)
-        
+
     def connect(self):
         while True:
             retry = False
@@ -52,7 +52,7 @@ class Algorithm:
             if self.client_sock is not None:
                 self.client_sock.close()
                 self.client_sock = None
-            
+
             print("Algorithm disconnected Successfully")
 
         except Exception as error:
@@ -75,7 +75,7 @@ class Algorithm:
 
     def read(self):
         try:
-            message = self.client_sock.recv(Algorithm_SOCKET_BUFFER_SIZE).strip()
+            message = self.client_sock.recv(Algorithm_SOCKET_BUFFER_SIZE).rstrip()
 
             if len(message) > 0:
                 print('From Algorithm:')
@@ -97,4 +97,3 @@ class Algorithm:
         except Exception as error:
             print('Algorithm write failed: '+ str(error))
             raise error
-            
