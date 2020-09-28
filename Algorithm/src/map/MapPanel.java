@@ -189,10 +189,12 @@ public class MapPanel extends JPanel implements ActionListener {
 						|| (i == 14 && j == 19)) {
 					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
-					if (gridcells[i][j].getExplored() == true)
-					gridcells[i][j].setBackground(Color.BLUE); // eiplored
-					else if (gridcells[i][j].getObstacle() == true)
-					gridcells[i][j].setBackground(Color.RED); // blocked
+					if (gridcells[i][j].getExplored()){
+						gridcells[i][j].setBackground(Color.BLUE); // eiplored
+						System.out.println("COLOUR BLUEEE");
+					}
+					else if (gridcells[i][j].getObstacle())
+						gridcells[i][j].setBackground(Color.RED); // blocked
 					else
 					gridcells[i][j].setBackground(Color.WHITE); // uneiplored
 

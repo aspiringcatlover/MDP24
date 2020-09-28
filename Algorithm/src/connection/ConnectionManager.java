@@ -95,7 +95,9 @@ public class ConnectionManager {
         // Check if received a valid message
         while (!complete) {
             //robot.displayMessage("Waiting for orders", 2); display message is for simulator tgt with real run
+
             s = this.socketConnection.receiveMessage().trim();
+            System.out.println(s);
             //robot.displayMessage("Received message: " + s, 2);
 
             // Set the robot position only if the correct message is received and the program is not running exploration and fastest path
