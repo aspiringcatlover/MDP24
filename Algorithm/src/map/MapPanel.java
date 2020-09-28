@@ -161,12 +161,6 @@ public class MapPanel extends JPanel implements ActionListener {
 		this.gridcells[y][x] = gridCell;
 	}
 
-	// assigns a color depending on whether gridCell is obstacle and
-	// explored/explored
-	public void colorMap(GridCell gridCell) {
-		//gridCell.setColor();
-	}
-
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
 			repaint();// this will call at every 1 second
@@ -178,23 +172,24 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// update simulation map
 	public void updateMap(int x, int y ) {
+		System.out.println("update map");
 		for (int i = 0; i < gridcells.length; i++) {
 			for (int j = 0; j < gridcells[i].length; j++) {
 				if ((i == 0 && j == 0) || (i == 0 && j == 1) || (i == 0 && j == 2) || (i == 1 && j == 0)
 						|| (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)
 						|| (i == 2 && j == 2)) {
-					gridcells[i][j].setBackground(Color.YELLOW); // start
+					gridcells[i][j].setBackground(Color.yellow); // start
 				} else if ((i == 12 && j == 17) || (i == 12 && j == 18) || (i == 12 && j == 19) || (i == 13 && j == 17)
 						|| (i == 13 && j == 18) || (i == 13 && j == 19) || (i == 14 && j == 17) || (i == 14 && j == 18)
 						|| (i == 14 && j == 19)) {
 					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
 					if (gridcells[i][j].getExplored() == true)
-					gridcells[i][j].setBackground(Color.BLUE); // eiplored
+					gridcells[i][j].setBackground(Color.BLUE); // explored
 					else if (gridcells[i][j].getObstacle() == true)
 					gridcells[i][j].setBackground(Color.RED); // blocked
 					else
-					gridcells[i][j].setBackground(Color.WHITE); // uneiplored
+					gridcells[i][j].setBackground(Color.WHITE); // unexplored
 
 				}
 			}
@@ -265,19 +260,6 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	public int[] getWayPoint() {
 		return waypoint;
-	}
-
-
-
-
-	// set robot color
-	public void displayRobotSpace(int x_coord, int y_coord) {
-		System.out.println(x_coord);
-		System.out.println(y_coord);
-		boolean outOfMap = false;
-
-
-//
 	}
 
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {

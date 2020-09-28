@@ -443,7 +443,7 @@ public class Exploration {
 
         switch (direction){
             case WEST:
-                // LEFT_TOP(3), LEFT_MIDDLE(4)
+                // LEFT_MIDDLE(3), LEFT_DOWN(4)
                 for (int loc = 3; loc < 5; loc++) {
                     sensor = robot.getIndividualSensor(loc);
                     sensorResult = sensor.getSensorInformation();
@@ -473,7 +473,7 @@ public class Exploration {
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
                 }
-                // RIGHT_TOP(5)
+                // RIGHT_MIDDLE(5)
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
@@ -486,7 +486,7 @@ public class Exploration {
                 }
                 break;
             case NORTH:
-                // LEFT_TOP(3), LEFT_MIDDLE(4)
+                // LEFT_MIDDLE(3), LEFT_DOWN(4)
                 for (int loc = 3; loc < 5; loc++) {
                     sensor = robot.getIndividualSensor(loc);
                     sensorResult = sensor.getSensorInformation();
@@ -514,7 +514,7 @@ public class Exploration {
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
                 }
-                // RIGHT_TOP(5)
+                // RIGHT_MIDDLE(5)
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
@@ -527,7 +527,7 @@ public class Exploration {
                 }
                 break;
             case EAST:
-                // LEFT_TOP(3), LEFT_MIDDLE(4)
+                // LEFT_MIDDLE(3), LEFT_DOWN(4)
                 for (int loc = 3; loc < 5; loc++) {
                     sensor = robot.getIndividualSensor(loc);
                     sensorResult = sensor.getSensorInformation();
@@ -554,7 +554,7 @@ public class Exploration {
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     }
                 }
-                // RIGHT_TOP(5)
+                // RIGHT_MIDDLE(5)
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
@@ -567,7 +567,7 @@ public class Exploration {
                 }
                 break;
             case SOUTH:
-                // LEFT_TOP(3), LEFT_MIDDLE(4)
+                // LEFT_MIDDLE(3), LEFT_DOWN(4)
                 for (int loc = 3; loc < 5; loc++) {
                     sensor = robot.getIndividualSensor(loc);
                     sensorResult = sensor.getSensorInformation();
@@ -593,7 +593,7 @@ public class Exploration {
                         map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                     }
                 }
-                // RIGHT_TOP(5)
+                // RIGHT_MIDDLE(5)
                 sensor = robot.getIndividualSensor(5);
                 sensorResult = sensor.getSensorInformation();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
