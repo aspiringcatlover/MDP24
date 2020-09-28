@@ -11,6 +11,7 @@ public class GridCell extends JPanel {
 	private boolean explored;
 	private int ver_coord;//ver_coord: along length
 	private int hor_coord;//hor_coord: along width
+	private BasicArrowButton arrow;
 
 	private int gCost;
 	private int hCost;
@@ -135,28 +136,32 @@ public class GridCell extends JPanel {
 	public void displayDirection(Direction direction) {
 		switch (direction) {
 			case NORTH:
-				BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.EAST);
-				add(arrowSouth, BorderLayout.NORTH);
+				BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.EAST);
+				add(arrowNorth, BorderLayout.EAST);
 				revalidate();
 				repaint();
+				//remove(arrowNorth);
 				break;
 			case SOUTH:
-				BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.WEST);
-				add(arrowNorth, BorderLayout.NORTH);
+				BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.WEST);
+				add(arrowSouth, BorderLayout.WEST);
 				revalidate();
 				repaint();
+				//remove(arrowSouth);
 				break;
 			case WEST:
-				BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.NORTH);
-				add(arrowEast, BorderLayout.NORTH);
-				revalidate();
-				repaint();
-				break;
-			case EAST:
-				BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.SOUTH);
+				BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.NORTH);
 				add(arrowWest, BorderLayout.NORTH);
 				revalidate();
 				repaint();
+				//remove(arrowWest);
+				break;
+			case EAST:
+				BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.SOUTH);
+				add(arrowEast, BorderLayout.SOUTH);
+				revalidate();
+				repaint();
+				//remove(arrowEast);
 		}
 	}
 }

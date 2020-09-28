@@ -1,10 +1,10 @@
 Legend:
 Sender > Receiver, "Command/Message", Instruction/Information
 
-Android > Arduino, "W1|", Move up
-Android > Arduino, "S1|", Move back
-Android > Arduino, "A|", Turn left
-Android > Arduino, "D|", Turn right
+Android > Arduino, "1|", Move up
+Android > Arduino, "U|", Move back
+Android > Arduino, "L|", Turn left
+Android > Arduino, "R|", Turn right
 Android > Arduino, "SS|", Sensor calibration (RPi send L|A| to Arduino)
 Android > Arduino, "F1|", Shortcut for some movement
 Android > Arduino, "F2|", Shortcut for some movement
@@ -17,9 +17,9 @@ Android > Algo, "waypoint (x,y)", Set waypoint (x,y) eg. waypoint (8,11)
 
 Arduino > Algo, "S1|S2|S3|S4|S5|S6", SX being the sensor value for X sensor
 
-Algo > Arduino, "WS|", Move forward S grid where S is an integer
-Algo > Arduino, "A|", Turn left
-Algo > Arduino, "D|", Turn right
+Algo > Arduino, "1|", Move forward S grid where S is an integer
+Algo > Arduino, "L|", Turn left
+Algo > Arduino, "R|", Turn right
 Algo > Arduino, "L|", Calibrate corner
 Algo > Arduino, "Z|", Sense all and return all 6 sensor values
 Algo > Arduino, "B|", Align right

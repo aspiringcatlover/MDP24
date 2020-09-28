@@ -104,7 +104,7 @@ public class SimulatorRobot extends Robot {
 		default:
 			break;
 		}
-		map.updateMap(y,x);
+		map.updateMap(x,y);
 		map.displayDirection(y,x,direction);
 		try {
 			// ms timeout
@@ -234,7 +234,7 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		}
-		map.updateMap(y,x);
+		map.updateMap(x,y);
 		map.displayDirection(y,x,direction);
 		//sleep to simulate
 		try {
