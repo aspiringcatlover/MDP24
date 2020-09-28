@@ -51,6 +51,8 @@ public class SimulatorMap extends JFrame {
 	private String[][] sample_map;
 	private boolean startSimulation;
 	private boolean startActual;
+	private boolean startExp;
+	private boolean startFp;
 
 	// constructor
 	public SimulatorMap() {
@@ -86,32 +88,38 @@ public class SimulatorMap extends JFrame {
 		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(8, 0, 0, 0)));
 
 		// drop down menu to select map
-				JLabel selectMap = new JLabel("Select map:");
-				settingsContainer.add(selectMap);
-				String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
-				final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
-				mapChoiceMenu.setBackground(Color.PINK);
-				settingsContainer.add(mapChoiceMenu);
+		JLabel selectMap = new JLabel("Select map:");
+		settingsContainer.add(selectMap);
+		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
+		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
+		mapChoiceMenu.setBackground(Color.PINK);
+		settingsContainer.add(mapChoiceMenu);
 
-				// radio button style for exploration/fastest path selection
-				JRadioButton optionExp = new JRadioButton("Exploration");
-				JRadioButton optionFp = new JRadioButton("Fastest Path");
-//				optionFp.setBounds(100, 120, 140, 40);
-//				add(Box.createHorizontalStrut(10));
-				
-				ButtonGroup group = new ButtonGroup();
-				group.add(optionExp);
-				group.add(optionFp);
+//		 radio button style for exploration/fastest path selection
+//		JRadioButton optionExp = new JRadioButton("Exploration");
+//		JRadioButton optionFp = new JRadioButton("Fastest Path");
+//		optionFp.setBounds(100, 120, 140, 40);
+//		add(Box.createHorizontalStrut(10));
+//
+//		ButtonGroup group = new ButtonGroup();
+//		group.add(optionExp);
+//		group.add(optionFp);
+//
+//		settingsContainer.add(optionExp);
+//		settingsContainer.add(optionFp);
+		
+		JSeparator s = new JSeparator();
+		s.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s);
+		s.setBounds(0, 0, 1, 1);
 
-				settingsContainer.add(optionExp);
-				settingsContainer.add(optionFp);
+		// goal coverage percentage field
+		JLabel goalCovPer = new JLabel();
+		goalCovPer.setText("Enter goal coverage percentage :");
+		settingsContainer.add(goalCovPer);
+		JTextField goalCovPerField = new JTextField(5);
+		settingsContainer.add(goalCovPerField);
 
-				// goal coverage percentage field
-				JLabel goalCovPer = new JLabel();
-				goalCovPer.setText("Enter goal coverage percentage :");
-				settingsContainer.add(goalCovPer);
-				JTextField goalCovPerField = new JTextField(5);
-				settingsContainer.add(goalCovPerField);
 		// steps per second field
 		JLabel stepsPerSec = new JLabel();
 		stepsPerSec.setText("Enter steps per second :");
@@ -139,28 +147,39 @@ public class SimulatorMap extends JFrame {
 		s1.setOrientation(SwingConstants.HORIZONTAL);
 		settingsContainer.add(s1);
 		s1.setBounds(0, 0, 1, 1);
+		
+		// exploration button
+		JButton expButton = new JButton();
+		expButton.setText("Start Exploration");
+		settingsContainer.add(expButton);
 
-		// apply settings button
-		JButton applySettings = new JButton("Apply");
-		applySettings.setBounds(100, 120, 140, 40);
-		applySettings.setBackground(Color.PINK);
-		settingsContainer.add(applySettings);
+		// exploration button
+		JButton fpButton = new JButton();
+		fpButton.setText("Start Fastest Path");
+		settingsContainer.add(fpButton);
 
-		// stop button
-		JButton stop = new JButton("Stop");
-		stop.setBounds(100, 120, 140, 40);
-		stop.setBackground(Color.PINK);
-		settingsContainer.add(stop);
+//		// apply settings button
+//		JButton applySettings = new JButton("Apply");
+//		applySettings.setBounds(100, 120, 140, 40);
+//		applySettings.setBackground(Color.PINK);
+//		settingsContainer.add(applySettings);
+//
+//		// stop button
+//		JButton stop = new JButton("Stop");
+//		stop.setBounds(100, 120, 140, 40);
+//		stop.setBackground(Color.PINK);
+//		settingsContainer.add(stop);
 
 		// add map
 		add(map);
 
 		// mouse listener for apply settings button
-		applySettings.addMouseListener(new MouseListener() {
+		expButton.addMouseListener(new MouseListener() {
 			@Override
 			public void mousePressed(MouseEvent me) {
-				// simulation will start
-				startSimulation = true;
+				startExp = true;
+				System.out.println(startExp);
+				
 				// control goal coverage percentage
 				goal_coverage_perc = Integer.parseInt(goalCovPerField.getText());
 
@@ -247,9 +266,9 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
-			System.out.println(path_name);
-			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+//			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+//			System.out.println(path_name);
+			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
@@ -343,5 +362,13 @@ public class SimulatorMap extends JFrame {
 
 	public boolean getStartActual() {
 		return startActual;
+	}
+	
+	public boolean getStartExp() {
+		return startExp;
+	}
+	
+	public boolean getStartFp() {
+		return startFp;
 	}
 }

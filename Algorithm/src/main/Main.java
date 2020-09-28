@@ -81,7 +81,9 @@ public class Main {
 		} else {
 			SimulatorMap simulatorMap = new SimulatorMap();
 			while (true) {
-				if (simulatorMap.getStartSimulation()) {
+//			Thread.sleep(5000);
+				System.out.println(simulatorMap.getStartExp());
+				if (simulatorMap.getStartExp()) {
 					int mapNum = simulatorMap.getMapChoice();
 					int time = simulatorMap.getTimeLimitMs();
 					int percentage = simulatorMap.getGoalCoveragePerc();
@@ -93,7 +95,8 @@ public class Main {
 					Robot simRobot = new SimulatorRobot(map);
 					ExplorationApp explorationApp = new ExplorationApp(simRobot, time, percentage,
 							stepsPerSecond, imageReg);
-					//System.out.println();
+					explorationApp.run();
+					System.out.println("end");
 				}
 			}
 		}
