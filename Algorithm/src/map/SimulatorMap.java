@@ -86,79 +86,32 @@ public class SimulatorMap extends JFrame {
 		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(8, 0, 0, 0)));
 
 		// drop down menu to select map
-		JLabel selectMap = new JLabel("Select map:");
-		settingsContainer.add(selectMap);
-		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
-		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
-		mapChoiceMenu.setBackground(Color.PINK);
-		settingsContainer.add(mapChoiceMenu);
+				JLabel selectMap = new JLabel("Select map:");
+				settingsContainer.add(selectMap);
+				String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" };
+				final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
+				mapChoiceMenu.setBackground(Color.PINK);
+				settingsContainer.add(mapChoiceMenu);
 
-		JSeparator s = new JSeparator();
-		s.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s);
+				// radio button style for exploration/fastest path selection
+				JRadioButton optionExp = new JRadioButton("Exploration");
+				JRadioButton optionFp = new JRadioButton("Fastest Path");
+//				optionFp.setBounds(100, 120, 140, 40);
+//				add(Box.createHorizontalStrut(10));
+				
+				ButtonGroup group = new ButtonGroup();
+				group.add(optionExp);
+				group.add(optionFp);
 
-		// actual run button
-		JButton actualRun = new JButton("Actual run");
-		actualRun.setBounds(100, 120, 140, 40);
-		actualRun.setBackground(Color.PINK);
-		settingsContainer.add(actualRun);
+				settingsContainer.add(optionExp);
+				settingsContainer.add(optionFp);
 
-		// mouse listener for apply settings button
-		actualRun.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// simulation will start
-				startActual = true;
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-
-		});
-
-		// radio button style for exploration/fastest path selection
-		JRadioButton optionExp = new JRadioButton("Exploration");
-		JRadioButton optionFp = new JRadioButton("Fastest Path");
-		optionFp.setBounds(100, 120, 140, 40);
-		add(Box.createHorizontalStrut(10));
-
-		ButtonGroup group = new ButtonGroup();
-		group.add(optionExp);
-		group.add(optionFp);
-
-		settingsContainer.add(optionExp);
-		settingsContainer.add(optionFp);
-
-		JSeparator s1 = new JSeparator();
-		s1.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s1);
-//		s1.setBounds(0, 0, 1, 1);
-
-		// goal coverage percentage field
-		JLabel goalCovPer = new JLabel();
-		goalCovPer.setText("Enter goal coverage percentage :");
-		settingsContainer.add(goalCovPer);
-		JTextField goalCovPerField = new JTextField(5);
-		settingsContainer.add(goalCovPerField);
-
+				// goal coverage percentage field
+				JLabel goalCovPer = new JLabel();
+				goalCovPer.setText("Enter goal coverage percentage :");
+				settingsContainer.add(goalCovPer);
+				JTextField goalCovPerField = new JTextField(5);
+				settingsContainer.add(goalCovPerField);
 		// steps per second field
 		JLabel stepsPerSec = new JLabel();
 		stepsPerSec.setText("Enter steps per second :");
@@ -181,6 +134,11 @@ public class SimulatorMap extends JFrame {
 		JTextField mdfField = new JTextField(5);
 		mdfField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(mdfField);
+		
+		JSeparator s1 = new JSeparator();
+		s1.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s1);
+		s1.setBounds(0, 0, 1, 1);
 
 		// apply settings button
 		JButton applySettings = new JButton("Apply");
@@ -285,21 +243,21 @@ public class SimulatorMap extends JFrame {
 
 	// get sample map
 	public static String[][] getSampleMap(int mapChoice){
-		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
+		String[][] temp_sample_map = new String[Constants.WIDTH][Constants.HEIGHT];
 		try {
 			String path_name = new File("").getAbsolutePath();
 			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
-			int col = 0;
+			int row = 0;
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] arrOfStr = data.split("");
-				for (int row = 0; row < arrOfStr.length; row++) {
-					temp_sample_map[row][col] = arrOfStr[row];
+				for (int col = 0; col < arrOfStr.length; col++) {
+					temp_sample_map[row][col] = arrOfStr[col];
 				}
-				col++;
+				row++;
 			}
 			myReader.close();
 		} catch (FileNotFoundException e) {

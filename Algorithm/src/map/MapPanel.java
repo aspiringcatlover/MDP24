@@ -22,10 +22,10 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
-		setLayout(new GridLayout(Constants.HEIGHT, Constants.WIDTH));
-		gridcells = new GridCell[Constants.HEIGHT][Constants.WIDTH];
-		for (int row = 0; row < Constants.HEIGHT; row++) {
-			for (int col = 0; col < Constants.WIDTH; col++) {
+		setLayout(new GridLayout(Constants.WIDTH, Constants.HEIGHT));
+		gridcells = new GridCell[Constants.WIDTH][Constants.HEIGHT];
+		for (int row = 0; row < Constants.WIDTH; row++) {
+			for (int col = 0; col < Constants.HEIGHT; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
 				MapPanel.this.add(gridCell);
