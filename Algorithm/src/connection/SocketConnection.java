@@ -65,7 +65,7 @@ public class SocketConnection {
         try {
             dout.write(message.getBytes());
             dout.flush();
-
+            System.out.println('"' + message + '"' + " sent successfully");
             if (debug.get()) {
                 System.out.println('"' + message + '"' + " sent successfully");
             }

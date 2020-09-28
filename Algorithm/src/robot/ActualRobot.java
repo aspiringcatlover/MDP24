@@ -62,7 +62,7 @@ public class ActualRobot extends Robot{
     @Override
     public void moveForward() {
         //update coordinates(both robot and sensor) + sensemap
-        socketConnection.sendMessage("W" + 1+ "|");
+        socketConnection.sendMessage(1+ "|");
         switch (direction) {
             case WEST:
                 x -= 1;
@@ -313,6 +313,7 @@ public class ActualRobot extends Robot{
 
         // For each of the sensor value, we will update the map accordingly.
         for (int i = 0; i < 6; i++) {
+            System.out.println("SENSOR VALUE" +sensorValues[i]);
             sensorResult = new ArrayList<>();
             double value = Double.parseDouble(sensorValues[i]);
 
