@@ -17,7 +17,7 @@ public class ExplorationAndFastestPathTest {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
 
-        Robot robot = new SimulatorRobot(map);
+        Robot robot = new SimulatorRobot(map, 2);
         Exploration exploration = new Exploration(robot, 360000,100, 2,false);
         robot = exploration.explore();
 

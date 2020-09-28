@@ -34,7 +34,9 @@ public class ExplorationApp {
 
         // Check if it is the simulator mode
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
+        System.out.println("???");
         Exploration exploration = new Exploration(robot,time, percentage, speed, image_recognition);
+        System.out.println("robot start exploring...");
         robot = exploration.explore();
         //exploration.Exploration(robot, time, percentage, speed, image_recognition);
         if (running.get()) {
