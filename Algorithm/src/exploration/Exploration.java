@@ -62,7 +62,7 @@ public class Exploration {
                 System.out.println();
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
-            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start){
+            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start){
                 System.out.println("break right wall hugging");
                 break;
             }
