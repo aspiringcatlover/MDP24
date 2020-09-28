@@ -10,11 +10,15 @@ import sensor.SimulatorSensor;
 
 public class SimulatorRobot extends Robot {
 
-	private SimulatorMap simulatorMap; // this is the simulator itself maybe can rename or smth
+	private MapPanel map;
+	private int steps_per_sec;
+	//SimulatorMap simulatorMap; // this is the simulator itself maybe can rename or smth
 
 	// constructor
-	public SimulatorRobot(MapPanel map) {
+	public SimulatorRobot(MapPanel map, int steps_per_sec) {
+
 		super(Direction.NORTH, START_X_COORD, START_Y_COORD);
+		this.steps_per_sec=steps_per_sec;
 		// map for the maze to simulate
 		this.map = map;
 		this.mdfString = map.getMdfString();
@@ -34,7 +38,7 @@ public class SimulatorRobot extends Robot {
 		// 1 short for right
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, map);
 
-		simulatorMap = new SimulatorMap();
+		//simulatorMap = new SimulatorMap();
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
@@ -42,12 +46,12 @@ public class SimulatorRobot extends Robot {
 				emptyMap.setExploredForGridCell(i, r, true);
 			}
 		}
-		simulatorMap.setMap(emptyMap);
+		map = emptyMap;
 		// simulator map is the one that shld be updated
 	}
 
 	public MapPanel getMap() {
-		return simulatorMap.getMap();
+		return map;
 	}
 
 	public Sensor getIndividualSensor(int i) {
@@ -99,6 +103,14 @@ public class SimulatorRobot extends Robot {
 			break;
 		default:
 			break;
+		}
+		map.updateMap(y,x);
+		map.displayDirection(y,x,direction);
+		try {
+			// ms timeout
+			int timeout = (1 / steps_per_sec) * 1000;
+			Thread.sleep(timeout); // Customize your refresh time
+		} catch (InterruptedException e) {
 		}
 
 	}
@@ -222,6 +234,15 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		}
+		map.updateMap(y,x);
+		map.displayDirection(y,x,direction);
+		//sleep to simulate
+		try {
+			// ms timeout
+			int timeout = (1 / steps_per_sec) * 1000;
+			Thread.sleep(timeout); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
 	}
 
 	@Override
@@ -289,10 +310,12 @@ public class SimulatorRobot extends Robot {
 	 * return directions[newIndex]; }
 	 */
 
+
 	public void initMap(MapPanel map) {
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
-				simulatorMap.getMap().colorMap(map.getGridCell(row, col));
+
+				this.map.setGridCell(row, col,map.getGridCell(row, col) );
 			}
 			System.out.println();
 		}

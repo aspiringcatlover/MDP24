@@ -131,5 +131,32 @@ public class GridCell extends JPanel {
 		this.parent = parent;
 	}
 
-	
+
+	public void displayDirection(Direction direction) {
+		switch (direction) {
+			case NORTH:
+				BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.EAST);
+				add(arrowSouth, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case SOUTH:
+				BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.WEST);
+				add(arrowNorth, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case WEST:
+				BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.NORTH);
+				add(arrowEast, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+				break;
+			case EAST:
+				BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.SOUTH);
+				add(arrowWest, BorderLayout.NORTH);
+				revalidate();
+				repaint();
+		}
+	}
 }

@@ -173,29 +173,44 @@ public class MapPanel extends JPanel implements ActionListener {
 		}
 	}
 
+
+
+
 	// update simulation map
-	public void updateMap() {
+	public void updateMap(int x, int y ) {
 		for (int i = 0; i < gridcells.length; i++) {
 			for (int j = 0; j < gridcells[i].length; j++) {
-				if ((j == 0 && i == 0) || (j == 0 && i == 1) || (j == 0 && i == 2) || (j == 1 && i == 0)
-						|| (j == 1 && i == 1) || (j == 1 && i == 2) || (j == 2 && i == 0) || (j == 2 && i == 1)
-						|| (j == 2 && i == 2)) {
-					gridcells[j][i].setBackground(Color.YELLOW); // start
-				} else if ((j == 12 && i == 17) || (j == 12 && i == 18) || (j == 12 && i == 19) || (j == 13 && i == 17)
-						|| (j == 13 && i == 18) || (j == 13 && i == 19) || (j == 14 && i == 17) || (j == 14 && i == 18)
-						|| (j == 14 && i == 19)) {
-					gridcells[j][i].setBackground(Color.GREEN); // goal
+				if ((i == 0 && j == 0) || (i == 0 && j == 1) || (i == 0 && j == 2) || (i == 1 && j == 0)
+						|| (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)
+						|| (i == 2 && j == 2)) {
+					gridcells[i][j].setBackground(Color.YELLOW); // start
+				} else if ((i == 12 && j == 17) || (i == 12 && j == 18) || (i == 12 && j == 19) || (i == 13 && j == 17)
+						|| (i == 13 && j == 18) || (i == 13 && j == 19) || (i == 14 && j == 17) || (i == 14 && j == 18)
+						|| (i == 14 && j == 19)) {
+					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
-					if (gridcells[j][i].getExplored() == true)
-						gridcells[j][i].setBackground(Color.BLUE); // explored
-					else if (gridcells[j][i].getObstacle() == true)
-						gridcells[j][i].setBackground(Color.RED); // blocked
+					if (gridcells[i][j].getExplored() == true)
+					gridcells[i][j].setBackground(Color.BLUE); // eiplored
+					else if (gridcells[i][j].getObstacle() == true)
+					gridcells[i][j].setBackground(Color.RED); // blocked
 					else
-						gridcells[j][i].setBackground(Color.WHITE); // unexplored
+					gridcells[i][j].setBackground(Color.WHITE); // uneiplored
 
 				}
 			}
 		}
+
+		//robot itself
+		gridcells[y - 1][x - 1].setBackground(Color.orange);
+		gridcells[y - 1][x].setBackground(Color.orange);
+		gridcells[y - 1][x + 1].setBackground(Color.orange);
+		gridcells[y][x + 1].setBackground(Color.orange);
+		gridcells[y + 1][x + 1].setBackground(Color.orange);
+		gridcells[y + 1][x].setBackground(Color.orange);
+		gridcells[y + 1][x - 1].setBackground(Color.orange);
+		gridcells[y][x- 1].setBackground(Color.orange);
+		gridcells[y][x].setBackground(Color.orange);
+
 		revalidate();
 		repaint();
 	}
@@ -259,29 +274,18 @@ public class MapPanel extends JPanel implements ActionListener {
 	public void displayRobotSpace(int x_coord, int y_coord) {
 		System.out.println(x_coord);
 		System.out.println(y_coord);
-//		boolean outOfMap = false;
-//		if (y_coord-1 < 0 || y_coord-1 > HEIGHT || x_coord-1 < 0 || x_coord-1 > WIDTH) 
-//			outOfMap = true;
-//		else
-//			outOfMap = false;
+		boolean outOfMap = false;
+
+
 //
-//		if(!outOfMap) {
-		/*
-		gridcells[y_coord - 1][x_coord - 1].setRobotColor();
-		gridcells[y_coord - 1][x_coord].setRobotColor();
-		gridcells[y_coord - 1][x_coord + 1].setRobotColor();
-		gridcells[y_coord][x_coord + 1].setRobotColor();
-		gridcells[y_coord + 1][x_coord + 1].setRobotColor();
-		gridcells[y_coord + 1][x_coord].setRobotColor();
-		gridcells[y_coord + 1][x_coord - 1].setRobotColor();
-		gridcells[y_coord][x_coord - 1].setRobotColor();
-		gridcells[y_coord][x_coord].setRobotColor();*/
-//		}
 	}
 
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
-		//gridcells[ver_coord][hor_coord].displayDirection(dir);
+		//displayDirection(dir, hor_coord, ver_coord);
+		gridcells[ver_coord][hor_coord].displayDirection(dir);
 	}
+		//
+
 
 //	    //Generate map descriptor part 1
 //		public String generateMapDes1() {

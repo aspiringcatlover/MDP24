@@ -35,7 +35,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.html.ImageView;
 
+import exploration.ExplorationApp;
+import fastest_path.FastestPathApp;
 import main.*;
+import robot.ActualRobot;
+import robot.Robot;
+import robot.SimulatorRobot;
 
 public class SimulatorMap extends JFrame {
 
@@ -53,6 +58,10 @@ public class SimulatorMap extends JFrame {
 	private boolean startActual;
 	private boolean startExp;
 	private boolean startFp;
+	private ExplorationApp explorationApp;
+	private FastestPathApp fastestPathApp;
+	private Robot robot;
+	private boolean mapExplored=false;
 
 	// constructor
 	public SimulatorMap() {
@@ -216,13 +225,21 @@ public class SimulatorMap extends JFrame {
 					break;
 				}
 
+				/*
 				if (optionExp.isSelected()) {
 					isExpSelected = true;
 				} else if (optionFp.isSelected()) {
 					isExpSelected = false;
-				}
+				}*/
+
+
 
 				refreshMap();
+                robot = new SimulatorRobot(map, steps_per_sec);
+                startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, false);
+                mapExplored=true;
+                actual_coverage_perc =  (int) robot.getMap().getActualPerc();
+
 
 				System.out.println("Goal coverage percentage: " + goal_coverage_perc);
 				System.out.println("Actual coverage percentage: " + actual_coverage_perc);
@@ -256,6 +273,36 @@ public class SimulatorMap extends JFrame {
 
 		});
 
+        fpButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mapExplored){
+                    //+ waypoint set
+                    startFastestPath();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -266,9 +313,9 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-//			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
 //			System.out.println(path_name);
-			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
@@ -288,6 +335,18 @@ public class SimulatorMap extends JFrame {
 		}
 		return temp_sample_map;
 	}
+
+    public void startExploration(Robot robot, int time, int percentage, int speed, boolean image_recognition){
+        explorationApp = new ExplorationApp(robot, time, percentage, speed, image_recognition);
+        explorationApp.run();
+        //get robot
+        this.robot = explorationApp.getRobot();
+    }
+
+    public void startFastestPath(){
+	    fastestPathApp = new FastestPathApp(robot);
+        fastestPathApp.run();
+    }
 
 	// refresh new map according to map choice
 	public void refreshMap() {

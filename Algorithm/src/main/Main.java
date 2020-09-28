@@ -80,25 +80,6 @@ public class Main {
 
 		} else {
 			SimulatorMap simulatorMap = new SimulatorMap();
-			while (true) {
-//			Thread.sleep(5000);
-				System.out.println(simulatorMap.getStartExp());
-				if (simulatorMap.getStartExp()) {
-					int mapNum = simulatorMap.getMapChoice();
-					int time = simulatorMap.getTimeLimitMs();
-					int percentage = simulatorMap.getGoalCoveragePerc();
-					int stepsPerSecond = simulatorMap.getStepsPerSec();
-					boolean imageReg = false;
-
-					String[][] sampleMap = getSampleMap(mapNum);
-					MapPanel map = new MapPanel(sampleMap);
-					Robot simRobot = new SimulatorRobot(map);
-					ExplorationApp explorationApp = new ExplorationApp(simRobot, time, percentage,
-							stepsPerSecond, imageReg);
-					explorationApp.run();
-					System.out.println("end");
-				}
-			}
 		}
 	}
 }
