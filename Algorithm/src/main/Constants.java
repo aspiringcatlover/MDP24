@@ -7,6 +7,12 @@ public final class Constants {
 	public static final int GOAL_X_COORD = 12;
 	public static final int GOAL_Y_COORD = 17;
 
+	// Actual run constraints
+	public static final int TIME = -1;
+	public static final int PERCENTAGE = 100;
+	public static final int SPEED = 1;
+	public static final boolean IMAGE_REC = false;
+
 	// map direction wrt robot's forward direction
 	public enum Direction {
 		NORTH(0), EAST(90), SOUTH(180), WEST(270);
@@ -56,8 +62,18 @@ public final class Constants {
 			return numVal;
 		}
 	}
-	public static final int LONG_RANGE_DISTANCE = 90; // range is 19-90cm, technically 19cm-151cm
-	public static final int SHORT_RANGE_DISTANCE = 50; // range is 9-50cm, technically 9cm-81cm
+
+
+	public static final double[][] SENSOR_RANGES = {{13.54, 21.46}, //UL
+												{10.0, 19.35},  //UM
+												{12, 21.555},   //UR
+												{19.4, 24.8, 32.15, 43, 51.75, 62.0},  //LT
+												{12.85, 22.7},   //LM
+												{13.65, 25.25}   //RT
+												};
+
+	public static final int LONG_RANGE_DISTANCE = 70; // range is 19-90cm, technically 19cm-151cm
+	public static final int SHORT_RANGE_DISTANCE = 40; // range is 9-50cm, technically 9cm-81cm
 	public static final int GRID_LONG_RANGE_DISTANCE = 5; // in terms of number of grids, starting outside of robot
 	public static final int GRID_SHORT_RANGE_DISTANCE = 2; // in terms of number of grids, starting outside of robot
 	public static final int DISTANCE_FROM_OBSTACLE = 10; // set the preferred distance robot should be away from wall
@@ -65,8 +81,8 @@ public final class Constants {
 	// camera
 	public static final int ANGLE = 90;
 
-	// public static final String IP_ADDRESS = "127.0.0.1";
-	public static final String IP_ADDRESS = "192.168.24.24";
+	public static final String IP_ADDRESS = "127.0.0.1";
+	//public static final String IP_ADDRESS = "192.168.24.24";
 	public static final int PORT = 8080;
 	public static final int BUFFER_SIZE = 512;
 

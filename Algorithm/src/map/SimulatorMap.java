@@ -242,22 +242,25 @@ public class SimulatorMap extends JFrame {
 	}
 
 	// get sample map
+
 	public static String[][] getSampleMap(int mapChoice){
-		String[][] temp_sample_map = new String[Constants.WIDTH][Constants.HEIGHT];
+		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
-			//path_name =  System.getProperty("user.dir")+"/algorithm/src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+			System.out.println(path_name);
+			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
-			int row = 0;
+			int col = 0;
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] arrOfStr = data.split("");
-				for (int col = 0; col < arrOfStr.length; col++) {
-					temp_sample_map[row][col] = arrOfStr[col];
+				for (int row = 0; row < arrOfStr.length; row++) {
+					temp_sample_map[row][col] = arrOfStr[row];
 				}
-				row++;
+				col++;
 			}
 			myReader.close();
 		} catch (FileNotFoundException e) {
