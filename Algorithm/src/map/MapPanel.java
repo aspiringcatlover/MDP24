@@ -27,18 +27,30 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	// constructor
 	public MapPanel(String[][] sample_map) {
-		setLayout(new GridLayout(Constants.HEIGHT, Constants.WIDTH));
+
 		gridcells = new GridCell[Constants.HEIGHT][Constants.WIDTH];
 		for (int row = 0; row < Constants.HEIGHT; row++) {
 			for (int col = 0; col < Constants.WIDTH; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
-				MapPanel.this.add(gridCell);
-//				System.out.println(row + " " + col);
-//				System.out.println(Constants.HEIGHT + " " + Constants.WIDTH);
-				timer.start();
 			}
 		}
+		parseToSimulatorGrid(gridcells);
+	}
+
+	public GridCell[][] parseToSimulatorGrid(GridCell[][] gridcells){
+		GridCell[][] parseGridcells;
+		setLayout(new GridLayout(Constants.WIDTH, Constants.HEIGHT)); //simulator will be 20x15 (the opposite)
+		parseGridcells = new GridCell[Constants.WIDTH][Constants.HEIGHT];
+		for (int row = 0; row < Constants.WIDTH; row++) {
+			for (int col = 0; col < Constants.HEIGHT; col++) {
+				parseGridcells[row][col]=gridcells[col][row];
+				MapPanel.this.add(parseGridcells[row][col]);
+				//timer.start();
+			}
+		}
+		return parseGridcells;
+
 	}
 
 	// getter and setter

@@ -93,6 +93,7 @@ public class Main {
 					Robot simRobot = new SimulatorRobot(map);
 					ExplorationApp explorationApp = new ExplorationApp(simRobot, time, percentage,
 							stepsPerSecond, imageReg);
+					//System.out.println();
 				}
 			}
 		}
