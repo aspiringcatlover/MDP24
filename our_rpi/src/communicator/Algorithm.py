@@ -1,6 +1,6 @@
 import socket
 
-from src.config import LOCALE, Algorithm_SOCKET_BUFFER_SIZE, WIFI_IP, WIFI_PORT
+from src.config import LOCALE, ALGORITHM_SOCKET_BUFFER_SIZE, WIFI_IP, WIFI_PORT
 
 
 '''

@@ -50,7 +50,7 @@ public final class Constants {
 	}
 	//location of sensor and number in array
 	public enum SensorLocation {
-		LEFT_MIDDLE(3), LEFT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_MIDDLE(5);
+		LEFT_MIDDLE(3), RIGHT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_MIDDLE(5);
 
 		private int numVal;
 

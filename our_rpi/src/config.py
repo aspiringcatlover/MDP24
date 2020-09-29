@@ -1,7 +1,7 @@
 LOCALE = 'UTF-8'
 
 # Android BT connection settings
-RFCOMM_CHANNEL = 9
+RFCOMM_CHANNEL = 7
 RPI_MAC_ADDR = 'B8:27:EB:AF:DC:B9'
 UUID = '00001101-0000-1000-8000-00805F9B34FB' #need to change to our tablet one
 ANDROID_SOCKET_BUFFER_SIZE = 512
@@ -13,8 +13,6 @@ ALGORITHM_SOCKET_BUFFER_SIZE = 512
 
 # Arduino USB connection settings
 SERIAL_PORT = '/dev/ttyACM0'
-# Symbolic link to always point to the correct port that arduino is connected to
-#SERIAL_PORT = '/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_75232303235351F091C0-if00'
 BAUD_RATE = 57600
 
 # Image Recognition Settings
