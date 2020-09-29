@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.Box;
@@ -62,6 +63,7 @@ public class SimulatorMap extends JFrame {
 	private FastestPathApp fastestPathApp;
 	private Robot robot;
 	private boolean mapExplored=false;
+	public Thread tSimExplore;
 
 	// constructor
 	public SimulatorMap() {
@@ -336,16 +338,24 @@ public class SimulatorMap extends JFrame {
 		return temp_sample_map;
 	}
 
+
     public void startExploration(Robot robot, int time, int percentage, int speed, boolean image_recognition){
-        explorationApp = new ExplorationApp(robot, time, percentage, speed, image_recognition);
-        explorationApp.run();
-        //get robot
+
+		if (tSimExplore == null || !tSimExplore.isAlive()) {
+			tSimExplore = new Thread(new ExplorationApp(robot, time,percentage, speed, image_recognition));
+			tSimExplore.start();
+		} else {
+			tSimExplore.interrupt();
+		}
+
+
+        //get robot this might have problem because asychronous
         this.robot = explorationApp.getRobot();
     }
 
     public void startFastestPath(){
 	    fastestPathApp = new FastestPathApp(robot);
-        fastestPathApp.run();
+        fastestPathApp.start();
     }
 
 	// refresh new map according to map choice

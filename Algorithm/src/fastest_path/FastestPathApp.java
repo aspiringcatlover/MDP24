@@ -10,7 +10,7 @@ import robot.SimulatorRobot;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class FastestPathApp {
+public class FastestPathApp extends Thread{
     private Robot robot;
     private long startTime;
     private long endTime;
@@ -26,7 +26,7 @@ public class FastestPathApp {
         pathFinder = new PathFinder(robot.getMap());
     }
 
-
+    @Override
     public void run(){
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
 
@@ -52,9 +52,9 @@ public class FastestPathApp {
                 //r.displayMessage("Sent message: " + Constants.END_TOUR, 1);
             }
         }
-
         else{
             //update the simulator
+
         }
 
     }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import static main.Constants.Direction.*;
+import static main.Constants.MOVE_FORWARD;
 
 public class ActualRobot extends Robot {
 	private ActualSensor[] sensorArr = new ActualSensor[6];
@@ -58,47 +59,47 @@ public class ActualRobot extends Robot {
 		return true;
 	};
 
-	// TODO: int step this is for fastest path
-	@Override
-	public void moveForward() {
-		// update coordinates(both robot and sensor) + sensemap
-		socketConnection.sendMessage(1 + "|");
-		switch (direction) {
-		case WEST:
-			x -= 1;
-			for (Sensor sensor : sensorArr) {
-				// here should update simulator map!!
-				sensor.setXCoord(sensor.getXCoord() - 1);
-				sensor.setDirection(WEST);
-			}
-			break;
-		case EAST:
-			x += 1;
-			for (sensor.Sensor sensor : sensorArr) {
-				sensor.setXCoord(sensor.getXCoord() + 1);
-				sensor.setDirection(EAST);
-			}
-			break;
-		case SOUTH:
-			y -= 1;
-			for (sensor.Sensor sensor : sensorArr) {
-				sensor.setYCoord(sensor.getYCoord() - 1);
-				sensor.setDirection(SOUTH);
-			}
-			break;
-		case NORTH:
-			y += 1;
-			for (sensor.Sensor sensor : sensorArr) {
-				sensor.setYCoord(sensor.getYCoord() + 1);
-				sensor.setDirection(NORTH);
-			}
-			break;
-		default:
-			break;
-		}
-		updateSensor();
-		// acknowledge();
-	}
+    //TODO: int step this is for fastest path
+    @Override
+    public void moveForward() {
+        //update coordinates(both robot and sensor) + sensemap
+        socketConnection.sendMessage(MOVE_FORWARD);
+        switch (direction) {
+            case WEST:
+                x -= 1;
+                for (Sensor sensor : sensorArr) {
+                    //here should update simulator map!!
+                    sensor.setXCoord(sensor.getXCoord() - 1);
+                    sensor.setDirection(WEST);
+                }
+                break;
+            case EAST:
+                x += 1;
+                for (sensor.Sensor sensor : sensorArr) {
+                    sensor.setXCoord(sensor.getXCoord() + 1);
+                    sensor.setDirection(EAST);
+                }
+                break;
+            case SOUTH:
+                y -= 1;
+                for (sensor.Sensor sensor : sensorArr) {
+                    sensor.setYCoord(sensor.getYCoord() - 1);
+                    sensor.setDirection(SOUTH);
+                }
+                break;
+            case NORTH:
+                y += 1;
+                for (sensor.Sensor sensor : sensorArr) {
+                    sensor.setYCoord(sensor.getYCoord() + 1);
+                    sensor.setDirection(NORTH);
+                }
+                break;
+            default:
+                break;
+        }
+        updateSensor();
+        //acknowledge();
+    }
 
 	@Override
 	public void turn(Constants.Direction dir) {
@@ -249,7 +250,7 @@ public class ActualRobot extends Robot {
 			return null;
 		}
 
-	}
+    }
 
 	@Override
 	public Constants.Direction robotLeftDir() {
@@ -289,7 +290,7 @@ public class ActualRobot extends Robot {
 		 * get sensor value from arudino, put them into ArrayList<boolean> into their
 		 * respective sensor true --> obstacle present false --> obstacle not present
 		 * null --> cannot detected as block by obstacle
-		 * 
+		 *
 		 * arrangement of sensor values: UL, UM, UR, LT (long sensor for this), LM, RT
 		 */
 
@@ -305,31 +306,32 @@ public class ActualRobot extends Robot {
 		socketConnection.sendMessage(Constants.SENSE_ALL);
 		boolean completed = false;
 
-		while (!completed) {
-			s = socketConnection.receiveMessage().trim();
-			if (sensorPattern.matcher(s).matches() || sensorPattern2.matcher(s).matches()) {
-				arr = s.split("\\|");
-				break;
-			}
-		}
-		System.arraycopy(arr, 0, sensorValues, 0, 6);
-		this.sensePosition[0] = x;
-		this.sensePosition[1] = y;
-		this.sensePosition[2] = getDirection().bearing;
+        while (!completed) {
+            s = socketConnection.receiveMessage().trim();
+            if (sensorPattern.matcher(s).matches() || sensorPattern2.matcher(s).matches()) {
+                arr = s.split("\\|");
+                break;
+            }
+        }
+        System.arraycopy(arr, 0, sensorValues, 0, 6);
+        this.sensePosition[0] = x;
+        this.sensePosition[1] = y;
+        this.sensePosition[2] = getDirection().bearing;
 
-		// For each of the sensor value, we will update the map accordingly.
-		for (int i = 0; i < 6; i++) {
-			System.out.println("SENSOR VALUE" + sensorValues[i]);
-			sensorResult = new ArrayList<>();
-			double value = Double.parseDouble(sensorValues[i]);
+        // For each of the sensor value, we will update the map accordingly.
+        for (int i = 0; i < 6; i++) {
+            System.out.println("SENSOR VALUE" +sensorValues[i]);
+            sensorResult = new ArrayList<>();
+            double value = Double.parseDouble(sensorValues[i]);
 
-			if (sensorArr[i].getType().equals(Constants.RangeType.SHORT)) {
-				sensorDistance = Constants.SHORT_RANGE_DISTANCE;
-				numGridsSensor = Constants.SHORT_RANGE_DISTANCE / 10;
-			} else if (sensorArr[i].getType().equals(Constants.RangeType.LONG)) {
-				sensorDistance = Constants.LONG_RANGE_DISTANCE;
-				numGridsSensor = Constants.LONG_RANGE_DISTANCE / 10;
-			}
+            if (sensorArr[i].getType().equals(Constants.RangeType.SHORT)){
+                sensorDistance = Constants.SHORT_RANGE_DISTANCE;
+                numGridsSensor= Constants.SHORT_RANGE_DISTANCE/10;
+            }
+            else if (sensorArr[i].getType().equals(Constants.RangeType.LONG)){
+                sensorDistance = Constants.LONG_RANGE_DISTANCE;
+                numGridsSensor=Constants.LONG_RANGE_DISTANCE/10;
+            }
 
 			// find number of grids that it can detect
 			double numGridInDeci = value / 10;
@@ -353,5 +355,6 @@ public class ActualRobot extends Robot {
 		}
 
 	}
+
 
 }

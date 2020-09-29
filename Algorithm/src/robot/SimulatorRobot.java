@@ -109,7 +109,7 @@ public class SimulatorRobot extends Robot {
 		try {
 			// ms timeout
 			int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(timeout); // Customize your refresh time
+			Thread.sleep(1000); ; // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 
@@ -239,8 +239,8 @@ public class SimulatorRobot extends Robot {
 		//sleep to simulate
 		try {
 			// ms timeout
-			int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(timeout); // Customize your refresh time
+			//int timeout = (1 / steps_per_sec) * 1000;
+			Thread.sleep(1000); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 	}
@@ -320,6 +320,8 @@ public class SimulatorRobot extends Robot {
 			System.out.println();
 		}
 	}
+
+
 
 	/*
 	 * //set color for map public void setColor() { if (explored) {

@@ -7,7 +7,7 @@ import robot.SimulatorRobot;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ExplorationApp {
+public class ExplorationApp extends Thread{
     private Robot robot;
     private int time;
     private int percentage;
@@ -20,15 +20,16 @@ public class ExplorationApp {
 
 
     public ExplorationApp(Robot robot, int time, int percentage, int speed, boolean image_recognition) {
-        //super("ExplorationThread");
+        super("ExplorationThread");
         this.robot = robot;
         this.time = time;
         this.percentage = percentage;
         this.speed = speed;
         this.image_recognition = image_recognition;
-        //start();
+        start();
     }
 
+    @Override
     public void run() {
         running.set(true);
 
@@ -55,6 +56,30 @@ public class ExplorationApp {
                         "\"}]}");
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
             }
+        }
+        else{
+            //simulator
+        }
+        while (!Thread.currentThread().isInterrupted()) {
+            /*
+            try {
+
+                exploredMap.simulatedReveal(robot, testMap);
+                gui.refreshGUI(robot, exploredMap);
+
+                // Run exploration for one step
+                boolean done = explorer.executeOneStep(robot, exploredMap);
+
+                exploredMap.simulatedReveal(robot, testMap);
+                gui.refreshGUI(robot, exploredMap);
+
+                if (done)
+                    break;
+
+                Thread.sleep(1000/speed);
+            } catch (InterruptedException e) {
+                break;
+            }*/
         }
     }
 
