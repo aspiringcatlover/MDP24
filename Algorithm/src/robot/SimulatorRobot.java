@@ -15,7 +15,7 @@ public class SimulatorRobot extends Robot {
 	//SimulatorMap simulatorMap; // this is the simulator itself maybe can rename or smth
 
 	// constructor
-	public SimulatorRobot(MapPanel map, int steps_per_sec) {
+	public SimulatorRobot(MapPanel map, int steps_per_sec, MapPanel simulateMap) {
 
 		super(Direction.NORTH, START_X_COORD, START_Y_COORD);
 		this.steps_per_sec=steps_per_sec;
@@ -29,14 +29,14 @@ public class SimulatorRobot extends Robot {
 		direction = EAST;
 		// initialize sensors for robot
 		// 3 short for front
-		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, map);
-		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, map);
-		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, map);
+		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, simulateMap);
+		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, simulateMap);
+		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, simulateMap);
 		// 1 long for left
-		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, map);
+		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap);
 		// 2 short for right
-		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, map);
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, map);
+		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap);
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, simulateMap);
 
 		//simulatorMap = new SimulatorMap();
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
@@ -104,12 +104,12 @@ public class SimulatorRobot extends Robot {
 		default:
 			break;
 		}
-		map.updateMap(x,y);
-		map.displayDirection(y,x,direction);
+
+
 		try {
 			// ms timeout
-			int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(1000); ; // Customize your refresh time
+			int timeout = 1000/ steps_per_sec;
+			Thread.sleep(timeout); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 
@@ -234,13 +234,14 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		}
-		map.updateMap(x,y);
-		map.displayDirection(y,x,direction);
+		/*map.displayDirection(y,x,direction);
+		map.updateMap(x,y);*/
 		//sleep to simulate
+
 		try {
 			// ms timeout
-			//int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(1000); // Customize your refresh time
+			int timeout = 1000/ steps_per_sec;
+			Thread.sleep(timeout); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 	}

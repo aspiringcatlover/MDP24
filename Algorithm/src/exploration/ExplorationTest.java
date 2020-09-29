@@ -2,6 +2,7 @@ package exploration;
 
 import main.Constants;
 import map.MapPanel;
+import map.SimulatorMap;
 import robot.Robot;
 import robot.SimulatorRobot;
 
@@ -11,10 +12,19 @@ import java.util.Scanner;
 
 public class ExplorationTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(2);
+        String[][] sampleMap = getSampleMap(8);
         MapPanel map = new MapPanel(sampleMap);
 
-        Robot robot = new SimulatorRobot(map, 2);
+        MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+
+        for (int i = 0; i < 3; i++) {
+            for (int r = 0; r < 3; r++) {
+                emptyMap.setExploredForGridCell(i, r, true);
+            }
+        }
+
+
+        Robot robot = new SimulatorRobot(emptyMap, 1000, map);
         Exploration exploration = new Exploration(robot, 360000,100, 2,false);
         exploration.explore();
     }

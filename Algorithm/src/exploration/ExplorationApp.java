@@ -2,13 +2,19 @@ package exploration;
 
 import connection.SocketConnection;
 import main.Constants;
+import map.GridCell;
+import map.MapPanel;
+import map.SimulatorMap;
 import robot.Robot;
 import robot.SimulatorRobot;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static main.Constants.HEIGHT;
+import static main.Constants.WIDTH;
+
 public class ExplorationApp extends Thread{
-    private Robot robot;
+    private static Robot robot;
     private int time;
     private int percentage;
     private int speed;
@@ -21,7 +27,7 @@ public class ExplorationApp extends Thread{
 
     public ExplorationApp(Robot robot, int time, int percentage, int speed, boolean image_recognition) {
         super("ExplorationThread");
-        this.robot = robot;
+        ExplorationApp.robot = robot;
         this.time = time;
         this.percentage = percentage;
         this.speed = speed;
@@ -39,6 +45,15 @@ public class ExplorationApp extends Thread{
         Exploration exploration = new Exploration(robot,time, percentage, speed, image_recognition);
         System.out.println("robot start exploring...");
         robot = exploration.explore();
+        MapPanel map = robot.getMap();
+        System.out.println("in exploration app");
+        for (int col = 0; col < WIDTH; col++) {
+            for (int row = 0; row < HEIGHT; row++){
+                printGridCell(map.getGridCell(row, col));
+            }
+            System.out.println();
+        }
+        SimulatorMap.setRobot(robot);
         //exploration.Exploration(robot, time, percentage, speed, image_recognition);
         if (running.get()) {
             completed.set(true);
@@ -58,7 +73,7 @@ public class ExplorationApp extends Thread{
             }
         }
         else{
-            //simulator
+
         }
         while (!Thread.currentThread().isInterrupted()) {
             /*
@@ -83,7 +98,7 @@ public class ExplorationApp extends Thread{
         }
     }
 
-    public Robot getRobot(){
+    public static Robot getRobot(){
         return robot;
     }
     public static boolean getRunning() {
@@ -92,5 +107,18 @@ public class ExplorationApp extends Thread{
 
     public static boolean getCompleted() {
         return completed.get();
+    }
+
+    public void printGridCell(GridCell gridCell) {
+        // O for obstacle
+        // E for explored
+        // U for unexplored
+        if (gridCell.getObstacle()) {
+            System.out.print("O");
+        } else if (gridCell.getExplored()) {
+            System.out.print("E");
+        } else {
+            System.out.print("U");
+        }
     }
 }

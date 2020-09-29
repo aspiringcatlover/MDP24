@@ -5,6 +5,8 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 import main.Constants.Direction;
 
+import static main.Constants.Direction.WEST;
+
 public class GridCell extends JPanel {
 
 	private boolean obstacle;
@@ -133,35 +135,55 @@ public class GridCell extends JPanel {
 	}
 
 
-	public void displayDirection(Direction direction) {
+	public void displayDirection(Direction direction, int steps_per_sec) {
 		switch (direction) {
 			case NORTH:
 				BasicArrowButton arrowNorth = new BasicArrowButton(BasicArrowButton.EAST);
 				add(arrowNorth, BorderLayout.EAST);
 				revalidate();
 				repaint();
-				//remove(arrowNorth);
+				try {
+					Thread.sleep(1000/steps_per_sec);}
+				catch(InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+				remove(arrowNorth);
 				break;
 			case SOUTH:
 				BasicArrowButton arrowSouth = new BasicArrowButton(BasicArrowButton.WEST);
 				add(arrowSouth, BorderLayout.WEST);
 				revalidate();
 				repaint();
-				//remove(arrowSouth);
+				try {
+					Thread.sleep(1000/steps_per_sec);}
+				catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				remove(arrowSouth);
 				break;
 			case WEST:
 				BasicArrowButton arrowWest = new BasicArrowButton(BasicArrowButton.NORTH);
 				add(arrowWest, BorderLayout.NORTH);
 				revalidate();
 				repaint();
-				//remove(arrowWest);
+				try {
+					Thread.sleep(1000/steps_per_sec);}
+				catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				remove(arrowWest);
 				break;
 			case EAST:
 				BasicArrowButton arrowEast = new BasicArrowButton(BasicArrowButton.SOUTH);
 				add(arrowEast, BorderLayout.SOUTH);
 				revalidate();
 				repaint();
-				//remove(arrowEast);
+				try {
+					Thread.sleep(1000/steps_per_sec);}
+				catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				remove(arrowEast);
 		}
 	}
 }

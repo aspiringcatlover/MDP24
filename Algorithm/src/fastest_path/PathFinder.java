@@ -182,6 +182,7 @@ public class PathFinder {
      * after heuristic cost is calculated, then a* search will be performed
      */
     private void search(int xStart, int yStart, int xEnd, int yEnd) {
+        int xTemp, yTemp;
         boolean strict;
         strict = false; //this should be param, to be added to make sure tat the actual a* search can find path
         /*
@@ -233,43 +234,81 @@ public class PathFinder {
             }
 
             if (!endpointCanAccess){
+
+
                 if (xEnd==14&&yEnd==19){
+                    if (map.getGridCell(18,13).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
+
                     if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd-1){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if(xEnd==0&&yEnd==19){
+                    if (map.getGridCell(18,1).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd+1 && lowestCostGridCell.getVerCoord()==yEnd-1){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if(xEnd==14&&yEnd==0){
+                    if (map.getGridCell(13,1).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd+1){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if (xEnd==14){
+                    if (map.getGridCell(yEnd,13).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd-1 && lowestCostGridCell.getVerCoord()==yEnd){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if (yEnd==19){
+                    if (map.getGridCell(18,xEnd).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd && lowestCostGridCell.getVerCoord()==yEnd-1){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if (xEnd==0){
+                    if (map.getGridCell(yEnd,1).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd+1 && lowestCostGridCell.getVerCoord()==yEnd){
                         closedList.add(lowestCostGridCell);
                         break;
                     }
                 }
                 else if (yEnd==0){
+                    if (map.getGridCell(1,xEnd).getObstacle()){
+                        System.out.println("no path");
+                        this.pathList=null;
+                        return;
+                    }
                     if (lowestCostGridCell.getHorCoord()==xEnd && lowestCostGridCell.getVerCoord()==yEnd+1){
                         closedList.add(lowestCostGridCell);
                         break;
@@ -311,6 +350,9 @@ public class PathFinder {
                 this.pathList=null;
                 return;
             }
+        }
+        else{
+
         }
 
 

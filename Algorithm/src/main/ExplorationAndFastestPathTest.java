@@ -4,6 +4,7 @@ import exploration.Exploration;
 import fastest_path.PathFinder;
 import map.GridCell;
 import map.MapPanel;
+import map.SimulatorMap;
 import robot.Robot;
 import robot.SimulatorRobot;
 
@@ -16,8 +17,14 @@ public class ExplorationAndFastestPathTest {
     public static void main(String[] args) {
         String[][] sampleMap = getSampleMap(2);
         MapPanel map = new MapPanel(sampleMap);
+        MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
-        Robot robot = new SimulatorRobot(map, 2);
+        for (int i = 0; i < 3; i++) {
+            for (int r = 0; r < 3; r++) {
+                emptyMap.setExploredForGridCell(i, r, true);
+            }
+        }
+        Robot robot = new SimulatorRobot(emptyMap, 2, map);
         Exploration exploration = new Exploration(robot, 360000,100, 2,false);
         robot = exploration.explore();
 
