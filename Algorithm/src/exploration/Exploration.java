@@ -380,7 +380,7 @@ public class Exploration {
         // else, turn left
         else {
             robot.turn(robot.robotLeftDir());
-
+            senseMap();
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
             //System.out.println("turn left");
             movement.add(Constants.Movement.TURN_LEFT);

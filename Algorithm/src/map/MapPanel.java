@@ -53,6 +53,8 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	}
 
+
+
 	// getter and setter
 
 	public float getActualPerc() {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import static main.Constants.Direction.*;
+import static main.Constants.MOVE_FORWARD;
 
 public class ActualRobot extends Robot{
     private ActualSensor[] sensorArr = new ActualSensor[6];
@@ -62,7 +63,7 @@ public class ActualRobot extends Robot{
     @Override
     public void moveForward() {
         //update coordinates(both robot and sensor) + sensemap
-        socketConnection.sendMessage(1+ "|");
+        socketConnection.sendMessage(MOVE_FORWARD);
         switch (direction) {
             case WEST:
                 x -= 1;
