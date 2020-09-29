@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class RightWallHuggingIncompleteTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(8888);
+        String[][] sampleMap = getSampleMap(6666);
         MapPanel map = new MapPanel(sampleMap);
 
         PathFinder pathFinder = new PathFinder(map);
@@ -34,7 +34,7 @@ public class RightWallHuggingIncompleteTest {
         }
         System.out.println("map complete?"+map.getActualPerc());
         ArrayList<GridCell> result = null;
-                result = pathFinder.getShortestPath(1,1,6,11);
+                result = pathFinder.getShortestPath(1,1,12,0);
         if (result!=null){
             System.out.println("num grid in result: "+result.size());
             for (GridCell gridCell: result){
@@ -47,12 +47,12 @@ public class RightWallHuggingIncompleteTest {
 
     }
 
-    private static String[][] getSampleMap(int mapChoice){
+    public static String[][] getSampleMap(int mapChoice){
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();
-            path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
-            System.out.println(path_name);
+            path_name = System.getProperty("user.dir")+"/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+//			System.out.println(path_name);
             //path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             //C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
             File myObj = new File(path_name);

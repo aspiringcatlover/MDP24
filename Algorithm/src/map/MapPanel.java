@@ -128,7 +128,7 @@ public class MapPanel extends JPanel {
 		int length = 0;
 		for (int y = 0; y < Constants.HEIGHT; y++) {
 			for (int x = 0; x < Constants.WIDTH; x++) {
-				if (!gridcells[x][y].getExplored()) {
+				if (!gridcells[y][x].getExplored()) {
 					//TODO:: CHECK FOR THIS ONE
 					length++;
 				}

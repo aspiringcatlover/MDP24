@@ -289,7 +289,15 @@ public class SimulatorMap extends JFrame {
 
 
 				refreshMap();
-                robot = new SimulatorRobot(map, steps_per_sec);
+				MapPanel simulateMap = new MapPanel(SimulatorMap.getSampleMap(mapChoice));
+
+				for (int i = 0; i < 3; i++) {
+					for (int r = 0; r < 3; r++) {
+						map.setExploredForGridCell(i, r, true);
+					}
+				}
+
+                robot = new SimulatorRobot(map, steps_per_sec, simulateMap);
                 startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, false);
                 mapExplored=true;
                 actual_coverage_perc =  (int) robot.getMap().getActualPerc();
@@ -463,7 +471,7 @@ public class SimulatorMap extends JFrame {
 	// refresh new map according to map choice
 	public void refreshMap() {
 		getContentPane().remove(map);
-		sample_map = getSampleMap(mapChoice);
+		sample_map = getSampleMap(1);
 		map = new MapPanel(sample_map);
 		add(map);
 		getContentPane().invalidate();
