@@ -32,10 +32,10 @@ public class SimulatorRobot extends Robot {
 		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, map);
 		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, map);
 		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, map);
-		// 1 short and 1 long for left
+		// 1 long for left
 		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, map);
-		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.LEFT_DOWN, map);
-		// 1 short for right
+		// 2 short for right
+		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, map);
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, map);
 
 		//simulatorMap = new SimulatorMap();
@@ -125,9 +125,9 @@ public class SimulatorRobot extends Robot {
 			// LEFT_MIDDLE(3)
 			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y - 2);
-			// LEFT_DOWN(4)
-			sensorArr[4].setXCoord(x - 2);
-			sensorArr[4].setYCoord(y + 1);
+			// RIGHT_DOWN(4)
+			sensorArr[4].setXCoord(x + 1);
+			sensorArr[4].setYCoord(y + 2);
 			// UP_LEFT(0)
 			sensorArr[0].setXCoord(x - 2);
 			sensorArr[0].setYCoord(y - 1);
@@ -150,9 +150,9 @@ public class SimulatorRobot extends Robot {
 			// LEFT_MIDDLE(3)
 			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y + 2);
-			// LEFT_DOWN(4)
+			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 1);
-			sensorArr[4].setYCoord(y + 2);
+			sensorArr[4].setYCoord(y - 2);
 			// UP_LEFT(0)
 			sensorArr[0].setXCoord(x + 2);
 			sensorArr[0].setYCoord(y + 1);
@@ -175,8 +175,8 @@ public class SimulatorRobot extends Robot {
 			// LEFT_MIDDLE(3)
 			sensorArr[3].setXCoord(x + 2);
 			sensorArr[3].setYCoord(y);
-			// LEFT_DOWN(4)
-			sensorArr[4].setXCoord(x + 2);
+			// RIGHT_DOWN(4)
+			sensorArr[4].setXCoord(x - 2);
 			sensorArr[4].setYCoord(y + 1);
 			// UP_LEFT(0)
 			sensorArr[0].setXCoord(x + 1);
@@ -202,8 +202,8 @@ public class SimulatorRobot extends Robot {
 			sensorArr[3].setYCoord(y);
 			// System.out.println(sensorArr[3].getXCoord());
 			// System.out.println(sensorArr[3].getYCoord());
-			// LEFT_DOWN(4)
-			sensorArr[4].setXCoord(x - 2);
+			// RIGHT_DOWN(4)
+			sensorArr[4].setXCoord(x + 2);
 			sensorArr[4].setYCoord(y - 1);
 			// System.out.println(sensorArr[4].getXCoord());
 			// System.out.println(sensorArr[4].getYCoord());

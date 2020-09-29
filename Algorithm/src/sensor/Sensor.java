@@ -37,9 +37,9 @@ public abstract class Sensor {
                 x = 1;
                 y = 3;
                 break;
-            case LEFT_DOWN:
-                x =0;
-                y = 3;
+            case RIGHT_DOWN:
+                x = 0;
+                y = -1;
                 break;
             case UP_LEFT:
                 x = 3;
