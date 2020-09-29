@@ -52,7 +52,8 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				sensorBlock = false;
+			case RIGHT_MIDDLE:
+					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y + i, x);
 
@@ -88,23 +89,7 @@ public class SimulatorSensor extends Sensor {
 					// sensorResult.add(getObstacleForSensor(y, x-i));
 				}
 				break;
-			case RIGHT_MIDDLE:
-				sensorBlock = false;
-				for (int i = 0; i < 2; i++) {
-					sensorResultGrid = getObstacleForSensor(y + i, x);
-
-					if (sensorBlock) {
-						sensorResult.add(null);
-						continue;
-					}
-
-					if (sensorResultGrid) {
-						sensorBlock = true;
-					}
-					sensorResult.add(sensorResultGrid);
-					// sensorResult.add(getObstacleForSensor(y+i,x));
-				}
-				break;
+				// sensorResult.add(getObstacleForSensor(y+i,x));
 			}
 		case SOUTH:
 			switch (location) {
@@ -126,7 +111,8 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				sensorBlock = false;
+				case RIGHT_MIDDLE:
+					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x - i);
 
@@ -161,23 +147,7 @@ public class SimulatorSensor extends Sensor {
 					// sensorResult.add(getObstacleForSensor(y-i, x));
 				}
 				break;
-			case RIGHT_MIDDLE:
-				sensorBlock = false;
-				for (int i = 0; i < 2; i++) {
-					sensorResultGrid = getObstacleForSensor(y, x - i);
-
-					if (sensorBlock) {
-						sensorResult.add(null);
-						continue;
-					}
-
-					if (sensorResultGrid) {
-						sensorBlock = true;
-					}
-					sensorResult.add(sensorResultGrid);
-					// sensorResult.add(getObstacleForSensor(y,x-i));
-				}
-				break;
+				// sensorResult.add(getObstacleForSensor(y,x-i));
 			}
 		case EAST:
 			switch (location) {
@@ -206,7 +176,8 @@ public class SimulatorSensor extends Sensor {
 				 */
 				break;
 			case RIGHT_DOWN:
-				sensorBlock = false;
+				case RIGHT_MIDDLE:
+					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y - i, x);
 
@@ -241,23 +212,7 @@ public class SimulatorSensor extends Sensor {
 					// sensorResult.add(getObstacleForSensor(y, x+i));
 				}
 				break;
-			case RIGHT_MIDDLE:
-				sensorBlock = false;
-				for (int i = 0; i < 2; i++) {
-					sensorResultGrid = getObstacleForSensor(y - i, x);
-
-					if (sensorBlock) {
-						sensorResult.add(null);
-						continue;
-					}
-
-					if (sensorResultGrid) {
-						sensorBlock = true;
-					}
-					sensorResult.add(sensorResultGrid);
-					// sensorResult.add(getObstacleForSensor(y-i,x));
-				}
-				break;
+				// sensorResult.add(getObstacleForSensor(y-i,x));
 			}
 		case NORTH:
 			switch (location) {
@@ -279,7 +234,8 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				sensorBlock = false;
+				case RIGHT_MIDDLE:
+					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x + i);
 
@@ -314,23 +270,7 @@ public class SimulatorSensor extends Sensor {
 					// sensorResult.add(getObstacleForSensor(y+i, x));
 				}
 				break;
-			case RIGHT_MIDDLE:
-				sensorBlock = false;
-				for (int i = 0; i < 2; i++) {
-					sensorResultGrid = getObstacleForSensor(y, x + i);
-
-					if (sensorBlock) {
-						sensorResult.add(null);
-						continue;
-					}
-
-					if (sensorResultGrid) {
-						sensorBlock = true;
-					}
-					sensorResult.add(sensorResultGrid);
-					// sensorResult.add(getObstacleForSensor(y,x+i));
-				}
-				break;
+				// sensorResult.add(getObstacleForSensor(y,x+i));
 			}
 		}
 		this.obstaclePresent = sensorResult;

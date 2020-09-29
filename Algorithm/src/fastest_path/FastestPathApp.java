@@ -32,10 +32,10 @@ public class FastestPathApp extends Thread{
 
         //get waypoint from map in the robot
         int[] waypoint = robot.getMap().getWayPoint();
+        System.out.println("way point" + waypoint[0]+" "+waypoint[1]);
         ArrayList<GridCell> fastestPath = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(),waypoint[0], waypoint[1]);
 
         //convert path to instructions
-        ArrayList<Constants.Movement> robotMovements = pathFinder.getRobotInstructions(fastestPath, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
 
         if (running.get()) {
             completed.set(true);
@@ -44,8 +44,9 @@ public class FastestPathApp extends Thread{
             completed.set(false);
         }
         running.set(false);
-
+        ArrayList<Constants.Movement> robotMovements = pathFinder.getRobotInstructions(fastestPath, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
+
             arudinoInstructions(robotMovements);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
@@ -54,7 +55,7 @@ public class FastestPathApp extends Thread{
         }
         else{
             //update the simulator
-
+            simulatorInstructions(robotMovements);
         }
 
     }
@@ -65,6 +66,25 @@ public class FastestPathApp extends Thread{
 
     public static boolean getCompleted() {
         return completed.get();
+    }
+
+    public void simulatorInstructions(ArrayList<Constants.Movement> robotMovements){
+        Constants.Direction direction;
+        for (Constants.Movement move: robotMovements){
+            if (move== Constants.Movement.MOVE_FORWARD){
+                robot.moveForward();
+            }
+            else if (move == Constants.Movement.TURN_LEFT){
+                robot.turn(robot.robotLeftDir());
+            }
+            else if (move== Constants.Movement.TURN_RIGHT){
+                robot.turn(robot.robotRightDir());
+            }
+            direction = robot.getDirection();
+            robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
+            robot.getMap().displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
+        }
+
     }
 
     public void arudinoInstructions(ArrayList<Constants.Movement> robotMovements){

@@ -17,12 +17,13 @@ import main.Constants.Direction;
 import static main.Constants.HEIGHT;
 import static main.Constants.WIDTH;
 
-public class MapPanel extends JPanel implements ActionListener {
+public class MapPanel extends JPanel {
 	private GridCell[][] gridcells;
-	Timer timer = new Timer(1000, this);
+	//Timer timer = new Timer(500, this);
 	String[] mdfString;
 	boolean changed;
 	private int[] waypoint = new int[] {-1, -1};
+	private int steps_per_sec;
 
 
 	// constructor
@@ -36,6 +37,11 @@ public class MapPanel extends JPanel implements ActionListener {
 			}
 		}
 		parseToSimulatorGrid(gridcells);
+		/*
+		gridcells[0][0].setBackground(Color.RED);
+		gridcells[19][0].setBackground(Color.ORANGE);
+		gridcells[0][14].setBackground(Color.BLUE);*/
+
 	}
 
 	public GridCell[][] parseToSimulatorGrid(GridCell[][] gridcells){
@@ -163,14 +169,13 @@ public class MapPanel extends JPanel implements ActionListener {
 		this.gridcells[y][x] = gridCell;
 	}
 
-	public void actionPerformed(ActionEvent ev) {
-		if (ev.getSource() == timer) {
-			repaint();// this will call at every 1 second
-		}
+	public int getSteps_per_sec() {
+		return steps_per_sec;
 	}
 
-
-
+	public void setSteps_per_sec(int steps_per_sec) {
+		this.steps_per_sec = steps_per_sec;
+	}
 
 	// update simulation map
 	public void updateMap(int x, int y ) {
@@ -186,10 +191,12 @@ public class MapPanel extends JPanel implements ActionListener {
 						|| (i == 14 && j == 19)) {
 					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
-					if (gridcells[i][j].getExplored() == true)
-					gridcells[i][j].setBackground(Color.BLUE); // explored
-					else if (gridcells[i][j].getObstacle() == true)
-					gridcells[i][j].setBackground(Color.RED); // blocked
+					if (gridcells[i][j].getExplored() == true) {
+						if (gridcells[i][j].getObstacle() == true)
+							gridcells[i][j].setBackground(Color.RED); // blocked
+						else
+							gridcells[i][j].setBackground(Color.BLUE); // explored
+					}
 					else
 					gridcells[i][j].setBackground(Color.WHITE); // unexplored
 
@@ -241,6 +248,7 @@ public class MapPanel extends JPanel implements ActionListener {
 	public void setWayPoint(int x, int y) {
 		//boolean verbose = new Exception().getStackTrace()[1].getClassName().equals("robot.Robot");
 
+		/*
 		if (x >= Constants.WIDTH - 1 || x <= 0 || y >= Constants.HEIGHT - 1 || y <= 0)
 				 {
 			if (!(waypoint[0] == -1 && waypoint[1] == -1)) {
@@ -250,9 +258,9 @@ public class MapPanel extends JPanel implements ActionListener {
 				if (verbose) {
 					System.out.println("The current waypoint is set as: " + "-1" + "," + "-1");
 				}*/
-			}
-			return;
-		}
+
+			//return;
+		//}
 		this.waypoint[0] = x;
 		this.waypoint[1] = y;
 		/*if (verbose) {
@@ -266,7 +274,7 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	public void displayDirection(int ver_coord, int hor_coord, Direction dir) {
 		//displayDirection(dir, hor_coord, ver_coord);
-		gridcells[ver_coord][hor_coord].displayDirection(dir);
+		gridcells[ver_coord][hor_coord].displayDirection(dir, steps_per_sec);
 	}
 		//
 

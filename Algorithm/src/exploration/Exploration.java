@@ -23,7 +23,7 @@ public class Exploration {
     private float goal_percentage;
     private float actual_percentage;
     private long endTime;
-    private MapPanel map;
+    private static MapPanel map;
     private int steps_per_sec;
     private boolean imageRecognition;
 
@@ -38,6 +38,7 @@ public class Exploration {
         this.map = robot.getMap();
         this.steps_per_sec = steps_per_sec;
         this.imageRecognition = imageRecognition;
+        map.setSteps_per_sec(steps_per_sec);
     }
 
 
@@ -52,7 +53,8 @@ public class Exploration {
 
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
 
-        while (actual_percentage < goal_percentage && System.currentTimeMillis() != endTime) {
+
+        while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime) {
             senseMap();
 
             for (int col = 0; col < WIDTH; col++) {
@@ -96,7 +98,7 @@ public class Exploration {
         int robotX, robotY;
         int counter=0;
 
-        while (!unexploredGrids.isEmpty()){
+        while (!unexploredGrids.isEmpty()&&actual_percentage < goal_percentage&& System.currentTimeMillis() < endTime){
             /*
             go to unexplored grid & continue to senseMap
             find out grid is obstacle or what
@@ -336,6 +338,7 @@ public class Exploration {
                     case TURN_LEFT: robot.turn(robot.robotLeftDir());
                         break;
                 }
+                map.updateMap(robot.getXCoord(),robot.getYCoord());
 
             }
             clearParent();
@@ -344,6 +347,8 @@ public class Exploration {
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
         //update robot map
         robot.setMap(map);
+        map.updateMap(robot.getXCoord(),robot.getYCoord());
+        //map.displayDirection(robot.getYCoord(),robot.getXCoord(),robot.getDirection());
         //return robot
         return robot;
 
@@ -380,12 +385,14 @@ public class Exploration {
         // else, turn left
         else {
             robot.turn(robot.robotLeftDir());
-            senseMap();
+
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
             //System.out.println("turn left");
             movement.add(Constants.Movement.TURN_LEFT);
+
         }
     }
+
 
     public boolean hasObstacle(Direction dir){
         int x,y;
@@ -443,22 +450,20 @@ public class Exploration {
 
         switch (direction){
             case WEST:
-                // LEFT_MIDDLE(3), LEFT_DOWN(4)
-                for (int loc = 3; loc < 5; loc++) {
-                    sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
-                    x = sensor.getXCoord();
-                    y = sensor.getYCoord();
-                    for (int i = 0; i < sensor.getGridDistance(); i++) {
+                // LEFT_MIDDLE(3)
+                sensor = robot.getIndividualSensor(3);
+                sensorResult = sensor.getSensorInformation();
+                x = sensor.getXCoord();
+                y = sensor.getYCoord();
+                for (int i = 0; i < sensor.getGridDistance(); i++) {
 
-                        if (sensorResult.get(i)==null)
-                            break;
-                        //update information from sensor
-                        map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
+                    if (sensorResult.get(i)==null)
+                        break;
+                    //update information from sensor
+                    map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
 
-                        //update explore
-                        map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
-                    }
+                    //update explore
+                    map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                 }
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
@@ -473,22 +478,24 @@ public class Exploration {
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
                 }
-                // RIGHT_MIDDLE(5)
-                sensor = robot.getIndividualSensor(5);
-                sensorResult = sensor.getSensorInformation();
-                x = sensor.getXCoord();
-                y = sensor.getYCoord();
-                for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (sensorResult.get(i)==null)
-                        break;
-                    map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
-                    map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
+                // RIGHT_MIDDLE(5),  LEFT_DOWN(4)
+                for (int loc = 4; loc < 6; loc++) {
+                    sensor = robot.getIndividualSensor(loc);
+                    sensorResult = sensor.getSensorInformation();
+                    x = sensor.getXCoord();
+                    y = sensor.getYCoord();
+                    for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i)==null)
+                            break;
+                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
+                        map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
+                    }
                 }
                 break;
             case NORTH:
                 // LEFT_MIDDLE(3), LEFT_DOWN(4)
-                for (int loc = 3; loc < 5; loc++) {
-                    sensor = robot.getIndividualSensor(loc);
+
+                    sensor = robot.getIndividualSensor(3);
                     sensorResult = sensor.getSensorInformation();
                     x=sensor.getXCoord();
                     y=sensor.getYCoord();
@@ -499,7 +506,7 @@ public class Exploration {
                         map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                     }
-                }
+
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
@@ -515,21 +522,22 @@ public class Exploration {
                     }
                 }
                 // RIGHT_MIDDLE(5)
-                sensor = robot.getIndividualSensor(5);
-                sensorResult = sensor.getSensorInformation();
-                x = sensor.getXCoord();
-                y = sensor.getYCoord();
-                for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (sensorResult.get(i)==null)
-                        break;
-                    map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
-                    map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
+                for (int loc = 4; loc < 6; loc++) {
+                    sensor = robot.getIndividualSensor(loc);
+                    sensorResult = sensor.getSensorInformation();
+                    x = sensor.getXCoord();
+                    y = sensor.getYCoord();
+                    for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i) == null)
+                            break;
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, sensorResult.get(i));
+                        map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, true);
+                    }
                 }
                 break;
             case EAST:
                 // LEFT_MIDDLE(3), LEFT_DOWN(4)
-                for (int loc = 3; loc < 5; loc++) {
-                    sensor = robot.getIndividualSensor(loc);
+                    sensor = robot.getIndividualSensor(3);
                     sensorResult = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
@@ -540,7 +548,7 @@ public class Exploration {
                         map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                     }
-                }
+
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
@@ -555,31 +563,33 @@ public class Exploration {
                     }
                 }
                 // RIGHT_MIDDLE(5)
-                sensor = robot.getIndividualSensor(5);
+                for (int loc = 4; loc < 6; loc++) {
+                    sensor = robot.getIndividualSensor(loc);
+                    sensorResult = sensor.getSensorInformation();
+                    x = sensor.getXCoord();
+                    y = sensor.getYCoord();
+                    for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i) == null)
+                            break;
+                        map.setObstacleForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), sensorResult.get(i));
+                        map.setExploredForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), true);
+                    }
+                }
+                break;
+            case SOUTH:
+                // LEFT_MIDDLE(3), LEFT_DOWN(4)
+
+                sensor = robot.getIndividualSensor(3);
                 sensorResult = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
                     if (sensorResult.get(i)==null)
                         break;
-                    map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
-                    map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+                    map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
+                    map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                 }
-                break;
-            case SOUTH:
-                // LEFT_MIDDLE(3), LEFT_DOWN(4)
-                for (int loc = 3; loc < 5; loc++) {
-                    sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
-                    x = sensor.getXCoord();
-                    y = sensor.getYCoord();
-                    for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i)==null)
-                            break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
-                        map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
-                    }
-                }
+
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
@@ -594,16 +604,22 @@ public class Exploration {
                     }
                 }
                 // RIGHT_MIDDLE(5)
-                sensor = robot.getIndividualSensor(5);
-                sensorResult = sensor.getSensorInformation();
-                for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (sensorResult.get(i)==null)
-                        break;
-                    map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
-                    map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
+                for (int loc = 4; loc < 6; loc++){
+                    sensor = robot.getIndividualSensor(loc);
+                    sensorResult = sensor.getSensorInformation();
+                    for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        if (sensorResult.get(i) == null)
+                            break;
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, sensorResult.get(i));
+                        map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, true);
+                    }
                 }
                 break;
         }
+
+        map.updateMap(robot.getXCoord(),robot.getYCoord());
+        map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
+
 
     }
 
@@ -736,5 +752,11 @@ public class Exploration {
                 &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
     }
 
+    public static MapPanel getMap() {
+        return map;
+    }
 
+    public static void setMap(MapPanel map) {
+        Exploration.map = map;
+    }
 }

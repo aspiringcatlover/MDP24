@@ -104,12 +104,12 @@ public class SimulatorRobot extends Robot {
 		default:
 			break;
 		}
-		map.updateMap(x,y);
-		map.displayDirection(y,x,direction);
+
+
 		try {
 			// ms timeout
-			int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(1000); ; // Customize your refresh time
+			int timeout = 1000/ steps_per_sec;
+			Thread.sleep(timeout); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 
@@ -234,13 +234,14 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		}
-		map.updateMap(x,y);
-		map.displayDirection(y,x,direction);
+		/*map.displayDirection(y,x,direction);
+		map.updateMap(x,y);*/
 		//sleep to simulate
+
 		try {
 			// ms timeout
-			//int timeout = (1 / steps_per_sec) * 1000;
-			Thread.sleep(1000); // Customize your refresh time
+			int timeout = 1000/ steps_per_sec;
+			Thread.sleep(timeout); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 	}
