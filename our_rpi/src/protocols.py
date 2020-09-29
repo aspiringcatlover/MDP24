@@ -18,10 +18,10 @@ class Status:
 
 
 class AndroidToArduino:
-    MOVE_FORWARD = '1|'.encode()
-    MOVE_BACK = 'U|'.encode()
-    TURN_LEFT = 'L|'.encode()
-    TURN_RIGHT = 'R|'.encode()
+    MOVE_FORWARD = 'W|'.encode()
+    MOVE_BACK = 'D|'.encode()
+    TURN_LEFT = 'A|'.encode()
+    TURN_RIGHT = 'S|'.encode()
     DO_SHORTCUT_1 = 'F1|'.encode()
     DO_SHORTCUT_2 = 'F2|'.encode()
 
@@ -45,16 +45,14 @@ class AndroidToRPi:
     CALIBRATE_SENSOR = 'SS|'.encode()
 
 
-class AlgorithmToArduino:
-    MOVE_FORWARD = '1'.encode()[0]
-    TURN_LEFT = 'L'.encode()[0]
-    TURN_RIGHT = 'R'.encode()[0]
+class AlgorithmToAndroid:
+    MOVE_FORWARD = 'W'.encode()[0]
+    TURN_LEFT = 'A'.encode()[0]
+    TURN_RIGHT = 'S'.encode()[0]
     CALIBRATING_CORNER = 'L'.encode()[0]
     SENSE_ALL = 'Z'.encode()[0]
     ALIGN_RIGHT = 'B'.encode()[0]
     ALIGN_FRONT = 'V'.encode()[0]
-
-class AlgorithmToAndroid:
     MDF_STRING = 'M'.encode()[0]
 
 
