@@ -82,16 +82,85 @@ public class MapPanel extends JPanel {
 
 
 	public String[] getMdfString() {
-		if (!changed) {
-			return this.mdfString;
-		}
-
-		changed = false;
-
 		StringBuilder MDFBitStringPart1 = new StringBuilder();
 		StringBuilder MDFBitStringPart2 = new StringBuilder();
 
-		MDFBitStringPart1.append("11");
+
+        //StringBuilder P1 = new StringBuilder(new String());
+        String P1 = new String();
+        String P2 = new String();
+
+        P1 += "11";		// Padding sequence
+
+        for (int y = 0; y < 20; y++) {
+            for (int x = 0; x < 15; x++) {
+                if (gridcells[y][x].getExplored()){
+                    //explored = 1
+                    P1 += "1";
+                    if (gridcells[y][x].getObstacle()){
+                        //obstacle=1
+                        P2 += "1";
+                    }
+                    else{
+                        P2 += "0";
+                        System.out.println("obstacle"+x+" "+y);
+                    }
+                }
+                else{
+                    P1 += "0";
+                }
+
+            }
+        }
+
+        P1 += "11";		// Padding sequence
+        System.out.println("p1..." + P1);
+
+        //p1 convert to hex string
+        String hexString = new String();
+        for (int i = 0; i < 304; i += 4) {
+            String binOf4Bits = P1.substring(i, i + 4);
+            int intOf4Bits = Integer.parseInt(binOf4Bits, 2);	// Binary String to Decimal Number
+            hexString += Integer.toString(intOf4Bits, 16).toUpperCase();	// Decimal Number to Hex String
+        }
+        System.out.println("hex string p1: " + hexString);
+
+        //p2
+        // Normalise P2 Binary
+        int remainder = P2.length() % 4;
+        String lastBit = new String();
+        String padding = new String();
+
+        switch (remainder) {
+            case 1:
+                lastBit = P2.substring(P2.length() - 1);
+                padding = "000";
+                P2 = P2.substring(0, P2.length() - 1).concat(padding).concat(lastBit);
+                break;
+            case 2:
+                lastBit = P2.substring(P2.length() - 2);
+                padding = "00";
+                P2 = P2.substring(0, P2.length() - 2).concat(padding).concat(lastBit);
+                break;
+            case 3:
+                lastBit = P2.substring(P2.length() - 3);
+                padding = "0";
+                P2 = P2.substring(0, P2.length() - 3).concat(padding).concat(lastBit);
+                break;
+            default: // Do nothing
+        }
+
+        // Convert to Hexadecimal
+        String hexStringP2 = new String();
+        for (int i = 0; i < P2.length(); i += 4) {
+            String binOf4Bits = P2.substring(i, i + 4);
+            int intOf4Bits = Integer.parseInt(binOf4Bits, 2);	// Binary String to Decimal Number
+            hexStringP2 += Integer.toString(intOf4Bits, 16).toUpperCase();	// Decimal Number to Hex String
+        }
+        System.out.println("hex string p2: " + hexStringP2);
+
+        /*
+        MDFBitStringPart1.append("11");
 		String[] MDFHexString = new String[] {"","",""};
 
 		for (int y = 0; y < Constants.HEIGHT; y++) {
@@ -113,6 +182,8 @@ public class MapPanel extends JPanel {
 			}
 		}
 		MDFBitStringPart1.append("11");
+		System.out.println("MDF bit string part 1"+MDFBitStringPart1);
+        System.out.println("MDF bit string part 2"+MDFBitStringPart2);
 
 		for (int i = 0; i < MDFBitStringPart1.length(); i += 4) {
 			MDFHexString[0] += Integer.toString(Integer.parseInt(MDFBitStringPart1.substring(i, i + 4), 2), 16);
@@ -136,11 +207,14 @@ public class MapPanel extends JPanel {
 			}
 		}
 
-		MDFHexString[1] = Integer.toString(length);
-
-		this.mdfString = MDFHexString;
-		System.out.println("1..."+MDFHexString[0]+"2...."+MDFHexString[1]+"3..."+MDFHexString[2]); 
-		return MDFHexString;
+		MDFHexString[1] = Integer.toString(length);*/
+        String[] mdf = new String[3];
+        mdf[0]= hexString;
+        mdf[2] = hexStringP2;
+		//this.mdfString[0] = hexString;
+        //this.mdfString[2] = hexStringP2;
+		System.out.println("1..."+hexString+"2...."+hexStringP2);
+		return mdf;
 
 	}
 

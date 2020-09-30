@@ -21,7 +21,7 @@ public class SimulatorRobot extends Robot {
 		this.steps_per_sec=steps_per_sec;
 		// map for the maze to simulate
 		this.map = map;
-		this.mdfString = map.getMdfString();
+		//this.mdfString = map.getMdfString();
 		x = START_X_COORD;
 		y = START_Y_COORD;
 		// assuming forward direction of robot is DOWN if right wall hugging
