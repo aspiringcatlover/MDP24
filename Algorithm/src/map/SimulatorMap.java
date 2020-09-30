@@ -56,7 +56,7 @@ public class SimulatorMap extends JFrame {
 	private int time_limit_ms;
 	private int waypoint_x;
 	private int waypoint_y;
-	private String mdf_string;
+	private String mdf_string_ent;
 	private String[][] sample_map;
 	private boolean startSimulation;
 	private boolean startActual;
@@ -122,10 +122,10 @@ public class SimulatorMap extends JFrame {
 //		settingsContainer.add(optionExp);
 //		settingsContainer.add(optionFp);
 		
-		JSeparator s = new JSeparator();
-		s.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s);
-		s.setBounds(0, 0, 1, 1);
+//		JSeparator s = new JSeparator();
+//		s.setOrientation(SwingConstants.HORIZONTAL);
+//		settingsContainer.add(s);
+//		s.setBounds(0, 0, 1, 1);
 
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
@@ -165,7 +165,7 @@ public class SimulatorMap extends JFrame {
 		waypointYField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(waypointYField);
 
-		// mdf string
+		// enter mdf string
 		JLabel mdfString = new JLabel();
 		mdfString.setText("Enter MDF string  :");
 		settingsContainer.add(mdfString);
@@ -173,10 +173,10 @@ public class SimulatorMap extends JFrame {
 		mdfField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(mdfField);
 		
-		JSeparator s1 = new JSeparator();
-		s1.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s1);
-		s1.setBounds(0, 0, 1, 1);
+//		JSeparator s1 = new JSeparator();
+//		s1.setOrientation(SwingConstants.HORIZONTAL);
+//		settingsContainer.add(s1);
+//		s1.setBounds(0, 0, 1, 1);
 		
 		// exploration button
 		JButton expButton = new JButton();
@@ -202,9 +202,40 @@ public class SimulatorMap extends JFrame {
 		JLabel statusInfo = new JLabel();
 		statusInfo.setText("Status Info :");
 		settingsContainer.add(statusInfo);
-		JTextField statusInfoField = new JTextField(5);
+		JTextField statusInfoField = new JTextField(40);
 		statusInfoField.setBounds(0, 0, 10, 50);
 		settingsContainer.add(statusInfoField);
+		
+		JSeparator s3 = new JSeparator();
+		s3.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s3);
+		s3.setBounds(0, 0, 1, 1);
+		
+		// print mdf button
+		JButton mdfButton = new JButton();
+		mdfButton.setText("Print MDF String");
+		settingsContainer.add(mdfButton);
+
+		// print mdf string part 1
+		JLabel mdf1 = new JLabel();
+		mdf1.setText("MDF String Part 1:");
+		settingsContainer.add(mdf1);
+		JTextField mdfStringField1 = new JTextField(5);
+		mdfStringField1.setBounds(0, 0, 10, 50);
+		settingsContainer.add(mdfStringField1);
+		
+		// print mdf string part 2
+		JLabel mdf2 = new JLabel();
+		mdf2.setText("MDF String Part 2:");
+		settingsContainer.add(mdf2);
+		JTextField mdfStringField2 = new JTextField(5);
+		mdfStringField2.setBounds(0, 0, 10, 50);
+		settingsContainer.add(mdfStringField2);
+		
+		// print match button
+		JButton matchButton = new JButton();
+		matchButton.setText("Is it a match?");
+		settingsContainer.add(matchButton);
 
 //		// apply settings button
 //		JButton applySettings = new JButton("Apply");
@@ -245,7 +276,7 @@ public class SimulatorMap extends JFrame {
 				waypoint_y = Integer.parseInt(waypointYField.getText());
 
 				// map descriptor format string
-				mdf_string = mdfField.getText();
+				mdf_string_ent = mdfField.getText();
 
 				// control steps per second of robot
 				steps_per_sec = Integer.parseInt(stepsPerSecField.getText());
@@ -309,7 +340,7 @@ public class SimulatorMap extends JFrame {
 				System.out.println("Map choice: " + mapChoice);
 				System.out.println("Steps per second: " + steps_per_sec);
 				System.out.println("Time limit in ms: " + time_limit_ms);
-				System.out.println("MDF String: " + mdf_string);
+				System.out.println("MDF String: " + mdf_string_ent);
 
 			}
 
@@ -374,7 +405,44 @@ public class SimulatorMap extends JFrame {
 		statusButton.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				statusInfoField.setText("Is exploring: " + isExpSelected + " , " + "Actual coverage percentage: " + actual_coverage_perc + " , " + "MDF String: " + mdf_string);
+				statusInfoField.setText("Exploration: " + isExpSelected + " , " + " Actual coverage percentage: " + actual_coverage_perc );
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+		});
+		
+		mdfButton.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println(map.getMdfString()[0]);
+				System.out.println(map.getMdfString()[1]); 
+				mdfStringField1.setText(map.getMdfString()[0]);
+				mdfStringField2.setText(map.getMdfString()[2]);
+//				if(getMdfStringEnt() == mdfStringField.getText()) {
+//					matchButton.setBackground(Color.GREEN);
+//				}
+//				else {
+//					matchButton.setBackground(Color.RED);
+//				}
+				
 			}
 
 			@Override
@@ -579,4 +647,9 @@ public class SimulatorMap extends JFrame {
 	public static void setRobot(Robot robot) {
 		SimulatorMap.robot = robot;
 	}
+	
+	public String getMdfStringEnt() {
+		return mdf_string_ent;
+	}
+	
 }
