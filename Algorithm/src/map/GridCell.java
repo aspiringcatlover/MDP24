@@ -90,6 +90,10 @@ public class GridCell extends JPanel {
 		return explored;
 	}
 	
+	public boolean getTravelled() {
+		return travelled;
+	}
+	
 	public void setExplored(boolean explored) {
 		this.explored = explored;
 	}

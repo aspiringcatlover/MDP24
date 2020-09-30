@@ -449,6 +449,7 @@ public class Exploration {
                     senseMap();
                     map.updateMap(robot.getXCoord(),robot.getYCoord());
                     map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
+                    map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
                 }
             }
 
@@ -640,6 +641,7 @@ public class Exploration {
 
                     //update explore
                     map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+
                 }
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
@@ -796,6 +798,7 @@ public class Exploration {
         System.out.println("robot x and y?" + robot.getXCoord()+" "+robot.getYCoord());
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
+        map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
         /*
         if(!isSimulated){
