@@ -17,16 +17,19 @@ public class SocketConnectionTest {
         int simulator = JOptionPane.CLOSED_OPTION;
         String[] sensorValues = new String[6];
         int[] sensePosition = new int[]{-1, -1, -1};
+        Constants.Direction direction = Constants.Direction.NORTH;
+        int x =0;
+        int y=0;
         // initialize sensors for robot
         // 3 short for front
-        sensorArr[0] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_LEFT);
-        sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE);
-        sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT);
+        sensorArr[0] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_LEFT, direction, x, y);
+        sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE, direction, x, y);
+        sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT, direction, x, y);
         // 1 long for left
-        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE);
+        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, direction, x, y);
         // 2 short for right
-        sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN);
-        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE);
+        sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, direction, x, y);
+        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE, direction, x, y);
         String s;
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         if (debug == JOptionPane.YES_OPTION) {

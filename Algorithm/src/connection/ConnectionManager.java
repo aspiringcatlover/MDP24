@@ -14,10 +14,11 @@ public class ConnectionManager {
     private static ActualRobot robot;
     private static ConnectionManager connectionManager = null;
     private SocketConnection socketConnection = SocketConnection.getInstance();
-    //private static Thread thread = null;
+    private static Thread thread = null;
     private static ArrayList<String> buffer = new ArrayList<String>();
     private static AtomicBoolean running = new AtomicBoolean(false);
     private static String[] bufferableCommand = new String[] {Constants.IMAGE_ACK};
+    private boolean explorationRun=false;
 
     private ConnectionManager() {
 
@@ -57,9 +58,7 @@ public class ConnectionManager {
         while(running.get()) {
             //run exploration
             //call the app
-
-            /*
-            if (ExplorationThread.getRunning() || FastestPathThread.getRunning()) {
+            if (ExplorationApp.getRunning() || FastestPathApp.getRunning()) {
                 try {
                     thread.join();
                 }
@@ -68,9 +67,17 @@ public class ConnectionManager {
                 }
             }
             else {
+                if (!ExplorationApp.getRunning()&&explorationRun){
+                    robot = (ActualRobot) ExplorationApp.getRobot(); //TODO: this might have problem
+                    System.out.println("after exploration???? " + robot.getMap().getGridCell(5,5).getExplored());
+                    socketConnection.sendMessage("END EXPLORATION");
+
+                }
+                System.out.println("waiting for message??");
                 waitingForMessage();
-            }*/
-            waitingForMessage();
+            }
+
+            //waitingForMessage();
         }
     }
 
@@ -102,56 +109,59 @@ public class ConnectionManager {
 
             // Set the robot position only if the correct message is received and the program is not running exploration and fastest path
             if (!ExplorationApp.getRunning() && !FastestPathApp.getRunning() && s.contains(Constants.INITIALISING)) {
+                /*
                 Pattern p_s_s = Pattern.compile(Constants.INITIALISING + "[\\s]\\([1-9],[1-9],[0-3]{1}\\)");
                 Pattern p_d_s = Pattern.compile(Constants.INITIALISING + "[\\s]\\([1][0-8],[1-9],[0-3]{1}\\)");
                 Pattern p_s_d = Pattern.compile(Constants.INITIALISING + "[\\s]\\([1-9],[1][0-4],[0-3]{1}\\)");
-                Pattern p_d_d = Pattern.compile(Constants.INITIALISING + "[\\s]\\([1][0-8],[1][0-4],[0-3]{1}\\)");
-                if ((p_s_s.matcher(s).matches() || p_d_s.matcher(s).matches() || p_s_d.matcher(s).matches() || p_d_d.matcher(s).matches())){
-                    complete = true;
-                    String tmp = s.replace(Constants.INITIALISING + " (", "");
-                    tmp = tmp.replace(")", "");
-                    String[] arr = tmp.trim().split(",");
-                    robot.initialise(Integer.parseInt(arr[1]), Integer.parseInt(arr[0]), (Integer.parseInt(arr[2]) + 1 ) % 4);
-                    s = "Successfully set the robot's position: " + Integer.parseInt(arr[0]) +
-                            "," + Integer.parseInt(arr[1]) + "," + Integer.parseInt(arr[2]);
-                    //robot.displayMessage(s, 2);
-                }
+                Pattern p_d_d = Pattern.compile(Constants.INITIALISING + "[\\s]\\([1][0-8],[1][0-4],[0-3]{1}\\)");*/
+                complete = true;
+                String tmp = s.replace(Constants.INITIALISING + " (", "");
+                tmp = tmp.replace(")", "");
+                String[] arr = tmp.trim().split(",");
+                robot.initialise(Integer.parseInt(arr[1]), Integer.parseInt(arr[0]), (Integer.parseInt(arr[2] )));
+                s = "Successfully set the robot's position: " + Integer.parseInt(arr[0]) +
+                        "," + Integer.parseInt(arr[1]) + "," + Integer.parseInt(arr[2]);
+                //robot.displayMessage(s, 2);
+                System.out.println(s);
+
                 robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
             }
 
             // Start exploration only if the correct message is received and the program is not running exploration and fastest path
             else if (!ExplorationApp.getRunning() && !FastestPathApp.getRunning() && s.equals(Constants.START_EXPLORATION) ) {
                 s = "Exploration Started";
-                explorationApp = new ExplorationApp(robot, Constants.TIME, Constants.PERCENTAGE, Constants.SPEED, Constants.IMAGE_REC);
-
-
-                //thread.setPriority(Thread.MAX_PRIORITY);
-
-                complete = true;
-
+                explorationRun = true;
+                thread = ExplorationApp.getInstance(robot, Constants.TIME, Constants.PERCENTAGE, Constants.SPEED, Constants.IMAGE_REC);
+                thread.setPriority(Thread.MAX_PRIORITY);
                 try {
-                    explorationApp.run();
+                    //explorationApp.start();
                     //get robot
-                    robot = (ActualRobot) explorationApp.getRobot();
-                    //thread.join();
+                    thread.join();
                 }
                 catch(Exception e) {
                     System.out.println("Error in start exploration in ConnectionManager");
                 }
+                complete=true;
+
+                //for testing purpose
+
             }
 
             // Start fastestpath only if the correct message is received and the program is not running exploration and fastest path
             //TODO: and map have to be explored?
             else if (!ExplorationApp.getRunning() && !FastestPathApp.getRunning() && s.equals(Constants.FASTEST_PATH) ){
-
-                fastestPathApp = new FastestPathApp(robot);
+                System.out.println("hmmm....");
+                //explorationRun=true;
+                thread = new FastestPathApp(robot);
                 //FastestPathApp.getInstance(robot, robot.getWaypoint(), 1);
-                //thread.setPriority(Thread.MAX_PRIORITY);
+                thread.setPriority(Thread.MAX_PRIORITY);
+                System.out.println("....hmmm");
+
 
                 s = "Fastest Path started";
                 try {
-                    fastestPathApp.run();
-                    //thread.join();
+
+                    thread.join();
 
                 }
                 catch(Exception e) {
@@ -163,20 +173,20 @@ public class ConnectionManager {
             // Set waypoint only if the correct message is received and the program is not running exploration and fastest path
             else if (!ExplorationApp.getRunning() && !FastestPathApp.getRunning() &&
                     s.contains(Constants.SETWAYPOINT)) {
+                /*
                 Pattern wp_s_s = Pattern.compile(Constants.SETWAYPOINT + " \\([1-9],[1-9]\\)");
                 Pattern wp_d_s = Pattern.compile(Constants.SETWAYPOINT + " \\([1-9],[1][0-8]\\)");
                 Pattern wp_s_d = Pattern.compile(Constants.SETWAYPOINT + " \\([1][0-4],[1-9]\\)");
-                Pattern wp_d_d = Pattern.compile(Constants.SETWAYPOINT + " \\([1][0-4],[1][0-8]\\)");
-                if ((wp_s_s.matcher(s).matches() || wp_d_s.matcher(s).matches() || wp_s_d.matcher(s).matches() || wp_d_d.matcher(s).matches())){
-                    complete = true;
-                    String tmp = s.replace(Constants.SETWAYPOINT + " (", "");
-                    tmp = tmp.replace(")", "");
-                    String[] arr = tmp.trim().split(",");
-                    robot.setWaypoint(Integer.parseInt(arr[1]), Integer.parseInt(arr[0]));
-                    s = "Successfully received the waypoint: " + Integer.parseInt(arr[0]) +
-                            "," + Integer.parseInt(arr[1]);
-                    //robot.displayMessage(s, 2);
-                }
+                Pattern wp_d_d = Pattern.compile(Constants.SETWAYPOINT + " \\([1][0-4],[1][0-8]\\)");*/
+                complete = true;
+                String tmp = s.replace(Constants.SETWAYPOINT + " (", "");
+                tmp = tmp.replace(")", "");
+                String[] arr = tmp.trim().split(",");
+                robot.setWaypoint(Integer.parseInt(arr[1]), Integer.parseInt(arr[0]));
+                s = "Successfully received the waypoint: " + Integer.parseInt(arr[0]) +
+                        "," + Integer.parseInt(arr[1]);
+                //robot.displayMessage(s, 2);
+                System.out.println(s);
                 robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
             }
 
@@ -190,14 +200,15 @@ public class ConnectionManager {
             }
 
             // Store valid message if the program is running exploration or fastest path
-            else if (Arrays.asList(bufferableCommand).contains(s) || sensorPattern.matcher(s).matches()) {
+            else {
                 // If the command is an acknowledgement or sensor values, put into buffer
                 buffer.add(s);
                 System.out.println("Placed command" + s + " into buffer");
             }
+            /*
             else {
                 System.out.println("Unknown command: " + s);
-            }
+            }*/
 
         }
         return s;

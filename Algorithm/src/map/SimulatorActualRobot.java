@@ -89,6 +89,7 @@ public class SimulatorActualRobot extends JFrame {
         setSize(10000, 10000);
         add(map);
         //refreshMap();
+        robot = new SimulatorRobot(map, 9999, null);
         setLocationRelativeTo(null);
         setVisible(true);
 

@@ -27,6 +27,8 @@ public abstract class Robot {
 
     }
 
+
+
     // Initialise the robot direction, position and the file to debug if applicable
     public void initialise(int x, int y, int direction) {
         /*
@@ -38,10 +40,15 @@ public abstract class Robot {
 
         switch (direction){
             case 0: this.direction=NORTH;
+                    break;
             case 1: this.direction=EAST;
+                break;
             case 2: this.direction=SOUTH;
+                break;
             case 3: this.direction = WEST;
+                break;
         }
+        System.out.println("ROBOT DIRECTION ... INIT " + this.direction);
 
        // this.validObstacleValue = false;
         /*
@@ -85,6 +92,9 @@ public abstract class Robot {
     public abstract Direction robotRightDir();
     public abstract Direction robotLeftDir();
     public abstract Sensor getIndividualSensor(int loc);
+    public abstract void initSensor();
+    public abstract Direction peekRobotRightDir();
+    public abstract Direction peekRobotLeftDir();
 
 
     //getter and setter

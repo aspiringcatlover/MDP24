@@ -51,25 +51,32 @@ public class Exploration {
         boolean terminate=false;
         boolean start = false;
 
-        //init start grid to be explored alr
 
+
+        //init start grid to be explored alr
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
         for (int i = 0; i < 3; i++) {
             for (int r = 0; r < 3; r++) {
                 map.setExploredForGridCell(i, r, true);
             }
         }
+        //init
+
+        robot.initSensor();
+        System.out.println("EXPLORATION-FINISH INITIALISE SENSOR");
+
 
         while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime) {
+            System.out.println("before sense map");
             senseMap();
-
+            System.out.println("after sense map");
             for (int col = 0; col < WIDTH; col++) {
                 for (int row = 0; row < HEIGHT; row++){
                     printGridCell(map.getGridCell(row, col));
                 }
                 System.out.println();
             }
-            System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
+            System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord() + "direction" + robot.getDirection());
             if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start){
                 System.out.println("break right wall hugging");
                 break;
@@ -490,13 +497,15 @@ public class Exploration {
 
     public void rightWallHugging() {
         System.out.println("has obstacle: " + hasObstacle(robot.getDirection()));
+        System.out.println("WTF IS GOIN ON HEER");
         // if no obstacle on the right, turn right and move forward
-        if (!hasObstacle(robot.robotRightDir())) {
-            //System.out.println("turn right");
+        if (!hasObstacle(robot.peekRobotRightDir())) {
+            System.out.println("turn right.....");
             robot.turn(robot.robotRightDir());
             senseMap();
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 
+            System.out.println("MOVE FORWARD.....");
             movement.add(Constants.Movement.TURN_RIGHT);
             //System.out.println("move forward");
             robot.moveForward();
@@ -515,7 +524,7 @@ public class Exploration {
         }
         // else, turn left
         else {
-            robot.turn(robot.robotLeftDir());
+            robot.turn(robot.peekRobotLeftDir());
 
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
             //System.out.println("turn left");
@@ -556,6 +565,7 @@ public class Exploration {
             for (int i=0;i<3;i++){
                 gridCell = map.getGridCell(y,x+i);
                 if (gridCell == null || gridCell.getObstacle()) {
+                    System.out.println("check obstacle row: y=" + y +" "+true);
                     return true;
                 }
             }
@@ -568,6 +578,7 @@ public class Exploration {
                 }
             }
         }
+        System.out.println("check obstacle row false");
         return false;
     }
 
@@ -747,15 +758,17 @@ public class Exploration {
                 }
                 break;
         }
-
+        System.out.println("update map-------");
+        System.out.println("robot x and y?" + robot.getXCoord()+" "+robot.getYCoord());
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
+        /*
         if(!isSimulated){
             //send mdf shit
             System.out.println("sending mdf string...");
             ((ActualRobot) robot).sendMdfString();
-        }
+        }*/
     }
 
     //get direction to face the unexplored grid

@@ -37,14 +37,7 @@ public class ActualRobot extends Robot {
 
 		// initialize sensors for robot
 		// 3 short for front
-		sensorArr[0] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_LEFT);
-		sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE);
-		sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT);
-		// 1 long for left
-		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE);
-		// 2 short for right
-		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN);
-		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE);
+
 
 		//TODO: pass the simulator map into this robot instead
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
@@ -57,6 +50,18 @@ public class ActualRobot extends Robot {
 		this.map = SimulatorActualRobot.getRobot().getMap();
 	}
 
+	public void initialise(int x, int y, int direction){
+		super.initialise(x, y, direction);
+		sensorArr[0] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_LEFT, this.direction, x, y);
+		sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE, this.direction, x, y);
+		sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT, this.direction, x, y);
+		// 1 long for left
+		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, this.direction, x, y);
+		// 2 short for right
+		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, this.direction, x, y);
+		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE, this.direction, x, y);
+	}
+
 	// check if robot sensor detects an obstacle in the specified direction
 	public boolean hasObstacle(Constants.Direction dir) {
 		return true;
@@ -67,6 +72,7 @@ public class ActualRobot extends Robot {
     public void moveForward() {
         //update coordinates(both robot and sensor) + sensemap
         socketConnection.sendMessage(MOVE_FORWARD);
+        System.out.println("SEND MOVE FORWARD");
         switch (direction) {
             case WEST:
                 x -= 1;
@@ -255,6 +261,29 @@ public class ActualRobot extends Robot {
 
     }
 
+    @Override
+    public Constants.Direction peekRobotRightDir(){
+		int bearing;
+		bearing = direction.bearing + 90;
+
+		switch (bearing) {
+			case 0:
+			case 360:
+				return Constants.Direction.NORTH;
+			case 90:
+				return Constants.Direction.EAST;
+			case 180:
+				return SOUTH;
+			case 270:
+			case -90:
+				return WEST;
+			default:
+				return null;
+		}
+	}
+
+
+
 	@Override
 	public Constants.Direction robotLeftDir() {
 		socketConnection.sendMessage(Constants.TURN_LEFT);
@@ -282,6 +311,27 @@ public class ActualRobot extends Robot {
 		}
 	}
 
+	@Override
+	public Constants.Direction peekRobotLeftDir(){
+		int bearing;
+		bearing = direction.bearing - 90;
+		switch (bearing) {
+			case 0:
+			case 360:
+				return Constants.Direction.NORTH;
+			case 90:
+				return Constants.Direction.EAST;
+			case 180:
+				return SOUTH;
+			case 270:
+			case -90:
+				return WEST;
+			default:
+				return null;
+		}
+	}
+
+
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		socketConnection.sendMessage("{\"map\":[{\"explored\": \"" + arr[0] + ",\"obstacle\":\"" + arr[2] + "\"}]}");
@@ -289,8 +339,18 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Sensor getIndividualSensor(int loc) {
-		updateSensor();
+		//updateSensor();
 		return sensorArr[loc];
+	}
+
+	@Override
+	public void initSensor() {
+		for (Sensor sensor : sensorArr) {
+			sensor.setDirection(direction);
+		}
+		System.out.println("init sensor-------");
+		updateSensor();
+		System.out.println("-------init sensor");
 	}
 
 	private void updateSensor() {
@@ -309,12 +369,13 @@ public class ActualRobot extends Robot {
 		int sensorDistance, numGridsSensor = 0, numGridNotDetected;
 		boolean obstacleDetected = false;
 		socketConnection.sendMessage(Constants.SENSE_ALL);
+		System.out.println("sense to arudino in update sensor");
 		boolean completed = false;
 
-        while (!completed) {
+        if  (!completed) {
             s = socketConnection.receiveMessage().trim();
 			arr = s.split(",");
-			break;
+			//break;
         }
         System.arraycopy(arr, 0, sensorValues, 0, 6);
         this.sensePosition[0] = x;

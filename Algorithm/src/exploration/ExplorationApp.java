@@ -22,7 +22,7 @@ public class ExplorationApp extends Thread{
 
     private static final AtomicBoolean running = new AtomicBoolean(false);
     private static final AtomicBoolean completed = new AtomicBoolean(false);
-    //private static ExplorationThread thread = null;
+    private static ExplorationApp thread = null;
 
 
     public ExplorationApp(Robot robot, int time, int percentage, int speed, boolean image_recognition) {
@@ -33,6 +33,11 @@ public class ExplorationApp extends Thread{
         this.speed = speed;
         this.image_recognition = image_recognition;
         start();
+    }
+
+    public static ExplorationApp getInstance(Robot r, int time, int percentage, int speed, boolean image_recognition) {
+        thread = new ExplorationApp(r, time, percentage, speed, image_recognition);
+        return thread;
     }
 
     @Override
@@ -61,8 +66,9 @@ public class ExplorationApp extends Thread{
         else {
             completed.set(false);
         }
-        running.set(false);
+        stopThread();
 
+        /*
         if (!isSimulated){
             if (SocketConnection.checkConnection()) {
                 // Send the MDF String at the end when it is completed
@@ -74,28 +80,7 @@ public class ExplorationApp extends Thread{
         }
         else{
 
-        }
-        while (!Thread.currentThread().isInterrupted()) {
-            /*
-            try {
-
-                exploredMap.simulatedReveal(robot, testMap);
-                gui.refreshGUI(robot, exploredMap);
-
-                // Run exploration for one step
-                boolean done = explorer.executeOneStep(robot, exploredMap);
-
-                exploredMap.simulatedReveal(robot, testMap);
-                gui.refreshGUI(robot, exploredMap);
-
-                if (done)
-                    break;
-
-                Thread.sleep(1000/speed);
-            } catch (InterruptedException e) {
-                break;
-            }*/
-        }
+        }*/
     }
 
     public static Robot getRobot(){
@@ -109,6 +94,7 @@ public class ExplorationApp extends Thread{
         return completed.get();
     }
 
+
     public void printGridCell(GridCell gridCell) {
         // O for obstacle
         // E for explored
@@ -120,5 +106,11 @@ public class ExplorationApp extends Thread{
         } else {
             System.out.print("U");
         }
+    }
+
+    public static void stopThread() {
+        running.set(false);
+        System.out.println("thread ==null");
+        thread = null;
     }
 }

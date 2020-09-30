@@ -12,6 +12,7 @@ public class SimulatorRobot extends Robot {
 
 	private MapPanel map;
 	private int steps_per_sec;
+	//private MapPanel simulateMap;
 	//SimulatorMap simulatorMap; // this is the simulator itself maybe can rename or smth
 
 	// constructor
@@ -27,18 +28,15 @@ public class SimulatorRobot extends Robot {
 		// assuming forward direction of robot is DOWN if right wall hugging
 		// in simulation
 		direction = EAST;
-		// initialize sensors for robot
-		// 3 short for front
-		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, simulateMap);
-		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, simulateMap);
-		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, simulateMap);
-		// 1 long for left
-		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap);
-		// 2 short for right
-		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap);
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, simulateMap);
-
 		//simulatorMap = new SimulatorMap();
+		sensorArr[0] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_LEFT, simulateMap, this.direction, x, y);
+		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, simulateMap, this.direction, x, y);
+		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, simulateMap, this.direction, x, y);
+		// 1 long for left
+		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap, this.direction, x, y);
+		// 2 short for right
+		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap, this.direction, x, y);
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, simulateMap, this.direction, x, y);
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
@@ -47,7 +45,17 @@ public class SimulatorRobot extends Robot {
 			}
 		}
 		map = emptyMap;
+		//this.simulateMap = simulateMap;
 		// simulator map is the one that shld be updated
+	}
+
+	public void initialise(int x, int y, int direction){
+		super.initialise(x,y,direction);
+
+		// initialize sensors for robot
+		// 3 short for front
+
+
 	}
 
 	public MapPanel getMap() {
@@ -56,6 +64,15 @@ public class SimulatorRobot extends Robot {
 
 	public Sensor getIndividualSensor(int i) {
 		return sensorArr[i];
+	}
+
+	@Override
+	public void initSensor() {
+		SimulatorSensor simulatorSensor;
+		for (Sensor sensor : sensorArr) {
+			simulatorSensor = (SimulatorSensor) sensor; // downcasting
+			simulatorSensor.setSensorInformation();
+		}
 	}
 
 	// helper functions
@@ -105,13 +122,15 @@ public class SimulatorRobot extends Robot {
 			break;
 		}
 
-
-		try {
-			// ms timeout
-			int timeout = 1000/ steps_per_sec;
-			Thread.sleep(timeout); // Customize your refresh time
-		} catch (InterruptedException e) {
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
 		}
+
 
 	}
 
@@ -238,11 +257,13 @@ public class SimulatorRobot extends Robot {
 		map.updateMap(x,y);*/
 		//sleep to simulate
 
-		try {
-			// ms timeout
-			int timeout = 1000/ steps_per_sec;
-			Thread.sleep(timeout); // Customize your refresh time
-		} catch (InterruptedException e) {
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
 		}
 	}
 
@@ -258,6 +279,16 @@ public class SimulatorRobot extends Robot {
 
 	// return map direction to the left of the forward direction of robot
 	public Direction robotLeftDir() {
+		return HelperDir(Movement.TURN_LEFT);
+	}
+
+	// return map direction to the right of the forward direction of robot
+	public Direction peekRobotRightDir() {
+		return HelperDir(Movement.TURN_RIGHT);
+	}
+
+	// return map direction to the left of the forward direction of robot
+	public Direction peekRobotLeftDir() {
 		return HelperDir(Movement.TURN_LEFT);
 	}
 

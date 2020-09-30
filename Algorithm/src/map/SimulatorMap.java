@@ -109,24 +109,6 @@ public class SimulatorMap extends JFrame {
 		mapChoiceMenu.setBackground(Color.PINK);
 		settingsContainer.add(mapChoiceMenu);
 
-//		 radio button style for exploration/fastest path selection
-//		JRadioButton optionExp = new JRadioButton("Exploration");
-//		JRadioButton optionFp = new JRadioButton("Fastest Path");
-//		optionFp.setBounds(100, 120, 140, 40);
-//		add(Box.createHorizontalStrut(10));
-//
-//		ButtonGroup group = new ButtonGroup();
-//		group.add(optionExp);
-//		group.add(optionFp);
-//
-//		settingsContainer.add(optionExp);
-//		settingsContainer.add(optionFp);
-		
-//		JSeparator s = new JSeparator();
-//		s.setOrientation(SwingConstants.HORIZONTAL);
-//		settingsContainer.add(s);
-//		s.setBounds(0, 0, 1, 1);
-
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
 		goalCovPer.setText("Enter goal coverage percentage :");
@@ -172,12 +154,7 @@ public class SimulatorMap extends JFrame {
 		JTextField mdfField = new JTextField(5);
 		mdfField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(mdfField);
-		
-//		JSeparator s1 = new JSeparator();
-//		s1.setOrientation(SwingConstants.HORIZONTAL);
-//		settingsContainer.add(s1);
-//		s1.setBounds(0, 0, 1, 1);
-		
+
 		// exploration button
 		JButton expButton = new JButton();
 		expButton.setText("Start Exploration");
@@ -236,18 +213,6 @@ public class SimulatorMap extends JFrame {
 		JButton matchButton = new JButton();
 		matchButton.setText("Is it a match?");
 		settingsContainer.add(matchButton);
-
-//		// apply settings button
-//		JButton applySettings = new JButton("Apply");
-//		applySettings.setBounds(100, 120, 140, 40);
-//		applySettings.setBackground(Color.PINK);
-//		settingsContainer.add(applySettings);
-//
-//		// stop button
-//		JButton stop = new JButton("Stop");
-//		stop.setBounds(100, 120, 140, 40);
-//		stop.setBackground(Color.PINK);
-//		settingsContainer.add(stop);
 
 		// add map
 		add(map);
@@ -316,8 +281,6 @@ public class SimulatorMap extends JFrame {
 				} else if (optionFp.isSelected()) {
 					isExpSelected = false;
 				}*/
-
-
 
 				refreshMap();
 				MapPanel simulateMap = new MapPanel(SimulatorMap.getSampleMap(mapChoice));
