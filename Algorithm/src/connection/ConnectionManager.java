@@ -116,6 +116,7 @@ public class ConnectionManager {
                             "," + Integer.parseInt(arr[1]) + "," + Integer.parseInt(arr[2]);
                     //robot.displayMessage(s, 2);
                 }
+                robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
             }
 
             // Start exploration only if the correct message is received and the program is not running exploration and fastest path
@@ -176,6 +177,7 @@ public class ConnectionManager {
                             "," + Integer.parseInt(arr[1]);
                     //robot.displayMessage(s, 2);
                 }
+                robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
             }
 
             // Send mdf arena only if the correct message is received and the program is not running exploration and fastest path
@@ -199,6 +201,11 @@ public class ConnectionManager {
 
         }
         return s;
+    }
+
+    public void sendMdfString(){
+
+
     }
 
 }

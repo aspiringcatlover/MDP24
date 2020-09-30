@@ -5,6 +5,7 @@ import main.Constants;
 import map.GridCell;
 import map.MapPanel;
 import map.SimulatorMap;
+import robot.ActualRobot;
 import robot.Robot;
 import robot.SimulatorRobot;
 import sensor.Sensor;
@@ -749,8 +750,12 @@ public class Exploration {
 
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
-
-
+        boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
+        if(!isSimulated){
+            //send mdf shit
+            System.out.println("sending mdf string...");
+            ((ActualRobot) robot).sendMdfString();
+        }
     }
 
     //get direction to face the unexplored grid

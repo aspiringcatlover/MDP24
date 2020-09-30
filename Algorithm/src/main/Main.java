@@ -72,6 +72,7 @@ public class Main {
 			}
 			try {
 				connectionManager.start();
+				SimulatorActualRobot simulatorActualRobot = new SimulatorActualRobot();
 			}
 			catch (Exception e) {
 				connectionManager.stopCM();

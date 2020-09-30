@@ -3,6 +3,7 @@ package robot;
 import connection.SocketConnection;
 import main.Constants;
 import map.MapPanel;
+import map.SimulatorActualRobot;
 import map.SimulatorMap;
 import sensor.ActualSensor;
 import sensor.Sensor;
@@ -44,6 +45,8 @@ public class ActualRobot extends Robot {
 		// 2 short for right
 		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN);
 		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE);
+
+		//TODO: pass the simulator map into this robot instead
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
@@ -51,7 +54,7 @@ public class ActualRobot extends Robot {
 				emptyMap.setExploredForGridCell(i, r, true);
 			}
 		}
-		this.map = emptyMap;
+		this.map = SimulatorActualRobot.getRobot().getMap();
 	}
 
 	// check if robot sensor detects an obstacle in the specified direction
@@ -279,6 +282,11 @@ public class ActualRobot extends Robot {
 		}
 	}
 
+	public void sendMdfString(){
+		String[] arr = getMdfString();
+		socketConnection.sendMessage("{\"map\":[{\"explored\": \"" + arr[0] + ",\"obstacle\":\"" + arr[2] + "\"}]}");
+	}
+
 	@Override
 	public Sensor getIndividualSensor(int loc) {
 		updateSensor();
@@ -295,9 +303,6 @@ public class ActualRobot extends Robot {
 		 */
 
 		// Accept only all integer sensor values or all double sensor values
-		Pattern sensorPattern = Pattern.compile("\\d+[|]{1}\\d+[|]{1}\\d+[|]{1}\\d+[|]{1}\\d+[|]{1}\\d+[|]{1}\\d+");
-		Pattern sensorPattern2 = Pattern.compile(
-				"\\d+[.]\\d+[|]{1}\\d+[.]\\d+[|]{1}\\d+[.]\\d+[|]{1}\\d+[.]\\d+[|]{1}\\d+[.]\\d+[|]{1}\\d+[.]\\d+[|]{1}\\d+");
 		String s;
 		String[] arr = null;
 		ArrayList<Boolean> sensorResult = new ArrayList<>();
@@ -308,10 +313,8 @@ public class ActualRobot extends Robot {
 
         while (!completed) {
             s = socketConnection.receiveMessage().trim();
-            if (sensorPattern.matcher(s).matches() || sensorPattern2.matcher(s).matches()) {
-                arr = s.split("\\|");
-                break;
-            }
+			arr = s.split(",");
+			break;
         }
         System.arraycopy(arr, 0, sensorValues, 0, 6);
         this.sensePosition[0] = x;
@@ -319,25 +322,35 @@ public class ActualRobot extends Robot {
         this.sensePosition[2] = getDirection().bearing;
 
         // For each of the sensor value, we will update the map accordingly.
-        for (int i = 0; i < 6; i++) {
-            System.out.println("SENSOR VALUE" +sensorValues[i]);
-            sensorResult = new ArrayList<>();
-            double value = Double.parseDouble(sensorValues[i]);
+		for (int i = 0; i < 6; i++) {
+			System.out.println("SENSOR VALUE" +sensorValues[i]);
+			sensorResult = new ArrayList<>();
+			double value = Double.parseDouble(sensorValues[i]);
 
-            if (sensorArr[i].getType().equals(Constants.RangeType.SHORT)){
-                sensorDistance = Constants.SHORT_RANGE_DISTANCE;
-                numGridsSensor= Constants.SHORT_RANGE_DISTANCE/10;
-            }
-            else if (sensorArr[i].getType().equals(Constants.RangeType.LONG)){
-                sensorDistance = Constants.LONG_RANGE_DISTANCE;
-                numGridsSensor=Constants.LONG_RANGE_DISTANCE/10;
-            }
+			if (sensorArr[i].getType().equals(Constants.RangeType.SHORT)){
+				sensorDistance = Constants.SHORT_RANGE_DISTANCE;
+				numGridsSensor= Constants.SHORT_RANGE_DISTANCE/10;
+			}
+			else if (sensorArr[i].getType().equals(Constants.RangeType.LONG)){
+				sensorDistance = Constants.LONG_RANGE_DISTANCE;
+				numGridsSensor=Constants.LONG_RANGE_DISTANCE/10;
+			}
 
 			// find number of grids that it can detect
 			double numGridInDeci = value / 10;
 			int numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
-			if (numGridDetected == numGridsSensor) {
-				for (int r = 0; r < numGridDetected; r++) {
+
+			System.out.println("num grid detected" + numGridDetected);
+			System.out.println("num of grids suppose to be" + numGridsSensor);
+			if (numGridDetected==0){
+				sensorResult.add(true);
+				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
+				for (int r = 0; r < numGridNotDetected; r++) {
+					sensorResult.add(null);
+				}
+			}
+			else if (numGridDetected >= numGridsSensor) {
+				for (int r = 0; r < numGridsSensor; r++) {
 					sensorResult.add(false);
 				}
 			} else {
