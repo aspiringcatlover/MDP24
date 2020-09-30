@@ -83,6 +83,22 @@ public class Exploration {
             }
             start=true;
             System.out.println("percentage covered:" + actual_percentage);
+            //check back of robot for unexplored grid
+
+            /*
+            if (!checkBackOfRobotAllExplored()){
+                System.out.println("robot run one round");
+                robot.turn(robot.robotRightDir());
+                senseMap();
+                robot.turn(robot.robotRightDir());
+                senseMap();
+                robot.turn(robot.robotRightDir());
+                senseMap();
+                robot.turn(robot.robotRightDir());
+                senseMap();
+                System.out.println("robot run one round finish");
+            }*/
+
             rightWallHugging();
             //fastest path to nearest unexplored grid
 
@@ -501,6 +517,15 @@ public class Exploration {
         // if no obstacle on the right, turn right and move forward
         if (!hasObstacle(robot.peekRobotRightDir())) {
             System.out.println("turn right.....");
+            //check left for unexplored grid
+            /*
+            if (!checkLeftOfRobotAllExplored()){
+                System.out.println("LEFT of robot have unexplored grid");
+                robot.turn(robot.robotLeftDir());
+                senseMap();
+                robot.turn(robot.robotRightDir());
+            }*/
+
             robot.turn(robot.robotRightDir());
             senseMap();
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
@@ -524,6 +549,15 @@ public class Exploration {
         }
         // else, turn left
         else {
+            //check right for unexplored grid
+            /*
+            if (!checkRightOfRobotAllExplored()){
+                System.out.println("RIGHT of robot have unexplored grid");
+                robot.turn(robot.robotRightDir());
+                senseMap();
+                robot.turn(robot.robotLeftDir());
+            }*/
+
             robot.turn(robot.peekRobotLeftDir());
 
             //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
@@ -850,6 +884,109 @@ public class Exploration {
         //manhattan heuristic
         return (Math.abs(xNow-xEnd) + Math.abs(yNow-yEnd));
     }
+
+    //return true if all explored
+    public boolean checkBackOfRobotAllExplored(){
+        int x,y;
+
+        switch (robot.getDirection()){
+            case WEST:
+                x=robot.getXCoord()+2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+            case EAST:
+                x=robot.getXCoord()-2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+            case SOUTH:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()+2;
+                return checkExploredRow(true,y,x);
+            case NORTH:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()-2;
+                return checkExploredRow(true,y,x);
+        }
+        return true;
+    }
+
+    //return true if all explored
+    private boolean checkExploredRow(boolean xIncrease, int y, int x){
+        GridCell gridCell;
+        if (xIncrease){
+            for (int i=0;i<3;i++){
+                gridCell = map.getGridCell(y,x+i);
+                if (gridCell==null)
+                    continue;
+                if (!gridCell.getExplored()) {
+                    System.out.println("check explored row: y=" + y +" "+false);
+                    return false;
+                }
+            }
+        }
+        else{
+            for (int i=0;i<3;i++){
+                gridCell = map.getGridCell(y+i,x);
+                if (gridCell==null)
+                    continue;
+                if (!gridCell.getExplored()) {
+                    return false;
+                }
+            }
+        }
+        System.out.println("check explored row true");
+        return true;
+    }
+
+    //return true if all explored
+    public boolean checkLeftOfRobotAllExplored(){
+        int x,y;
+
+        switch (robot.getDirection()){
+            case WEST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()-2;
+                return checkExploredRow(true,y,x);
+            case EAST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()+2;
+                return checkExploredRow(true,y,x);
+            case SOUTH:
+                x=robot.getXCoord()+2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+            case NORTH:
+                x=robot.getXCoord()-2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+        }
+        return true;
+    }
+
+    public boolean checkRightOfRobotAllExplored(){
+        int x,y;
+
+        switch (robot.getDirection()){
+            case WEST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()+2;
+                return checkExploredRow(true,y,x);
+            case EAST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()-2;
+                return checkExploredRow(true,y,x);
+            case SOUTH:
+                x=robot.getXCoord()-2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+            case NORTH:
+                x=robot.getXCoord()+2;
+                y=robot.getYCoord()-1;
+                return checkExploredRow(false,y,x);
+        }
+        return true;
+    }
+
 
     public float getActualPerc() {
         int totalGridCells = HEIGHT * WIDTH;
