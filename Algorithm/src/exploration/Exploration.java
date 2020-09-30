@@ -20,7 +20,7 @@ import static main.Constants.*;
 
 public class Exploration {
     private Robot robot;
-    private ArrayList<Constants.Movement> movement = new ArrayList<Constants.Movement>();
+    private ArrayList<Constants.Movement> movement = new ArrayList<>();
     private float goal_percentage;
     private float actual_percentage;
     private long endTime;
@@ -37,7 +37,7 @@ public class Exploration {
         actual_percentage = 0;
         long startTime = System.currentTimeMillis();
         endTime = startTime + timeLimitMs;
-        this.map = robot.getMap();
+        map = robot.getMap();
         this.steps_per_sec = steps_per_sec;
         this.imageRecognition = imageRecognition;
         map.setSteps_per_sec(steps_per_sec);
@@ -46,7 +46,7 @@ public class Exploration {
 
     public Robot explore(){
         GridCell nearestUnexploredGrid;
-        ArrayList<GridCell> path = null;
+        ArrayList<GridCell> path ;
         ArrayList<Movement> moveInstructions;
         boolean terminate=false;
         boolean start = false;
@@ -494,6 +494,7 @@ public class Exploration {
                         break;
                 }
                 map.updateMap(robot.getXCoord(),robot.getYCoord());
+                map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
 
             }
             clearParent();
@@ -503,6 +504,7 @@ public class Exploration {
         //update robot map
         robot.setMap(map);
         map.updateMap(robot.getXCoord(),robot.getYCoord());
+        map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         //map.displayDirection(robot.getYCoord(),robot.getXCoord(),robot.getDirection());
         //return robot
         return robot;
@@ -512,7 +514,7 @@ public class Exploration {
     }
 
 
-    public void rightWallHugging() {
+    private void rightWallHugging() {
         System.out.println("has obstacle: " + hasObstacle(robot.getDirection()));
         System.out.println("WTF IS GOIN ON HEER");
         // if no obstacle on the right, turn right and move forward
@@ -569,7 +571,7 @@ public class Exploration {
     }
 
 
-    public boolean hasObstacle(Direction dir){
+    private boolean hasObstacle(Direction dir){
         int x,y;
         GridCell gridCell;
 
@@ -618,7 +620,7 @@ public class Exploration {
     }
 
     // sense map using sensors and update explored space on map
-    public void senseMap() {
+    private void senseMap() {
         ArrayList<Boolean> sensorResult;
         Direction direction = robot.getDirection();
         Sensor sensor;
