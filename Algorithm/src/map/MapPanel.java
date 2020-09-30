@@ -37,6 +37,7 @@ public class MapPanel extends JPanel {
 			}
 		}
 		parseToSimulatorGrid(gridcells);
+		changed = true; 
 		/*
 		gridcells[0][0].setBackground(Color.RED);
 		gridcells[19][0].setBackground(Color.ORANGE);
@@ -138,6 +139,7 @@ public class MapPanel extends JPanel {
 		MDFHexString[1] = Integer.toString(length);
 
 		this.mdfString = MDFHexString;
+		System.out.println("1..."+MDFHexString[0]+"2...."+MDFHexString[1]+"3..."+MDFHexString[2]); 
 		return MDFHexString;
 
 	}
