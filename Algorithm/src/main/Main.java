@@ -36,18 +36,6 @@ public class Main {
 					JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {
 				realRun = true;
-				debug = JOptionPane.showConfirmDialog(null, "Print debug?", "Debug", JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE);
-				while (debug == JOptionPane.CLOSED_OPTION) {
-					debug = JOptionPane.showConfirmDialog(null, "Print debug?", "Debug", JOptionPane.YES_NO_OPTION,
-							JOptionPane.PLAIN_MESSAGE);
-				}
-				simulator = JOptionPane.showConfirmDialog(null, "Show Simulator?", "Simulator",
-						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-				while (simulator == JOptionPane.CLOSED_OPTION) {
-					simulator = JOptionPane.showConfirmDialog(null, "Show Simulator?", "Simulator",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-				}
 				if (simulator == JOptionPane.YES_OPTION) {
 					simulate = true;
 				}
