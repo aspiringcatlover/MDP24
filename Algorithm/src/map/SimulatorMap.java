@@ -104,7 +104,7 @@ public class SimulatorMap extends JFrame {
 		// drop down menu to select map
 		JLabel selectMap = new JLabel("Select map:");
 		settingsContainer.add(selectMap);
-		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5", "Map 6", "Map 7", "Map 8"};
+		String[] mapChoices = { "Map 1", "Map 2", "Map 3", "Map 4", "Map 5", "Map 6", "Map 7", "Map 8", "Map 9", "Map 10", "Map 11", "Map 12"};
 		final JComboBox<String> mapChoiceMenu = new JComboBox<String>(mapChoices);
 		mapChoiceMenu.setBackground(Color.PINK);
 		settingsContainer.add(mapChoiceMenu);
@@ -308,6 +308,18 @@ public class SimulatorMap extends JFrame {
 				case "Map 8":
 					mapChoice = 8;
 					break;
+				case "Map 9":
+					mapChoice = 9;
+					break;
+				case "Map 10":
+					mapChoice = 10;
+					break;
+				case "Map 11":
+					mapChoice = 11;
+					break;
+				case "Map 12":
+					mapChoice = 12;
+					break;
 				}
 
 				/*
@@ -475,9 +487,9 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+//			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
 //			System.out.println(path_name);
-			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);

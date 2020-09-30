@@ -425,7 +425,7 @@ public class Exploration {
                     senseMap();
                     map.updateMap(robot.getXCoord(),robot.getYCoord());
                     map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
-                    map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
+                    map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true); 
                 }
             }
 

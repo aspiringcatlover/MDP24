@@ -268,15 +268,15 @@ public class MapPanel extends JPanel {
 				if ((i == 0 && j == 0) || (i == 0 && j == 1) || (i == 0 && j == 2) || (i == 1 && j == 0)
 						|| (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)
 						|| (i == 2 && j == 2)) {
-					gridcells[i][j].setBackground(Color.yellow); // start
+					gridcells[i][j].setBackground(Color.YELLOW); // start
 				} else if ((i == 12 && j == 17) || (i == 12 && j == 18) || (i == 12 && j == 19) || (i == 13 && j == 17)
 						|| (i == 13 && j == 18) || (i == 13 && j == 19) || (i == 14 && j == 17) || (i == 14 && j == 18)
-						|| (i == 14 && j == 19)) {
+						|| (i == 14 && j == 19)) { 
 					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
 					if (gridcells[i][j].getExplored() == true) {
 						if (gridcells[i][j].getTravelled() == true)
-							gridcells[i][j].setBackground(Color.PINK); // travelled
+							gridcells[i][j].setBackground(Color.CYAN); // travelled
 						else if (gridcells[i][j].getObstacle() == true)
 							gridcells[i][j].setBackground(Color.RED); // blocked
 						else
@@ -289,15 +289,15 @@ public class MapPanel extends JPanel {
 		}
 
 		//robot itself
-		gridcells[y - 1][x - 1].setBackground(Color.orange);
-		gridcells[y - 1][x].setBackground(Color.orange);
-		gridcells[y - 1][x + 1].setBackground(Color.orange);
-		gridcells[y][x + 1].setBackground(Color.orange);
-		gridcells[y + 1][x + 1].setBackground(Color.orange);
-		gridcells[y + 1][x].setBackground(Color.orange);
-		gridcells[y + 1][x - 1].setBackground(Color.orange);
-		gridcells[y][x- 1].setBackground(Color.orange);
-		gridcells[y][x].setBackground(Color.orange);
+		gridcells[y - 1][x - 1].setBackground(Color.MAGENTA);
+		gridcells[y - 1][x].setBackground(Color.MAGENTA);
+		gridcells[y - 1][x + 1].setBackground(Color.MAGENTA);
+		gridcells[y][x + 1].setBackground(Color.MAGENTA);
+		gridcells[y + 1][x + 1].setBackground(Color.MAGENTA);
+		gridcells[y + 1][x].setBackground(Color.MAGENTA);
+		gridcells[y + 1][x - 1].setBackground(Color.MAGENTA);
+		gridcells[y][x- 1].setBackground(Color.MAGENTA);
+		gridcells[y][x].setBackground(Color.MAGENTA);
 
 		revalidate();
 		repaint();

@@ -81,10 +81,6 @@ public class GridCell extends JPanel {
 	public void setObstacle(boolean obstacle) {
 		this.obstacle = obstacle;
 	}
-	
-	public void setTravelled(boolean travelled) {
-		this.travelled = travelled;
-	}
 
 	public boolean getObstacle() {
 		return obstacle;
