@@ -58,6 +58,7 @@ public class Main {
 		}
 
 		if (realRun) {
+			SimulatorActualRobot simulatorActualRobot = new SimulatorActualRobot();
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
 			if (debug == JOptionPane.YES_OPTION) {
 				/*
@@ -72,6 +73,8 @@ public class Main {
 			}
 			try {
 				connectionManager.start();
+				//SimulatorRobot simulatorRobot
+
 			}
 			catch (Exception e) {
 				connectionManager.stopCM();

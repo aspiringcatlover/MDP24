@@ -13,10 +13,11 @@ public class SimulatorSensor extends Sensor {
 	private MapPanel map;
 
 	// constructor
-	public SimulatorSensor(RangeType type, SensorLocation location, MapPanel map) {
-		super(type, location);
+	public SimulatorSensor(RangeType type, SensorLocation location, MapPanel map, Direction direction, int x,int y) {
+		super(type, location, direction, x, y);
 		this.map = map;
-		setSensorInformation();
+		if (map!=null)
+			setSensorInformation();
 		// setSensorInformationAllFalse();
 	}
 

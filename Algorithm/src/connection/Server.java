@@ -10,23 +10,26 @@ public class Server {
 	// This server basically test communication for the main system
 	//this acts like the rpi --> msg from arduino/android
 	public static void main(String args[]) {
+		int counter=0;
 		ConnectionServer server = ConnectionServer.getInstance();
 		String message = "";
 		String sensorMessage = "";
 		boolean acknowledge = true;
-		Scanner sc = new Scanner (System.in);
+		Scanner sc = new Scanner(System.in);
 		boolean exploring = false, completed = false, fastestpath = false;
-		int pos[] = new int[] {1,1};
+		int pos[] = new int[]{1, 1};
 		int direction = 2, count = 0;
-		while (!completed) {
+		while (true) {
 //			message = "ES|";
 			System.out.print("Enter your command: ");
 			message = sc.nextLine();
 			server.sendMessage(message);
 			if (message.equals(Constants.START_EXPLORATION)) {
+				System.out.println("starting exploring");
 				exploring = true;
 			}
 			if (message.equals(Constants.FASTEST_PATH)) {
+				System.out.println("fastest path....");
 				fastestpath = true;
 			}
 			if (message.equals(Constants.SEND_ARENA)) {
@@ -34,6 +37,29 @@ public class Server {
 			}
 			while (exploring || fastestpath) {
 				message = server.receiveMessage();
+				System.out.println("receive..." + message);
+				//if (message.compareTo("W|")==0|| message.compareTo("A|")==0||message.compareTo("D|")==0){
+					//message = server.receiveMessage();
+					if (message.contains("Z|")) {
+						if (counter==12||counter==30||counter==43){
+							server.sendMessage("6,6,6,100,6,6");
+							System.out.println("sensor values send 6,6,6,100,6,6");
+						}else{
+							server.sendMessage("100,100,100,100,6,6");
+							System.out.println("sensor values send 100,100,100,100,6,6");
+						}
+
+						counter++;
+					}
+					if (message.contains("END EXPLORATION")){
+						break;
+					}
+			}
+				//System.out.println("starting exploring/fastest path....");
+
+
+
+
 				acknowledge = true;
 				System.out.println("Message received: " + message);
 				Pattern p = Pattern.compile("W\\d+[|]");
@@ -79,7 +105,7 @@ public class Server {
 						count++;
 					}
 					else {
-						sensorMessage = "84.0|84.0|84.0|3.0|3.0|84.0|1";
+						sensorMessage = "100,100,100,100,100,100";
 						count = 0;
 					}
 					try {
@@ -91,7 +117,8 @@ public class Server {
 					server.sendMessage(sensorMessage);
 				}
 			}
+		//System.out.println(server.receiveMessage());
 		}
-		System.out.println(server.receiveMessage());
+
 	}
-}
+

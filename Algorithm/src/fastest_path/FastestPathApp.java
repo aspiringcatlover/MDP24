@@ -24,10 +24,13 @@ public class FastestPathApp extends Thread{
     public FastestPathApp(Robot robot){
         this.robot = robot;
         pathFinder = new PathFinder(robot.getMap());
+        start();
     }
 
     @Override
     public void run(){
+        running.set(true);
+
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
 
         //get waypoint from map in the robot

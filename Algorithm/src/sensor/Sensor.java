@@ -4,6 +4,8 @@ import main.Constants.*;
 
 import java.util.ArrayList;
 
+import static main.Constants.Direction.*;
+import static main.Constants.Direction.NORTH;
 import static main.Constants.GRID_LONG_RANGE_DISTANCE;
 import static main.Constants.GRID_SHORT_RANGE_DISTANCE;
 
@@ -16,7 +18,7 @@ public abstract class Sensor {
     ArrayList<Boolean> obstaclePresent;
     Direction direction; // the direction the sensor is facing
 
-    public Sensor(RangeType type, SensorLocation location) {
+    public Sensor(RangeType type, SensorLocation location, Direction direction, int x, int y) {
         this.type = type;
         this.location = location;
         this.direction = Direction.EAST;
@@ -31,33 +33,121 @@ public abstract class Sensor {
                 // System.out.println("Cannot detect sensor");
         }
 
-        //assuming forward direction of robot wrt map is DOWN
-        switch(location) {
-            case LEFT_MIDDLE:
-                x = 1;
-                y = 3;
+        switch (direction){
+            case WEST:
+                switch (location){
+                    case LEFT_MIDDLE:
+                        this.x = x;
+                        this.y = y - 2;
+                        break;
+                    case RIGHT_DOWN:
+                        this.x = x+1;
+                        this.y = y+2;
+                        break;
+                    case UP_LEFT:
+                        this.x = x-2;
+                        this.y = y-1;
+                        break;
+                    case UP_MIDDLE:
+                        this.x = x - 2;
+                        this.y = y;
+                        break;
+                    case UP_RIGHT:
+                        this.x = x-2;
+                        this.y = y+1;
+                        break;
+                    case RIGHT_MIDDLE:
+                        this.x = x;
+                        this.y = y+2;
+                        break;
+                }
                 break;
-            case RIGHT_DOWN:
-                x = 0;
-                y = -1;
+            case EAST:
+                switch (location){
+                    case LEFT_MIDDLE:
+                        this.x = x;
+                        this.y = y+2;
+                        break;
+                    case RIGHT_DOWN:
+                        this.x = x-1;
+                        this.y = x-2;
+                        break;
+                    case UP_LEFT:
+                        this.x = x + 2;
+                        this.y = y+1;
+                        break;
+                    case UP_MIDDLE:
+                        this.x = x+2;
+                        this.y =y;
+                        break;
+                    case UP_RIGHT:
+                        this.x = x+2;
+                        this.y = y-1;
+                        break;
+                    case RIGHT_MIDDLE:
+                        this.x = x;
+                        this.y = y-2;
+                        break;
+                }
                 break;
-            case UP_LEFT:
-                x = 3;
-                y = 2;
+            case SOUTH:
+                switch (location){
+                    case LEFT_MIDDLE:
+                        this.x = x+2;
+                        this.y = y;
+                        break;
+                    case RIGHT_DOWN:
+                        this.x = x-2;
+                        this.y = x+1;
+                        break;
+                    case UP_LEFT:
+                        this.x = x + 1;
+                        this.y = y-2;
+                        break;
+                    case UP_MIDDLE:
+                        this.x = x;
+                        this.y =y-2;
+                        break;
+                    case UP_RIGHT:
+                        this.x = x-1;
+                        this.y = y-2;
+                        break;
+                    case RIGHT_MIDDLE:
+                        this.x = x-2;
+                        this.y = y;
+                        break;
+                }
                 break;
-            case UP_MIDDLE:
-                x = 3;
-                y = 1;
-                break;
-            case UP_RIGHT:
-                x = 3;
-                y = 0;
-                break;
-            case RIGHT_MIDDLE:
-                x = 1;
-                y = -1;
+            case NORTH:
+                switch (location){
+                    case LEFT_MIDDLE:
+                        this.x = x-2;
+                        this.y = y;
+                        break;
+                    case RIGHT_DOWN:
+                        this.x = x+2;
+                        this.y = x-1;
+                        break;
+                    case UP_LEFT:
+                        this.x = x - 1;
+                        this.y = y+2;
+                        break;
+                    case UP_MIDDLE:
+                        this.x = x;
+                        this.y =y+2;
+                        break;
+                    case UP_RIGHT:
+                        this.x = x+1;
+                        this.y = y+2;
+                        break;
+                    case RIGHT_MIDDLE:
+                        this.x = x+2;
+                        this.y = y;
+                        break;
+                }
                 break;
         }
+        this.direction = direction;
     }
 
     public Direction getDirection() {

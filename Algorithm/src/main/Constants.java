@@ -8,9 +8,9 @@ public final class Constants {
 	public static final int GOAL_Y_COORD = 17;
 
 	// Actual run constraints
-	public static final int TIME = -1;
+	public static final int TIME = 1000000;
 	public static final int PERCENTAGE = 100;
-	public static final int SPEED = 1;
+	public static final int SPEED = 9999;
 	public static final boolean IMAGE_REC = false;
 
 	// map direction wrt robot's forward direction
