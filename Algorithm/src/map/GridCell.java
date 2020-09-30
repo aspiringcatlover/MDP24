@@ -11,6 +11,7 @@ public class GridCell extends JPanel {
 
 	private boolean obstacle;
 	private boolean explored;
+	private boolean travelled;
 	private int ver_coord;//ver_coord: along length
 	private int hor_coord;//hor_coord: along width
 	private BasicArrowButton arrow;
@@ -80,6 +81,10 @@ public class GridCell extends JPanel {
 	public void setObstacle(boolean obstacle) {
 		this.obstacle = obstacle;
 	}
+	
+	public void setTravelled(boolean travelled) {
+		this.travelled = travelled;
+	}
 
 	public boolean getObstacle() {
 		return obstacle;
@@ -87,6 +92,10 @@ public class GridCell extends JPanel {
 	
 	public boolean getExplored() {
 		return explored;
+	}
+	
+	public boolean getTravelled() {
+		return travelled;
 	}
 	
 	public void setExplored(boolean explored) {

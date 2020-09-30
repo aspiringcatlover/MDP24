@@ -425,6 +425,7 @@ public class Exploration {
                     senseMap();
                     map.updateMap(robot.getXCoord(),robot.getYCoord());
                     map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
+                    map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
                 }
             }
 
@@ -594,6 +595,7 @@ public class Exploration {
 
                     //update explore
                     map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+                    
                 }
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
@@ -749,6 +751,7 @@ public class Exploration {
 
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
+        map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
 
 
     }

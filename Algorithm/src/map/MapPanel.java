@@ -165,6 +165,13 @@ public class MapPanel extends JPanel {
 			return;
 		this.gridcells[y][x].setExplored(explored);
 	}
+	
+	public void setTravellededForGridCell(int y, int x, Boolean travelled){
+		changed=true;
+		if (y<0||y>19||x<0||x>14||travelled==null)
+			return;
+		this.gridcells[y][x].setTravelled(travelled);
+	}
 
 	public void setGridCell(int y, int x, GridCell gridCell) {
 		changed=true;
@@ -194,14 +201,15 @@ public class MapPanel extends JPanel {
 					gridcells[i][j].setBackground(Color.GREEN); // goal
 				} else {
 					if (gridcells[i][j].getExplored() == true) {
-						if (gridcells[i][j].getObstacle() == true)
+						if (gridcells[i][j].getTravelled() == true)
+							gridcells[i][j].setBackground(Color.PINK); // travelled
+						else if (gridcells[i][j].getObstacle() == true)
 							gridcells[i][j].setBackground(Color.RED); // blocked
 						else
 							gridcells[i][j].setBackground(Color.BLUE); // explored
 					}
 					else
 					gridcells[i][j].setBackground(Color.WHITE); // unexplored
-
 				}
 			}
 		}
