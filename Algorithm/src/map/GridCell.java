@@ -102,6 +102,10 @@ public class GridCell extends JPanel {
 		this.explored = explored;
 	}
 
+	public void setTravelled(boolean travelled) {
+		this.travelled = travelled;
+	}
+
 	public boolean getWall(int ver_coord, int hor_coord) {
 		if (ver_coord < 0 || ver_coord > 14)
 			return true;
