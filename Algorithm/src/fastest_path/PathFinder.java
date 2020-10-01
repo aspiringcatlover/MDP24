@@ -31,6 +31,29 @@ public class PathFinder {
         return pathList;
     }
 
+    public ArrayList<GridCell> getShortestPathWithWaypoint(int xStart, int yStart, int xEnd, int yEnd){
+
+        getShortestPath(xStart,yStart,xEnd,yEnd);
+        if (xEnd!=14&&yEnd!=19){
+            int size = pathList.size();
+            GridCell gridCell = pathList.get(size-1);
+            int xWaypoint, yWaypoint;
+            xWaypoint = gridCell.getHorCoord();
+            yWaypoint = gridCell.getVerCoord();
+            ArrayList pathFirstPart = (ArrayList) pathList.clone();
+            pathList = new ArrayList<>();
+
+            closedList = new ArrayList<>();
+            getShortestPath(xEnd,yEnd,14,19);
+            pathList.remove(0);
+            pathFirstPart.addAll(pathList);
+            pathList = pathFirstPart;
+        }
+        return pathList;
+    }
+
+
+
     public ArrayList<Movement> getRobotInstructions(ArrayList<GridCell> path, Direction curDirection, int xStart, int yStart){
         Direction sampleRobot = curDirection; //this robot is just to provide reference of robot current direction, no link to simulator robot or real robot
         int xCoord, yCoord;
@@ -178,6 +201,17 @@ public class PathFinder {
         }
     }
 
+    /*
+    private void calculateHeuristicCostOfMap(int xStart, int yStart, int xEnd, int yEnd){
+        //System.out.println("height" + map.getX()+"width"+map.getWidth());
+        //check the get height get width is it correct
+        for (int y=0; y<20; y++){
+            for (int x=0; x<15; x++){
+                map.getGridCell(y,x).sethCost(calculateHeuristicCost(x,y,xEnd, yEnd));
+            }
+        }
+    }*/
+
     /**
      * after heuristic cost is calculated, then a* search will be performed
      */
@@ -214,6 +248,7 @@ public class PathFinder {
         GridCell lowestCostGridCell;
         Direction currentDirection;
         lowestCostGridCell = openList.poll();
+        System.out.println("lowest cost grid cell" + lowestCostGridCell.getHorCoord() + " "+lowestCostGridCell.getVerCoord());
 
         //check if map is fully explored.
         boolean mapExplored=false;
@@ -327,14 +362,14 @@ public class PathFinder {
                 openList = exploreNeighbourGrid(lowestCostGridCell,direction,currentDirection, openList, xEnd, yEnd, mapExplored);
             }
 
-            /*
+
             System.out.println("check");
 
             System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
             }
-            debugCounter++;*/
+            debugCounter++;
 
             //System.out.println("openlist" + Arrays.toString(openList.toArray()));
             lowestCostGridCell = openList.poll();
@@ -359,6 +394,7 @@ public class PathFinder {
 
 
         retracePath(endPoint);
+        clearParent();
         System.out.println(endPoint.getHorCoord());
         /*
         while (endNode.parent != null) {
@@ -538,6 +574,17 @@ public class PathFinder {
             current = current.getParentGrid();
         }
         //need to add start? no right
+    }
+
+    public void clearParent(){
+        GridCell gridCell;
+        for (int i=0;i<14;i++){
+            for (int r=0; r<19;r++){
+                gridCell= map.getGridCell(r,i);
+                gridCell.setParentGrid(null);
+                map.setGridCell(r,i,gridCell);
+            }
+        }
     }
 
     /**

@@ -97,7 +97,7 @@ public final class Constants {
 	public static final String MOVE_FORWARD = "W|";
 	public static final String TURN_LEFT = "A|";
 	public static final String TURN_RIGHT = "D|";
-	public static final String CALIBRATE = "C|";
+	public static final String CALIBRATE = "L|";
 	public static final String RIGHTALIGN = "B|";
 	public static final String END_TOUR = "N";
 

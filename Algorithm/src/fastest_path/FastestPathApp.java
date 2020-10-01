@@ -36,9 +36,10 @@ public class FastestPathApp extends Thread{
         //get waypoint from map in the robot
         int[] waypoint = robot.getMap().getWayPoint();
         System.out.println("way point" + waypoint[0]+" "+waypoint[1]);
-        ArrayList<GridCell> fastestPath = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(),waypoint[0], waypoint[1]);
+        ArrayList<GridCell> fastestPath1 = pathFinder.getShortestPathWithWaypoint(robot.getXCoord(), robot.getYCoord(),waypoint[0], waypoint[1]);
 
-        //convert path to instructions
+
+        //convert path to instructins
 
         if (running.get()) {
             completed.set(true);
@@ -47,10 +48,10 @@ public class FastestPathApp extends Thread{
             completed.set(false);
         }
         running.set(false);
-        ArrayList<Constants.Movement> robotMovements = pathFinder.getRobotInstructions(fastestPath, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
+        ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructions(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
 
-            arudinoInstructions(robotMovements);
+            arudinoInstructions(robotMovements1);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
                 //r.displayMessage("Sent message: " + Constants.END_TOUR, 1);
@@ -58,9 +59,9 @@ public class FastestPathApp extends Thread{
         }
         else{
             //update the simulator
-            simulatorInstructions(robotMovements);
-        }
+            simulatorInstructions(robotMovements1);
 
+        }
     }
 
     public static boolean getRunning() {

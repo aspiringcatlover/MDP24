@@ -508,7 +508,7 @@ public class SimulatorMap extends JFrame {
 			System.out.println();
 		}
 		fastestPathApp = new FastestPathApp(robot);
-        fastestPathApp.start();
+        //fastestPathApp.start();
     }
 
 	// refresh new map according to map choice
