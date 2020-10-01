@@ -486,6 +486,12 @@ public class Exploration {
             System.out.println("------------------------------------------------------");
         }
 
+        //send final mdf string
+        if(!isSimulated){
+            //send mdf shit
+            System.out.println("sending mdf string...");
+            ((ActualRobot) robot).sendMdfString();
+        }
 
            System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
         //if robot not at start point get shortest path to start point & move to start point
@@ -874,12 +880,15 @@ public class Exploration {
         map.displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
         map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
-        /*
+
         if(!isSimulated){
             //send mdf shit
-            System.out.println("sending mdf string...");
-            ((ActualRobot) robot).sendMdfString();
-        }*/
+            if (robot!=null){
+                System.out.println("sending mdf string...");
+                ((ActualRobot) robot).sendMdfString();
+            }
+
+        }
     }
 
     //get direction to face the unexplored grid

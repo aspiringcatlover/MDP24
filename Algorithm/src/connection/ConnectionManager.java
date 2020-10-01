@@ -34,6 +34,7 @@ public class ConnectionManager {
     // Initialise the realrobot here and connect to RPI
     public boolean connectToRPi() {
         if (robot == null){
+            //UNCOMMENT THIS
             robot = ActualRobot.getInstance();
         }
 

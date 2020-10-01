@@ -36,7 +36,7 @@ public class SimulatorRobot extends Robot {
 		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap, this.direction, x, y);
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, simulateMap, this.direction, x, y);
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_UP, simulateMap, this.direction, x, y);
 		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
@@ -157,7 +157,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setXCoord(x - 2);
 			sensorArr[2].setYCoord(y + 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x-1);
 			sensorArr[5].setYCoord(y + 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(WEST);
@@ -182,7 +182,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setXCoord(x + 2);
 			sensorArr[2].setYCoord(y - 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x+1);
 			sensorArr[5].setYCoord(y - 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(EAST);
@@ -208,7 +208,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setYCoord(y - 2);
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x - 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y-1);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(SOUTH);
 				simulatorSensor = (SimulatorSensor) sensor; // downcasting
@@ -243,7 +243,7 @@ public class SimulatorRobot extends Robot {
 			// System.out.println(sensorArr[2].getYCoord());
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x + 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y+1);
 			// System.out.println(sensorArr[5].getXCoord());
 			// System.out.println(sensorArr[5].getYCoord());
 			for (sensor.Sensor sensor : sensorArr) {

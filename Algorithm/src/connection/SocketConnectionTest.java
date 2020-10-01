@@ -29,7 +29,7 @@ public class SocketConnectionTest {
         sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, direction, x, y);
         // 2 short for right
         sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, direction, x, y);
-        sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE, direction, x, y);
+        //sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE, direction, x, y);
         String s;
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         if (debug == JOptionPane.YES_OPTION) {

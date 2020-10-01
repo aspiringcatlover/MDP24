@@ -85,6 +85,8 @@ public class MapPanel extends JPanel {
 		StringBuilder MDFBitStringPart1 = new StringBuilder();
 		StringBuilder MDFBitStringPart2 = new StringBuilder();
 
+		int numExploredGrid=0;
+
 
         //StringBuilder P1 = new StringBuilder(new String());
         String P1 = new String();
@@ -97,6 +99,7 @@ public class MapPanel extends JPanel {
                 if (gridcells[y][x].getExplored()){
                     //explored = 1
                     P1 += "1";
+                    numExploredGrid++;
                     if (gridcells[y][x].getObstacle()){
                         //obstacle=1
                         P2 += "1";
@@ -210,10 +213,11 @@ public class MapPanel extends JPanel {
 		MDFHexString[1] = Integer.toString(length);*/
         String[] mdf = new String[3];
         mdf[0]= hexString;
+        mdf[1]= Integer.toString(numExploredGrid);
         mdf[2] = hexStringP2;
 		//this.mdfString[0] = hexString;
         //this.mdfString[2] = hexStringP2;
-		System.out.println("1..."+hexString+"2...."+hexStringP2);
+		System.out.println("1..."+hexString+"length: " + numExploredGrid+"2...."+hexStringP2);
 		return mdf;
 
 	}

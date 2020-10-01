@@ -59,7 +59,7 @@ public class ActualRobot extends Robot {
 		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, this.direction, x, y);
-		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_MIDDLE, this.direction, x, y);
+		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_UP, this.direction, x, y);
 	}
 
 	// check if robot sensor detects an obstacle in the specified direction
@@ -133,7 +133,7 @@ public class ActualRobot extends Robot {
 			sensorArr[2].setXCoord(x - 2);
 			sensorArr[2].setYCoord(y + 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x-1);
 			sensorArr[5].setYCoord(y + 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(WEST);
@@ -156,7 +156,7 @@ public class ActualRobot extends Robot {
 			sensorArr[2].setXCoord(x + 2);
 			sensorArr[2].setYCoord(y - 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x+1);
 			sensorArr[5].setYCoord(y - 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(EAST);
@@ -180,7 +180,7 @@ public class ActualRobot extends Robot {
 			sensorArr[2].setYCoord(y - 2);
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x - 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y-1);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(SOUTH);
 			}
@@ -213,7 +213,7 @@ public class ActualRobot extends Robot {
 			// System.out.println(sensorArr[2].getYCoord());
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x + 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y+1);
 			// System.out.println(sensorArr[5].getXCoord());
 			// System.out.println(sensorArr[5].getYCoord());
 			for (sensor.Sensor sensor : sensorArr) {
@@ -334,7 +334,11 @@ public class ActualRobot extends Robot {
 
 	public void sendMdfString(){
 		String[] arr = getMdfString();
-		socketConnection.sendMessage("{\"map\":[{\"explored\": \"" + arr[0] + ",\"obstacle\":\"" + arr[2] + "\"}]}");
+		if (arr!=null){
+			socketConnection.sendMessage("M{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
+					"\"}]}");
+		}
+
 	}
 
 	@Override
@@ -373,11 +377,13 @@ public class ActualRobot extends Robot {
 		boolean completed = false;
 
         if  (!completed) {
-            s = socketConnection.receiveMessage().trim();
-			arr = s.split(",");
+            s = socketConnection.receiveMessage();
+            System.out.println("MESSAGE>>>> " + s);
+			sensorValues = s.split(",");
+			System.out.println("length of sensor values" + sensorValues.length);
 			//break;
         }
-        System.arraycopy(arr, 0, sensorValues, 0, 6);
+//        System.arraycopy(arr, 0, sensorValues, 0, 6);
         this.sensePosition[0] = x;
         this.sensePosition[1] = y;
         this.sensePosition[2] = getDirection().bearing;

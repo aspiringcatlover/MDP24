@@ -53,7 +53,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-			case RIGHT_MIDDLE:
+			case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y + i, x);
@@ -112,7 +112,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x - i);
@@ -177,7 +177,7 @@ public class SimulatorSensor extends Sensor {
 				 */
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y - i, x);
@@ -235,7 +235,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x + i);
