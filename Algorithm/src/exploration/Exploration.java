@@ -699,7 +699,8 @@ public class Exploration {
 
     // sense map using sensors and update explored space on map
     private void senseMap() {
-        ArrayList<Boolean> sensorResult;
+        ArrayList<Boolean> sensorResultArrayList;
+        Boolean sensorResult;
         Direction direction = robot.getDirection();
         Sensor sensor;
         GridCell gridCell;
@@ -709,44 +710,108 @@ public class Exploration {
             case WEST:
                 // LEFT_MIDDLE(3)
                 sensor = robot.getIndividualSensor(3);
-                sensorResult = sensor.getSensorInformation();
+                sensorResultArrayList = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-
-                    if (sensorResult.get(i)==null)
+                    sensorResult =sensorResultArrayList.get(i);
+                    System.out.println("sensor corrdinate: " + x + ", "+(y-i)+ "sensor result " + sensorResultArrayList.get(i));
+                    if (sensorResult==null)
                         break;
+
                     //update information from sensor
-                    map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
+                    try{
+                        if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
+                            continue;
+                        }
+                    }catch (NullPointerException e){
+
+                    }
+
+                    map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+                    //if no obstacle on the existing, then set ; if not dont update the update
+                    try{
+                        if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getObstacle()){
+                            continue;
+                        }
+                    }catch (NullPointerException e){
+                        map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                    }
+
+
+
+                    map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
 
                     //update explore
-                    map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+
 
                 }
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
+
+                        try {
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getObstacle()){
+                                continue;
+                            }
+                        } catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResultArrayList.get(i));
+                        }
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResultArrayList.get(i));
+
+
                     }
                 }
-                // RIGHT_MIDDLE(5),  LEFT_DOWN(4)
+                // RIGHT_Up(5),  right_DOWN(4)
                 for (int loc = 4; loc < 6; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
+
                     }
                 }
                 break;
@@ -754,83 +819,194 @@ public class Exploration {
                 // LEFT_MIDDLE(3), LEFT_DOWN(4)
 
                     sensor = robot.getIndividualSensor(3);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x=sensor.getXCoord();
                     y=sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResult.get(i));
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResult.get(i));
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, sensorResultArrayList.get(i));
+
+
                     }
 
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResult.get(i));
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                        }
+
+                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
+
                     }
                 }
                 // RIGHT_MIDDLE(5)
                 for (int loc = 4; loc < 6; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i) == null)
+                        System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i) == null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, sensorResult.get(i));
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, sensorResultArrayList.get(i));
+
+
                     }
                 }
                 break;
             case EAST:
                 // LEFT_MIDDLE(3), LEFT_DOWN(4)
                     sensor = robot.getIndividualSensor(3);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
+                        System.out.println("sensor corrdinate: " + (x) + ", "+(y+i)+ "sensor result " + sensorResultArrayList.get(i));
                         //System.out.println("hmm" + i);
-                        if (sensorResult.get(i)==null)
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResult.get(i));
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                        }
+
+                        map.setObstacleForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
+
                     }
 
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
+
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
+
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResultArrayList.get(i));
+
+
                     }
                 }
                 // RIGHT_MIDDLE(5)
                 for (int loc = 4; loc < 6; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i) == null)
+                        System.out.println("sensor corrdinate: " + (x) + ", "+(y-i)+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i) == null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), sensorResult.get(i));
+                        try{
+                            if (map.getGridCell(sensor.getYCoord() - i, sensor.getXCoord()).getExplored()){
+                                continue;
+                            }
+                        } catch (NullPointerException e){
+                        }
                         map.setExploredForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord() - i, sensor.getXCoord()).getObstacle()){
+                                continue;
+                            }
+                        } catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
+
                     }
                 }
                 break;
@@ -838,38 +1014,91 @@ public class Exploration {
                 // LEFT_MIDDLE(3), LEFT_DOWN(4)
 
                 sensor = robot.getIndividualSensor(3);
-                sensorResult = sensor.getSensorInformation();
+                sensorResultArrayList = sensor.getSensorInformation();
                 x = sensor.getXCoord();
                 y = sensor.getYCoord();
                 for (int i = 0; i < sensor.getGridDistance(); i++) {
-                    if (sensorResult.get(i)==null)
+                    System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                    if (sensorResultArrayList.get(i)==null)
                         break;
-                    map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResult.get(i));
+
+                    try{
+                        if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
+                            continue;
+                        }
+                    }catch (NullPointerException e){
+                    }
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
+                    try{
+                        if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getObstacle()){
+                            continue;
+                        }
+                    }catch (NullPointerException e){
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResultArrayList.get(i));
+                    }
+
+
+                    map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, sensorResultArrayList.get(i));
+
+
                 }
 
                 // UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2)
                 for (int loc = 0; loc < 3; loc++) {
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     x = sensor.getXCoord();
                     y = sensor.getYCoord();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i)==null)
+                        System.out.println("sensor corrdinate: " + (x) + ", "+(y-i)+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i)==null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResult.get(i));
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
                         map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
+                        try{
+                            if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResultArrayList.get(i));
+                        }
+
+
+                        map.setObstacleForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), sensorResultArrayList.get(i));
+
                     }
                 }
                 // RIGHT_MIDDLE(5)
                 for (int loc = 4; loc < 6; loc++){
                     sensor = robot.getIndividualSensor(loc);
-                    sensorResult = sensor.getSensorInformation();
+                    sensorResultArrayList = sensor.getSensorInformation();
                     for (int i = 0; i < sensor.getGridDistance(); i++) {
-                        if (sensorResult.get(i) == null)
+                        System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
+                        if (sensorResultArrayList.get(i) == null)
                             break;
-                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, sensorResult.get(i));
+                        try {
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord() - i).getExplored()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                        }
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, true);
+                        try {
+                            if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord() - i).getObstacle()){
+                                continue;
+                            }
+                        }catch (NullPointerException e){
+                            map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, sensorResultArrayList.get(i));
+                        }
+
+                        map.setObstacleForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, sensorResultArrayList.get(i));
+
+
                     }
                 }
                 break;

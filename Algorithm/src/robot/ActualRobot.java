@@ -221,6 +221,11 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		}
+		try {
+			// ms timeout
+			Thread.sleep(1000); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
 		updateSensor();
 	}
 
@@ -403,13 +408,35 @@ public class ActualRobot extends Robot {
 				numGridsSensor=Constants.LONG_RANGE_DISTANCE/10;
 			}
 
-			// find number of grids that it can detect
+			double calibrateValue;
+			double calibrateNumGridInDeci;
+			int calibrateNumGridDetected, numGridDetected;
+
+			//raw value from sensor
 			double numGridInDeci = value / 10;
-			int numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
+			numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
+			// find number of grids that it can detect
+			/*
+			calibrateValue = value -2; //try
+			calibrateNumGridInDeci = calibrateValue/10;
+			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
+			if (calibrateNumGridDetected!=numGridDetected){
+				System.out.println("calibrate grid...." + calibrateNumGridDetected);
+				numGridDetected = calibrateNumGridDetected;
+			}
+
+			calibrateValue = value +2; //try
+			calibrateNumGridInDeci = calibrateValue/10;
+			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
+			if (calibrateNumGridDetected!=numGridDetected){
+				System.out.println("calibrate grid...." + calibrateNumGridDetected);
+				numGridDetected = calibrateNumGridDetected;
+			}*/
 
 			System.out.println("num grid detected" + numGridDetected);
 			System.out.println("num of grids suppose to be" + numGridsSensor);
 			if (numGridDetected==0){
+				System.out.println("grid in front....");
 				sensorResult.add(true);
 				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
 				for (int r = 0; r < numGridNotDetected; r++) {
@@ -431,7 +458,15 @@ public class ActualRobot extends Robot {
 				}
 
 			}
+			System.out.println("SENSOR VALUES IN SENSOR");
 			sensorArr[i].updateSensor(sensorResult);
+		}
+
+		for (int r=0; r<6; r++){
+			System.out.println("________________NEXT");
+			for (Boolean sresult: sensorArr[r].getSensorInformation()){
+				System.out.println(sresult);
+			}
 		}
 
 	}
