@@ -488,8 +488,9 @@ public class Exploration {
 
         //send final mdf string
         robot.setMap(map);
-        ActualRobot actualRobot = (ActualRobot) robot;
+
         if(!isSimulated){
+            ActualRobot actualRobot = (ActualRobot) robot;
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
@@ -525,8 +526,10 @@ public class Exploration {
             clearParent();
         }
 
-        System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
+        System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
         //update robot map
+        resetRobotDirection();
+        System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
         robot.setMap(map);
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
@@ -538,6 +541,18 @@ public class Exploration {
 
     }
 
+    private void resetRobotDirection(){
+        switch (robot.getDirection()){
+            case SOUTH: robot.turn(robot.robotRightDir());
+                robot.turn(robot.robotRightDir());
+                break;
+            case WEST:
+                robot.turn(robot.robotRightDir());
+                break;
+            case EAST: robot.turn(robot.robotLeftDir());
+                break;
+        }
+    }
 
     private void rightWallHugging() {
         System.out.println("has obstacle: " + hasObstacle(robot.getDirection()));

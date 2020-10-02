@@ -66,6 +66,8 @@ public class ExplorationApp extends Thread{
         else {
             completed.set(false);
         }
+
+        SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
         stopThread();
 
         /*

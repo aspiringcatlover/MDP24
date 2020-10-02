@@ -120,4 +120,24 @@ public class FastestPathApp extends Thread{
         SocketConnection.getInstance().sendMessage(msg);
     }
 
+    public void arudinoInstructionsStepByStep(ArrayList<Constants.Movement> robotMovements){
+        // Append all the movement message into one full string and send at once
+        Constants.Direction direction;
+        int count = 0;
+        for (Constants.Movement move: robotMovements){
+            if (move== Constants.Movement.MOVE_FORWARD){
+                robot.moveForward();
+            }
+            else if (move == Constants.Movement.TURN_LEFT){
+                robot.turn(robot.robotLeftDir());
+            }
+            else if (move== Constants.Movement.TURN_RIGHT){
+                robot.turn(robot.robotRightDir());
+            }
+            direction = robot.getDirection();
+            robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
+            robot.getMap().displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
+        }
+    }
+
 }
