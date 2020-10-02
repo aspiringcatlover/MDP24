@@ -103,4 +103,7 @@ public final class Constants {
 
 	// Connection Acknowledge
 	public static final String IMAGE_ACK = "D";
+
+	//num of sensor values to average
+	public static final int SENSOR_VALUES = 10;
 }

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static main.Constants.Direction.*;
 import static main.Constants.MOVE_FORWARD;
+import static main.Constants.SENSOR_VALUES;
 
 public class ActualRobot extends Robot {
 	private ActualSensor[] sensorArr = new ActualSensor[6];
@@ -363,7 +364,137 @@ public class ActualRobot extends Robot {
 		System.out.println("-------init sensor");
 	}
 
-	private void updateSensor() {
+	private String[] getSensorValue(){
+		String s;
+		String[] arr = null;
+		socketConnection.sendMessage(Constants.SENSE_ALL);
+		System.out.println("sense to arudino in update sensor");
+		boolean completed = false;
+
+		if  (!completed) {
+			s = socketConnection.receiveMessage();
+			System.out.println("MESSAGE>>>> " + s);
+			arr = s.split(",");
+			System.out.println("length of sensor values" + sensorValues.length);
+			//break;
+		}
+		return arr;
+	}
+
+	private void updateSensor(){
+		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		int sensorDistance, numGridsSensor = 0, numGridNotDetected;
+		boolean obstacleDetected = false;
+    	int[] total = new int[6];
+
+    	//init array
+		for (int i=0; i<6;i++){
+			total[i] = 0;
+		}
+
+    	ArrayList<String[]> sensorValueArrayList= new ArrayList<>();
+    	for (int i=0; i<SENSOR_VALUES;i++){
+			sensorValueArrayList.add(getSensorValue());
+			try {
+				// ms timeout
+				Thread.sleep(20); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
+
+    	//get total
+		for (String[] indiValue: sensorValueArrayList){
+			for (int i=0; i<6;i++){
+				total[i] += Integer.parseInt(indiValue[i]);
+			}
+		}
+
+		//get average
+		for (int i=0; i<6;i++){
+			sensorValues[i] = Integer.toString(total[i]/SENSOR_VALUES);
+			System.out.println("after average sensor "+ i +" :" + sensorValues[i]);
+			//maybe can change sensorvalues to int
+		}
+
+		for (int i = 0; i < 6; i++) {
+			System.out.println("SENSOR VALUE" +sensorValues[i]);
+			sensorResult = new ArrayList<>();
+			double value = Double.parseDouble(sensorValues[i]);
+
+			if (sensorArr[i].getType().equals(Constants.RangeType.SHORT)){
+				sensorDistance = Constants.SHORT_RANGE_DISTANCE;
+				numGridsSensor= Constants.SHORT_RANGE_DISTANCE/10;
+			}
+			else if (sensorArr[i].getType().equals(Constants.RangeType.LONG)){
+				sensorDistance = Constants.LONG_RANGE_DISTANCE;
+				numGridsSensor=Constants.LONG_RANGE_DISTANCE/10;
+			}
+
+			double calibrateValue;
+			double calibrateNumGridInDeci;
+			int calibrateNumGridDetected, numGridDetected;
+
+			//raw value from sensor
+			double numGridInDeci = value / 10;
+			numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
+			// find number of grids that it can detect
+			/*
+			calibrateValue = value -2; //try
+			calibrateNumGridInDeci = calibrateValue/10;
+			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
+			if (calibrateNumGridDetected!=numGridDetected){
+				System.out.println("calibrate grid...." + calibrateNumGridDetected);
+				numGridDetected = calibrateNumGridDetected;
+			}
+
+			calibrateValue = value +2; //try
+			calibrateNumGridInDeci = calibrateValue/10;
+			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
+			if (calibrateNumGridDetected!=numGridDetected){
+				System.out.println("calibrate grid...." + calibrateNumGridDetected);
+				numGridDetected = calibrateNumGridDetected;
+			}*/
+
+			System.out.println("num grid detected" + numGridDetected);
+			System.out.println("num of grids suppose to be" + numGridsSensor);
+			if (numGridDetected==0){
+				System.out.println("grid in front....");
+				sensorResult.add(true);
+				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
+				for (int r = 0; r < numGridNotDetected; r++) {
+					sensorResult.add(null);
+				}
+			}
+			else if (numGridDetected >= numGridsSensor) {
+				for (int r = 0; r < numGridsSensor; r++) {
+					sensorResult.add(false);
+				}
+			} else {
+				for (int r = 0; r < numGridDetected; r++) {
+					sensorResult.add(false);
+				}
+				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
+				sensorResult.add(true);
+				for (int r = 0; r < numGridNotDetected; r++) {
+					sensorResult.add(null);
+				}
+
+			}
+			System.out.println("SENSOR VALUES IN SENSOR");
+			sensorArr[i].updateSensor(sensorResult);
+		}
+
+		for (int r=0; r<6; r++){
+			System.out.println("________________NEXT");
+			for (Boolean sresult: sensorArr[r].getSensorInformation()){
+				System.out.println(sresult);
+			}
+		}
+
+
+	}
+
+	private void updateSensor1() {
 		/*
 		 * get sensor value from arudino, put them into ArrayList<boolean> into their
 		 * respective sensor true --> obstacle present false --> obstacle not present

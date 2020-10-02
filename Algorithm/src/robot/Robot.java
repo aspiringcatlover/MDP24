@@ -101,6 +101,8 @@ public abstract class Robot {
 
 
     public String[] getMdfString() {
+        //ask map to calculate
+        this.mdfString = map.getMdfString();
         return mdfString;
     }
 
