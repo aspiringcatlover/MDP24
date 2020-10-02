@@ -223,7 +223,7 @@ public class ActualRobot extends Robot {
 		}
 		try {
 			// ms timeout
-			Thread.sleep(1000); // Customize your refresh time
+			Thread.sleep(2000); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 		updateSensor();
@@ -340,6 +340,7 @@ public class ActualRobot extends Robot {
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){
+			System.out.println("send mdf string in actual robot");
 			socketConnection.sendMessage("M{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
 					"\"}]}");
 		}

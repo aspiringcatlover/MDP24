@@ -487,6 +487,7 @@ public class Exploration {
         }
 
         //send final mdf string
+        robot.setMap(map);
         if(!isSimulated){
             //send mdf shit
             System.out.println("sending mdf string...");
@@ -1110,6 +1111,7 @@ public class Exploration {
         map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
 
+        robot.setMap(map);
         if(!isSimulated){
             //send mdf shit
             if (robot!=null){
