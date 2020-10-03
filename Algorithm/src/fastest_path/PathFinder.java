@@ -34,7 +34,7 @@ public class PathFinder {
     public ArrayList<GridCell> getShortestPathWithWaypoint(int xStart, int yStart, int xEnd, int yEnd){
 
         getShortestPath(xStart,yStart,xEnd,yEnd);
-        if (xEnd!=14&&yEnd!=19){
+        if (xEnd!=14||yEnd!=19){
             int size = pathList.size();
             GridCell gridCell = pathList.get(size-1);
             int xWaypoint, yWaypoint;
@@ -43,9 +43,10 @@ public class PathFinder {
             ArrayList pathFirstPart = (ArrayList) pathList.clone();
             pathList = new ArrayList<>();
 
+            System.out.println("what is happening here");
             closedList = new ArrayList<>();
-            getShortestPath(xEnd,yEnd,14,19);
-            pathList.remove(0);
+            getShortestPath(xWaypoint,yWaypoint,14,19);
+            //pathList.remove(0);
             pathFirstPart.addAll(pathList);
             pathList = pathFirstPart;
         }
