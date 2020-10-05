@@ -50,6 +50,7 @@ public class Exploration {
         ArrayList<Movement> moveInstructions;
         boolean terminate=false;
         boolean start = false;
+        int calibrateCounter =0;
 
 
 
@@ -71,9 +72,20 @@ public class Exploration {
             System.out.println("before sense map");
             //aft sense map calibrate
             senseMap();
-            if (hasObstacleOnRight()){
+            if (hasObstacleOnRight()&&hasObstacleOnFront()){
+                System.out.println("obstacle on corner...calibrate");
+                robot.calibrate();
+                //calibrateCounter= 0;
+            }else{
+                //calibrateCounter++;
+            }
+            if (hasObstacleOnRight()&&calibrateCounter==3){
+                //&&calibrateCounter==3
                 System.out.println("obstacle on right...calibrate");
                 robot.calibrate();
+                calibrateCounter= 0;
+            }else{
+                calibrateCounter++;
             }
             System.out.println("after sense map");
             for (int col = 0; col < WIDTH; col++) {
@@ -613,6 +625,33 @@ public class Exploration {
             movement.add(Constants.Movement.TURN_LEFT);
 
         }
+    }
+
+
+
+    public boolean hasObstacleOnFront(){
+        System.out.println("check if hav 3 obstacle on the right");
+        int x,y;
+
+        switch (robot.getDirection()){
+            case WEST:
+                x=robot.getXCoord()-2;
+                y=robot.getYCoord()-1;
+                return checkObstacleWholeRow(false,y,x);
+            case EAST:
+                x=robot.getXCoord()+2;
+                y=robot.getYCoord()-1;
+                return checkObstacleWholeRow(false,y,x);
+            case SOUTH:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()-2;
+                return checkObstacleWholeRow(true,y,x);
+            case NORTH:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()+2;
+                return checkObstacleWholeRow(true,y,x);
+        }
+        return true;
     }
 
 

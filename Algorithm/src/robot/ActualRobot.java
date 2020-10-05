@@ -395,11 +395,12 @@ public class ActualRobot extends Robot {
     	ArrayList<String[]> sensorValueArrayList= new ArrayList<>();
     	for (int i=0; i<SENSOR_VALUES;i++){
 			sensorValueArrayList.add(getSensorValue());
+			/*
 			try {
 				// ms timeout
 				Thread.sleep(20); // Customize your refresh time
 			} catch (InterruptedException e) {
-			}
+			}*/
 		}
 
     	//get total
