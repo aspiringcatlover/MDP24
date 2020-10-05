@@ -2,6 +2,7 @@ package robot;
 
 import connection.SocketConnection;
 import main.Constants;
+import map.GridCell;
 import map.MapPanel;
 import map.SimulatorActualRobot;
 import map.SimulatorMap;
@@ -10,6 +11,7 @@ import sensor.Sensor;
 import sensor.SimulatorSensor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 import static main.Constants.Direction.*;
@@ -107,6 +109,11 @@ public class ActualRobot extends Robot {
             default:
                 break;
         }
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
         updateSensor();
         //acknowledge();
     }
@@ -222,11 +229,25 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		}
+
 		try {
 			// ms timeout
-			Thread.sleep(2000); // Customize your refresh time
+			Thread.sleep(10); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
+		//calibrate here
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			//calibrateCounter++;
+		}
+		else if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
+
 		updateSensor();
 	}
 
@@ -241,6 +262,17 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotRightDir() {
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			//calibrateCounter++;
+		}
+		else if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		socketConnection.sendMessage(Constants.TURN_RIGHT);
 		// acknowledge();
 		int bearing;
@@ -292,6 +324,17 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotLeftDir() {
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			//calibrateCounter++;
+		}
+		else if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		socketConnection.sendMessage(Constants.TURN_LEFT);
 		// send instruction to arduino to turn left
 		// acknowledge();
@@ -335,6 +378,11 @@ public class ActualRobot extends Robot {
 			default:
 				return null;
 		}
+	}
+
+	@Override
+	public void calibrateFront() {
+		socketConnection.sendMessage(Constants.FRONT_CALIBRATION);
 	}
 
 
@@ -403,19 +451,45 @@ public class ActualRobot extends Robot {
 			}*/
 		}
 
-    	//get total
+		ArrayList<Integer> individualValue1 = new ArrayList<>();
+		ArrayList<Integer> individualValue2 = new ArrayList<>();
+		ArrayList<Integer> individualValue3 = new ArrayList<>();
+		ArrayList<Integer> individualValue4 = new ArrayList<>();
+		ArrayList<Integer> individualValue5 = new ArrayList<>();
+		ArrayList<Integer> individualValue0 = new ArrayList<>();
 		for (String[] indiValue: sensorValueArrayList){
-			for (int i=0; i<6;i++){
-				total[i] += Integer.parseInt(indiValue[i]);
-			}
+			individualValue0.add(Integer.parseInt(indiValue[0]));
+			individualValue1.add(Integer.parseInt(indiValue[1]));
+			individualValue2.add(Integer.parseInt(indiValue[2]));
+			individualValue3.add(Integer.parseInt(indiValue[3]));
+			individualValue4.add(Integer.parseInt(indiValue[4]));
+			individualValue5.add(Integer.parseInt(indiValue[5]));
 		}
+
+		Collections.sort(individualValue0);
+		Collections.sort(individualValue1);
+		Collections.sort(individualValue2);
+		Collections.sort(individualValue3);
+		Collections.sort(individualValue4);
+		Collections.sort(individualValue5);
+
+		sensorValues[0]=Integer.toString((individualValue0.get(4) + individualValue0.get(5))/2);
+		sensorValues[1]=Integer.toString((individualValue1.get(4) + individualValue1.get(5))/2);
+		sensorValues[2]=Integer.toString((individualValue2.get(4) + individualValue2.get(5))/2);
+		sensorValues[3]=Integer.toString((individualValue3.get(4) + individualValue3.get(5))/2);
+		sensorValues[4]=Integer.toString((individualValue4.get(4) + individualValue4.get(5))/2);
+		sensorValues[5]=Integer.toString((individualValue5.get(4) + individualValue5.get(5))/2);
+
+
+
+		/*
 
 		//get average
 		for (int i=0; i<6;i++){
 			sensorValues[i] = Integer.toString(total[i]/SENSOR_VALUES);
 			System.out.println("after average sensor "+ i +" :" + sensorValues[i]);
 			//maybe can change sensorvalues to int
-		}
+		}*/
 
 		for (int i = 0; i < 6; i++) {
 			System.out.println("SENSOR VALUE" +sensorValues[i]);
@@ -603,6 +677,86 @@ public class ActualRobot extends Robot {
 		}
 
 	}
+
+
+
+
+	public boolean hasObstacleOnFront(){
+		System.out.println("check if hav 3 obstacle on the right");
+		int x,y;
+
+		switch (actualRobot.getDirection()){
+			case WEST:
+				x=actualRobot.getXCoord()-2;
+				y=actualRobot.getYCoord()-1;
+				return checkObstacleWholeRow(false,y,x);
+			case EAST:
+				x=actualRobot.getXCoord()+2;
+				y=actualRobot.getYCoord()-1;
+				return checkObstacleWholeRow(false,y,x);
+			case SOUTH:
+				x=actualRobot.getXCoord()-1;
+				y=actualRobot.getYCoord()-2;
+				return checkObstacleWholeRow(true,y,x);
+			case NORTH:
+				x=actualRobot.getXCoord()-1;
+				y=actualRobot.getYCoord()+2;
+				return checkObstacleWholeRow(true,y,x);
+		}
+		return true;
+	}
+
+
+	public boolean hasObstacleOnRight(){
+		System.out.println("check if hav 3 obstacle on the right");
+		int x,y;
+
+		switch (actualRobot.getDirection()){
+			case WEST:
+				x=actualRobot.getXCoord()-1;
+				y=actualRobot.getYCoord()+2;
+				return checkObstacleWholeRow(true,y,x);
+			case EAST:
+				x=actualRobot.getXCoord()-1;
+				y=actualRobot.getYCoord()-2;
+				return checkObstacleWholeRow(true,y,x);
+			case SOUTH:
+				x=actualRobot.getXCoord()-2;
+				y=actualRobot.getYCoord()-1;
+				return checkObstacleWholeRow(false,y,x);
+			case NORTH:
+				x=actualRobot.getXCoord()+2;
+				y=actualRobot.getYCoord()-1;
+				return checkObstacleWholeRow(false,y,x);
+		}
+		return true;
+	}
+
+	private boolean checkObstacleWholeRow(boolean xIncrease, int y, int x){
+		GridCell gridCell;
+		if (xIncrease){
+			for (int i=0;i<3;i++){
+				gridCell = map.getGridCell(y,x+i);
+				if (gridCell != null && !gridCell.getObstacle()) {
+					System.out.println("check obstacle row: y=" + y +" "+true);
+					return false;
+				}
+			}
+		}
+		else{
+			for (int i=0;i<3;i++){
+				gridCell = map.getGridCell(y+i,x);
+				if (gridCell != null && !gridCell.getObstacle()) {
+					return false;
+				}
+			}
+		}
+		System.out.println("check obstacle row false");
+		return true;
+	}
+
+
+
 
 
 }

@@ -292,6 +292,11 @@ public class SimulatorRobot extends Robot {
 		return HelperDir(Movement.TURN_LEFT);
 	}
 
+	@Override
+	public void calibrateFront() {
+
+	}
+
 	/*
 	 * --> to translate from coordinate to movement public Movement
 	 * HelperDir(Direction dir){ if (direction.equals(dir)) return

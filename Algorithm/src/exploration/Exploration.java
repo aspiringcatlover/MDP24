@@ -72,22 +72,8 @@ public class Exploration {
             System.out.println("before sense map");
             //aft sense map calibrate
             senseMap();
-            if (hasObstacleOnRight()&&hasObstacleOnFront()){
-                System.out.println("obstacle on corner...calibrate");
-                robot.calibrate();
-                //calibrateCounter= 0;
-            }else{
-                //calibrateCounter++;
-            }
-            if (hasObstacleOnRight()&&calibrateCounter==3){
-                //&&calibrateCounter==3
-                System.out.println("obstacle on right...calibrate");
-                robot.calibrate();
-                calibrateCounter= 0;
-            }else{
-                calibrateCounter++;
-            }
-            System.out.println("after sense map");
+           // robot.setMap(map);
+                System.out.println("after sense map");
             for (int col = 0; col < WIDTH; col++) {
                 for (int row = 0; row < HEIGHT; row++){
                     printGridCell(map.getGridCell(row, col));
@@ -116,7 +102,7 @@ public class Exploration {
                 senseMap();
                 System.out.println("robot run one round finish");
             }*/
-
+            robot.setMap(map);
             rightWallHugging();
             //fastest path to nearest unexplored grid
 

@@ -100,6 +100,7 @@ public final class Constants {
 	public static final String CALIBRATE = "L|";
 	public static final String RIGHTALIGN = "B|";
 	public static final String END_TOUR = "N";
+	public static final String FRONT_CALIBRATION = "V";
 
 	// Connection Acknowledge
 	public static final String IMAGE_ACK = "D";
