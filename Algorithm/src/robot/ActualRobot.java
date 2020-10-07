@@ -119,6 +119,52 @@ public class ActualRobot extends Robot {
     }
 
 	@Override
+	public void moveForward(int steps) {
+		socketConnection.sendMessage(Integer.toString(steps)+ "|"); //eg 3|
+		System.out.println("SEND MOVE FORWARD x" + steps);
+		switch (direction) {
+			case WEST:
+				x -= steps;
+				for (Sensor sensor : sensorArr) {
+					//here should update simulator map!!
+					sensor.setXCoord(sensor.getXCoord() - steps);
+					sensor.setDirection(WEST);
+				}
+				break;
+			case EAST:
+				x += steps;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setXCoord(sensor.getXCoord() + steps);
+					sensor.setDirection(EAST);
+				}
+				break;
+			case SOUTH:
+				y -= steps;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setYCoord(sensor.getYCoord() - steps);
+					sensor.setDirection(SOUTH);
+				}
+				break;
+			case NORTH:
+				y += steps;
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setYCoord(sensor.getYCoord() + steps);
+					sensor.setDirection(NORTH);
+				}
+				break;
+			default:
+				break;
+		}
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
+		updateSensor();
+		//acknowledge();
+	}
+
+	@Override
 	public void turn(Constants.Direction dir) {
 		// update coordinates(robot and sensor) + sensemap
 		direction = dir;

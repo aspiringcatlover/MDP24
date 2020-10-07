@@ -210,14 +210,31 @@ public class MapPanel extends JPanel {
 			}
 		}
 
+
+
 		MDFHexString[1] = Integer.toString(length);*/
+
+		int length = 0;
+		for (int j = 0; j < Constants.HEIGHT; j++) {
+			for (int i = 0; i < Constants.WIDTH; i++) {
+				if (gridcells[j][i].getExplored()) {
+					length++;
+				}
+			}
+		}
+
+		//round up
+		//Math. ceil()
+		double roundUp =Math.ceil(length/4.0);
+		length = (int) roundUp*4;
+
         String[] mdf = new String[3];
         mdf[0]= hexString;
-        mdf[1]= Integer.toString(numExploredGrid);
+        mdf[1]= Integer.toString(length);
         mdf[2] = hexStringP2;
 		//this.mdfString[0] = hexString;
         //this.mdfString[2] = hexStringP2;
-		System.out.println("1..."+hexString+"length: " + numExploredGrid+"2...."+hexStringP2);
+		System.out.println("1..."+hexString+"length: " + length+"2...."+hexStringP2);
 		return mdf;
 
 	}

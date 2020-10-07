@@ -87,6 +87,7 @@ public abstract class Robot {
 
 
     public abstract void moveForward();
+    public abstract void moveForward(int steps);
     public abstract void turn(Direction dir);
     public abstract void calibrate();
     public abstract Direction robotRightDir();

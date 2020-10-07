@@ -134,6 +134,11 @@ public class SimulatorRobot extends Robot {
 
 	}
 
+	@Override
+	public void moveForward(int steps) {
+
+	}
+
 	// turn robot in a specified direction
 	public void turn(Direction dir) {
 		SimulatorSensor simulatorSensor;
