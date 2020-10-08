@@ -35,7 +35,7 @@ public class ConnectionManager {
     public boolean connectToRPi() {
         if (robot == null){
             //UNCOMMENT THIS
-                robot = ActualRobot.getInstance();
+                    robot = ActualRobot.getInstance();
         }
 
         return socketConnection.connectToRPI();

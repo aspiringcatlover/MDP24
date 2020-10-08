@@ -15,9 +15,11 @@ public class CameraInstructionTest {
             while (connected) {
                 SocketConnection socketConnection = SocketConnection.getInstance();
                 System.out.println("CONNECTED TO SOCKET");
-                socketConnection.sendMessage("C[-1,-1|-1,-1|-1,-1]");
+                socketConnection.sendMessage("C[1,1|-1,-1|-1,-1]");
                 System.out.println("camera instruction send");
-                break;
+                while(true){}
+
+
 
             }
         } catch (Exception e) {

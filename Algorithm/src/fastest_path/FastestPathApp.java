@@ -10,6 +10,8 @@ import robot.SimulatorRobot;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static main.Constants.CALIBRATE;
+
 public class FastestPathApp extends Thread{
     private Robot robot;
     private long startTime;
@@ -54,7 +56,6 @@ public class FastestPathApp extends Thread{
             arudinoInstructions(robotMovements1);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
-                //r.displayMessage("Sent message: " + Constants.END_TOUR, 1);
             }
         }
         else{
@@ -91,7 +92,7 @@ public class FastestPathApp extends Thread{
 
     }
 
-    public void arudinoInstructions(ArrayList<Constants.Movement> robotMovements){
+    public void aurdinoInstructionsWithCalibration(ArrayList<Constants.Movement> robotMovements){
         // Append all the movement message into one full string and send at once
         StringBuilder sb = new StringBuilder();
         int count = 0;
@@ -100,6 +101,43 @@ public class FastestPathApp extends Thread{
                 count++;
             } else if (count > 0) {
                 sb.append("W").append(count).append("|");
+                if (move == Constants.Movement.TURN_RIGHT) {
+                    sb.append(Constants.TURN_RIGHT);
+                    count = 0;
+                } else if (move == Constants.Movement.TURN_LEFT) {
+                    sb.append(Constants.TURN_LEFT);
+                    count = 0;
+                } else if (move == Constants.Movement.FRONT_CALIBRATION){
+                    sb.append(Constants.FRONT_CALIBRATION);
+                    count = 0;
+                } else if (move == Constants.Movement.RIGHT_CALIBRATION){
+                    sb.append(CALIBRATE);
+                    count = 0;
+                }
+
+                else {
+                    System.out.println("Error!");
+                    return;
+                }
+            }
+        }
+        if (count > 0) {
+            sb.append("W").append(count).append("|");
+        }
+        String msg = sb.toString();
+        //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
+        SocketConnection.getInstance().sendMessage(msg);
+    }
+
+    public void arudinoInstructions(ArrayList<Constants.Movement> robotMovements){
+        // Append all the movement message into one full string and send at once
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for (Constants.Movement move : robotMovements) {
+            if (move == Constants.Movement.MOVE_FORWARD) {
+                count++;
+            } else if (count > 0) {
+                sb.append(count).append("|");
                 if (move == Constants.Movement.TURN_RIGHT) {
                     sb.append(Constants.TURN_RIGHT);
                     count = 1;
@@ -113,7 +151,7 @@ public class FastestPathApp extends Thread{
             }
         }
         if (count > 0) {
-            sb.append("W").append(count).append("|");
+            sb.append(count).append("|");
         }
         String msg = sb.toString();
         //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
@@ -139,5 +177,6 @@ public class FastestPathApp extends Thread{
             robot.getMap().displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
         }
     }
+
 
 }

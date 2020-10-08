@@ -89,35 +89,9 @@ public class Exploration {
             System.out.println("percentage covered:" + actual_percentage);
             //check back of robot for unexplored grid
 
-            /*
-            if (!checkBackOfRobotAllExplored()){
-                System.out.println("robot run one round");
-                robot.turn(robot.robotRightDir());
-                senseMap();
-                robot.turn(robot.robotRightDir());
-                senseMap();
-                robot.turn(robot.robotRightDir());
-                senseMap();
-                robot.turn(robot.robotRightDir());
-                senseMap();
-                System.out.println("robot run one round finish");
-            }*/
             robot.setMap(map);
             rightWallHugging();
             //fastest path to nearest unexplored grid
-
-
-            //uncomment to follow time
-            /*
-            if (isSimulated){
-                try {
-                    // ms timeout
-                    int timeout = (1 / steps_per_sec) * 1000;
-                    Thread.sleep(timeout); // Customize your refresh time
-                } catch (InterruptedException e) {
-                }
-            }*/
-
 
           actual_percentage = getActualPerc();
         }
@@ -350,26 +324,6 @@ public class Exploration {
                                 break;
                         }
 
-                            /*
-                            System.out.println("corners");
-                            for (int y = -2; y < 3; y++) {
-                                for (int x = -2; x < 3; x++) {
-                                    if ((x == -2 && y == 2) || (x == 2 && y == 2) || (x == 2 && y == -2) || (x == -2 && y == -2) || (x == 0 && y == 0))
-                                        continue;
-                                    pathFinder = new PathFinder(map);
-
-                                    System.out.println("robot current position: " + robot.getXCoord() + " " + robot.getYCoord() + " grid to go to: " + (unexploredGridX + x) + " " + (unexploredGridY + y));
-                                    if ((robot.getXCoord() != unexploredGridX + x || robot.getYCoord() != unexploredGridY + y) && checkSurroundingGrid(unexploredGridX + x, unexploredGridY + y)) {
-                                        System.out.println("robot current position: " + robot.getXCoord() + " " + robot.getYCoord() + " grid to go to: " + (unexploredGridX + x) + " " + (unexploredGridY + y));
-                                        path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), unexploredGridX + x, unexploredGridY + y);
-                                    }
-
-                                    if (path != null)
-                                        break;
-                                }
-                                if (path!=null)
-                                    break;
-                            }*/
                          else {
                             for (int y = -1; y < 2; y++) {
                                 for (int x = -1; x < 2; x++) {
@@ -570,8 +524,6 @@ public class Exploration {
             movement.add(Constants.Movement.TURN_RIGHT);
             //System.out.println("move forward");
             robot.moveForward();
-
-            // simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
             movement.add(Constants.Movement.MOVE_FORWARD);
 
 
@@ -580,34 +532,14 @@ public class Exploration {
         // if can move forward, move forward
         else if (!hasObstacle(robot.getDirection())) {
             //System.out.println("move forward");
-
             robot.moveForward();
-
-            //simulatorMap.getMap().displayRobotSpace(robot.getXCoord(), robot.getYCoord());
             movement.add(Constants.Movement.MOVE_FORWARD);
         }
         // else, turn left
         else {
             //check right for unexplored grid
             System.out.println("turn left....");
-            /*
-            if (!checkRightOfRobotAllExplored()){
-                System.out.println("RIGHT of robot have unexplored grid");
-                robot.turn(robot.robotRightDir());
-                senseMap();
-                if (hasObstacleOnRight()){
-                    System.out.println("obstacle on right...calibrate");
-                    robot.calibrate();
-                }
-                robot.turn(robot.robotLeftDir());
-            }*/
-
             robot.turn(robot.robotLeftDir());
-
-
-
-            //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
-            //System.out.println("turn left");
             movement.add(Constants.Movement.TURN_LEFT);
 
         }
@@ -762,6 +694,7 @@ public class Exploration {
                         break;
 
                     //update information from sensor
+
                     try{
                         if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
                             //if explored alr dont change the grid

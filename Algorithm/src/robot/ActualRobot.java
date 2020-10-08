@@ -431,7 +431,6 @@ public class ActualRobot extends Robot {
 		socketConnection.sendMessage(Constants.FRONT_CALIBRATION);
 	}
 
-
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){
@@ -519,12 +518,12 @@ public class ActualRobot extends Robot {
 		Collections.sort(individualValue4);
 		Collections.sort(individualValue5);
 
-		sensorValues[0]=Integer.toString((individualValue0.get(4) + individualValue0.get(5))/2);
-		sensorValues[1]=Integer.toString((individualValue1.get(4) + individualValue1.get(5))/2);
-		sensorValues[2]=Integer.toString((individualValue2.get(4) + individualValue2.get(5))/2);
-		sensorValues[3]=Integer.toString((individualValue3.get(4) + individualValue3.get(5))/2);
-		sensorValues[4]=Integer.toString((individualValue4.get(4) + individualValue4.get(5))/2);
-		sensorValues[5]=Integer.toString((individualValue5.get(4) + individualValue5.get(5))/2);
+		sensorValues[0]=Integer.toString((individualValue0.get(2)));
+		sensorValues[1]=Integer.toString((individualValue1.get(2)));
+		sensorValues[2]=Integer.toString((individualValue2.get(2)));
+		sensorValues[3]=Integer.toString((individualValue3.get(2)));
+		sensorValues[4]=Integer.toString((individualValue4.get(2)));
+		sensorValues[5]=Integer.toString((individualValue5.get(2)));
 
 
 

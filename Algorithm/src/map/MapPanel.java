@@ -37,11 +37,7 @@ public class MapPanel extends JPanel {
 			}
 		}
 		parseToSimulatorGrid(gridcells);
-		changed = true; 
-		/*
-		gridcells[0][0].setBackground(Color.RED);
-		gridcells[19][0].setBackground(Color.ORANGE);
-		gridcells[0][14].setBackground(Color.BLUE);*/
+		changed = true;
 
 	}
 
@@ -82,11 +78,6 @@ public class MapPanel extends JPanel {
 
 
 	public String[] getMdfString() {
-		StringBuilder MDFBitStringPart1 = new StringBuilder();
-		StringBuilder MDFBitStringPart2 = new StringBuilder();
-
-		int numExploredGrid=0;
-
 
         //StringBuilder P1 = new StringBuilder(new String());
         String P1 = new String();
@@ -99,14 +90,13 @@ public class MapPanel extends JPanel {
                 if (gridcells[y][x].getExplored()){
                     //explored = 1
                     P1 += "1";
-                    numExploredGrid++;
+
                     if (gridcells[y][x].getObstacle()){
                         //obstacle=1
                         P2 += "1";
                     }
                     else{
                         P2 += "0";
-                        System.out.println("obstacle"+x+" "+y);
                     }
                 }
                 else{
@@ -161,58 +151,6 @@ public class MapPanel extends JPanel {
             hexStringP2 += Integer.toString(intOf4Bits, 16).toUpperCase();	// Decimal Number to Hex String
         }
         System.out.println("hex string p2: " + hexStringP2);
-
-        /*
-        MDFBitStringPart1.append("11");
-		String[] MDFHexString = new String[] {"","",""};
-
-		for (int y = 0; y < Constants.HEIGHT; y++) {
-			for (int x = 0; x < Constants.WIDTH; x++) {
-
-				if (gridcells[y][x].getObstacle()) { // Obstacle
-					MDFBitStringPart1.append("1");
-					MDFBitStringPart2.append("1");
-
-				}
-				else if (gridcells[y][x].getExplored()) { // Unexplored
-					MDFBitStringPart1.append("0");
-				}
-				else {
-					MDFBitStringPart1.append("1");
-					MDFBitStringPart2.append("0");
-				}
-
-			}
-		}
-		MDFBitStringPart1.append("11");
-		System.out.println("MDF bit string part 1"+MDFBitStringPart1);
-        System.out.println("MDF bit string part 2"+MDFBitStringPart2);
-
-		for (int i = 0; i < MDFBitStringPart1.length(); i += 4) {
-			MDFHexString[0] += Integer.toString(Integer.parseInt(MDFBitStringPart1.substring(i, i + 4), 2), 16);
-		}
-
-		if ((MDFBitStringPart2.length() % 4) != 0){ // Only pad if the MDF Bit string is not a multiple of 4
-			MDFBitStringPart2.insert(0, "0".repeat(4 - (MDFBitStringPart2.length() % 4)));
-		}
-
-		for (int i = 0; i < MDFBitStringPart2.length(); i += 4) {
-			MDFHexString[2] += Integer.toString(Integer.parseInt(MDFBitStringPart2.substring(i, i + 4), 2), 16);
-		}
-
-		int length = 0;
-		for (int y = 0; y < Constants.HEIGHT; y++) {
-			for (int x = 0; x < Constants.WIDTH; x++) {
-				if (!gridcells[y][x].getExplored()) {
-					//TODO:: CHECK FOR THIS ONE
-					length++;
-				}
-			}
-		}
-
-
-
-		MDFHexString[1] = Integer.toString(length);*/
 
 		int length = 0;
 		for (int j = 0; j < Constants.HEIGHT; j++) {
@@ -351,26 +289,8 @@ public class MapPanel extends JPanel {
 
 
 	public void setWayPoint(int x, int y) {
-		//boolean verbose = new Exception().getStackTrace()[1].getClassName().equals("robot.Robot");
-
-		/*
-		if (x >= Constants.WIDTH - 1 || x <= 0 || y >= Constants.HEIGHT - 1 || y <= 0)
-				 {
-			if (!(waypoint[0] == -1 && waypoint[1] == -1)) {
-				this.waypoint[0] = -1;
-				this.waypoint[1] = -1;
-				/*
-				if (verbose) {
-					System.out.println("The current waypoint is set as: " + "-1" + "," + "-1");
-				}*/
-
-			//return;
-		//}
 		this.waypoint[0] = x;
 		this.waypoint[1] = y;
-		/*if (verbose) {
-			System.out.println("Successfully set the waypoint: " + x + "," + y);
-		}*/
 	}
 
 	public int[] getWayPoint() {
@@ -381,37 +301,5 @@ public class MapPanel extends JPanel {
 		//displayDirection(dir, hor_coord, ver_coord);
 		gridcells[ver_coord][hor_coord].displayDirection(dir, steps_per_sec);
 	}
-		//
-
-
-//	    //Generate map descriptor part 1
-//		public String generateMapDes1() {
-//			Component[] components = this.getComponents();
-//			String bitStream1 = "11";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) 
-//					bitStream1 = bitStream1 + "0";
-//				else 
-//					bitStream1 = bitStream1 + "1";
-//				}
-//			bitStream1 = bitStream1 + "11";
-//			return String.format("%016x", Integer.parseInt(bitStream1));
-//		}
-//		
-//		
-//		//Generate map descriptor part 2
-//		public String generateMapDes2() {
-//			Component[] components = this.getComponents();
-//			String bitStream2 = "";
-//			for (int i = 0; i < components.length; i++) {
-//				if (components[i] instanceof JPanel && components[i].getState() == State.EXPLORED) {
-//						if (components[i] instanceof JPanel && components[i].getState() == State.BLOCKED)
-//							bitStream2 = bitStream2 + "1";
-//						else
-//							bitStream2 = bitStream2 + "1";
-//				}
-//			}
-//			return String.format("%016x", Integer.parseInt(bitStream2));
-//		}
 
 }

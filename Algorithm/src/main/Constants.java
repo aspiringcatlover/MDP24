@@ -8,7 +8,7 @@ public final class Constants {
 	public static final int GOAL_Y_COORD = 17;
 
 	// Actual run constraints
-	public static final int TIME = 1000000;
+	public static final int TIME = 300000;
 	public static final int PERCENTAGE = 100;
 	public static final int SPEED = 9999;
 	public static final boolean IMAGE_REC = false;
@@ -26,7 +26,7 @@ public final class Constants {
 
 	// forward direction of robot
 	public enum Movement {
-		MOVE_FORWARD, TURN_RIGHT, TURN_LEFT
+		MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, FRONT_CALIBRATION, RIGHT_CALIBRATION
 	}
 
 	public enum checkDirection {
@@ -106,5 +106,5 @@ public final class Constants {
 	public static final String IMAGE_ACK = "D";
 
 	//num of sensor values to average
-	public static final int SENSOR_VALUES = 10;
+	public static final int SENSOR_VALUES = 5;
 }
