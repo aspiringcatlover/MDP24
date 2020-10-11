@@ -26,7 +26,7 @@ public class SocketConnectionTest {
         sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE, direction, x, y);
         sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT, direction, x, y);
         // 1 long for left
-        sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, direction, x, y);
+        //sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, direction, x, y);
         // 2 short for right
         sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, direction, x, y);
         sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_UP, direction, x, y);

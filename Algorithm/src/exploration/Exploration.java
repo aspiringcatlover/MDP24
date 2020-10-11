@@ -536,12 +536,16 @@ public class Exploration {
             movement.add(Constants.Movement.MOVE_FORWARD);
         }
         // else, turn left
-        else {
+        else if (!hasObstacle(robot.peekRobotLeftDir())){
             //check right for unexplored grid
             System.out.println("turn left....");
             robot.turn(robot.robotLeftDir());
             movement.add(Constants.Movement.TURN_LEFT);
-
+        }
+        else{
+            //uturn
+            System.out.println("uturn");
+            robot.uTurn();
         }
     }
 
@@ -695,6 +699,7 @@ public class Exploration {
 
                     //update information from sensor
 
+
                     try{
                         if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
                             //if explored alr dont change the grid
@@ -735,6 +740,7 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
+
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
                                 continue;
@@ -767,6 +773,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i)==null)
                             break;
+
 
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
@@ -804,6 +811,7 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
+
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
                                 continue;
@@ -836,6 +844,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i)==null)
                             break;
+
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
                                 continue;
@@ -867,6 +876,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i) == null)
                             break;
+
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
                                 continue;
@@ -901,6 +911,7 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
+
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
                                 continue;
@@ -932,6 +943,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i)==null)
                             break;
+
 
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
@@ -965,6 +977,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x) + ", "+(y-i)+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i) == null)
                             break;
+
                         try{
                             if (map.getGridCell(sensor.getYCoord() - i, sensor.getXCoord()).getExplored()){
                                 continue;
@@ -999,6 +1012,7 @@ public class Exploration {
                     if (sensorResultArrayList.get(i)==null)
                         break;
 
+
                     try{
                         if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
                             continue;
@@ -1030,6 +1044,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x) + ", "+(y-i)+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i)==null)
                             break;
+
                         try{
                             if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
                                 continue;
@@ -1058,6 +1073,7 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x-i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i) == null)
                             break;
+
                         try {
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord() - i).getExplored()){
                                 continue;
@@ -1343,16 +1359,6 @@ public class Exploration {
             return false;
         }
 
-        /*
-        System.out.println(!map.getGridCell(y+1,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x-1).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y+1,x-1).getObstacle());
-        System.out.println(!map.getGridCell(y,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y+1,x).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x).getObstacle());
-        System.out.println(!map.getGridCell(y,x-1).getObstacle());*/
-
         return (!map.getGridCell(y+1,x+1).getObstacle()&&!map.getGridCell(y-1,x-1).getObstacle()&&!map.getGridCell(y-1,x+1).getObstacle()&&!map.getGridCell(y+1,x-1).getObstacle()
                 &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
     }
@@ -1364,4 +1370,10 @@ public class Exploration {
     public static void setMap(MapPanel map) {
         Exploration.map = map;
     }
+
+    ////--------------check map accuracy
+
+    //have a list of coordinates of all the obstacle
+    
+
 }

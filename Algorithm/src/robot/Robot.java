@@ -97,6 +97,7 @@ public abstract class Robot {
     public abstract Direction peekRobotRightDir();
     public abstract Direction peekRobotLeftDir();
     public abstract void calibrateFront();
+    public abstract void uTurn();
 
 
     //getter and setter

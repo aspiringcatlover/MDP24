@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
+import static main.Constants.*;
 import static main.Constants.Direction.*;
-import static main.Constants.MOVE_FORWARD;
-import static main.Constants.SENSOR_VALUES;
 
 public class ActualRobot extends Robot {
 	private ActualSensor[] sensorArr = new ActualSensor[6];
@@ -59,7 +58,7 @@ public class ActualRobot extends Robot {
 		sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE, this.direction, x, y);
 		sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT, this.direction, x, y);
 		// 1 long for left
-		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_MIDDLE, this.direction, x, y);
+		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_UP, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, this.direction, x, y);
 		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_UP, this.direction, x, y);
@@ -114,6 +113,11 @@ public class ActualRobot extends Robot {
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
 		}
+		try {
+			// ms timeout
+			Thread.sleep(100); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
         updateSensor();
         //acknowledge();
     }
@@ -155,12 +159,14 @@ public class ActualRobot extends Robot {
 			default:
 				break;
 		}
+
+		//TODO: to remove?
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
 		}
-		updateSensor();
+		//updateSensor();
 		//acknowledge();
 	}
 
@@ -171,8 +177,8 @@ public class ActualRobot extends Robot {
 		System.out.println("Direction" + direction);
 		switch (direction) {
 		case WEST:
-			// LEFT_MIDDLE(3)
-			sensorArr[3].setXCoord(x);
+// LEFT_UP(3)
+			sensorArr[3].setXCoord(x-1);
 			sensorArr[3].setYCoord(y - 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x + 1);
@@ -194,8 +200,8 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case EAST:
-			// LEFT_MIDDLE(3)
-			sensorArr[3].setXCoord(x);
+			// LEFT_UP(3)
+			sensorArr[3].setXCoord(x+1);
 			sensorArr[3].setYCoord(y + 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 1);
@@ -217,9 +223,9 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case SOUTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_UP(3)
 			sensorArr[3].setXCoord(x + 2);
-			sensorArr[3].setYCoord(y);
+			sensorArr[3].setYCoord(y-1);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 2);
 			sensorArr[4].setYCoord(y + 1);
@@ -240,9 +246,9 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case NORTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_UP(3)
 			sensorArr[3].setXCoord(x - 2);
-			sensorArr[3].setYCoord(y);
+			sensorArr[3].setYCoord(y+2);
 			// System.out.println(sensorArr[3].getXCoord());
 			// System.out.println(sensorArr[3].getYCoord());
 			// RIGHT_DOWN(4)
@@ -270,17 +276,17 @@ public class ActualRobot extends Robot {
 			sensorArr[5].setYCoord(y+1);
 			// System.out.println(sensorArr[5].getXCoord());
 			// System.out.println(sensorArr[5].getYCoord());
+			// System.out.println(sensorArr[5].getYCoord());
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(NORTH);
 			}
 			break;
 		}
 
-		try {
-			// ms timeout
-			Thread.sleep(10); // Customize your refresh time
-		} catch (InterruptedException e) {
-		}
+
+
+
+		System.out.println("is there any calibration?");
 		//calibrate here
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
@@ -288,13 +294,33 @@ public class ActualRobot extends Robot {
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
 		}
-		else if (hasObstacleOnRight()){
+
+		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
 		}
 
+		try {
+			// ms timeout
+			Thread.sleep(100); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
+
 		updateSensor();
+
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			//calibrateCounter++;
+		}
+
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 	}
 
 	@Override
@@ -314,7 +340,7 @@ public class ActualRobot extends Robot {
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
 		}
-		else if (hasObstacleOnRight()){
+		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
@@ -376,7 +402,7 @@ public class ActualRobot extends Robot {
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
 		}
-		else if (hasObstacleOnRight()){
+		 if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
@@ -431,6 +457,54 @@ public class ActualRobot extends Robot {
 		socketConnection.sendMessage(Constants.FRONT_CALIBRATION);
 	}
 
+	@Override
+	public void uTurn() {
+		//robot coord doesnt change
+		socketConnection.sendMessage(U_TURN);
+		System.out.println("SEND U TURN");
+		switch (direction) {
+			case WEST:
+
+				for (Sensor sensor : sensorArr) {
+					//here should update simulator map!!
+					sensor.setDirection(EAST);
+				}
+				direction=EAST;
+				break;
+			case EAST:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(WEST);
+				}
+				direction=WEST;
+				break;
+			case SOUTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(NORTH);
+				}
+				direction = NORTH;
+				break;
+			case NORTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(SOUTH);
+				}
+				direction = SOUTH;
+				break;
+			default:
+				break;
+		}
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
+		try {
+			// ms timeout
+			Thread.sleep(100); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
+		updateSensor();
+	}
+
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){
@@ -465,9 +539,30 @@ public class ActualRobot extends Robot {
 		boolean completed = false;
 
 		if  (!completed) {
+
 			s = socketConnection.receiveMessage();
 			System.out.println("MESSAGE>>>> " + s);
 			arr = s.split(",");
+			System.out.println("length of sensor values" + sensorValues.length);
+			//break;
+		}
+		return arr;
+	}
+
+	private String[][] getSensorValue(int num){
+		String s;
+		String[][] arr = null;
+
+		 socketConnection.sendMessage(num + Constants.SENSE_ALL);
+		System.out.println("sense to arudino in update sensor");
+		boolean completed = false;
+
+		if  (!completed) {
+			for (int i=0; i<num;i++){
+				s = socketConnection.receiveMessage();
+				System.out.println("MESSAGE>>>> " + s);
+				arr[i] = s.split(",");
+			}
 			System.out.println("length of sensor values" + sensorValues.length);
 			//break;
 		}
@@ -486,6 +581,10 @@ public class ActualRobot extends Robot {
 		}
 
     	ArrayList<String[]> sensorValueArrayList= new ArrayList<>();
+
+
+
+
     	for (int i=0; i<SENSOR_VALUES;i++){
 			sensorValueArrayList.add(getSensorValue());
 			/*

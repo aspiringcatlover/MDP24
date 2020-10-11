@@ -50,7 +50,7 @@ public final class Constants {
 	}
 	//location of sensor and number in array
 	public enum SensorLocation {
-		LEFT_MIDDLE(3), RIGHT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_UP(5);
+		LEFT_UP(3), RIGHT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_UP(5);
 
 		private int numVal;
 
@@ -100,6 +100,7 @@ public final class Constants {
 	public static final String CALIBRATE = "L|";
 	public static final String RIGHTALIGN = "B|";
 	public static final String END_TOUR = "N";
+	public static final String U_TURN="S|";
 	public static final String FRONT_CALIBRATION = "V";
 
 	// Connection Acknowledge

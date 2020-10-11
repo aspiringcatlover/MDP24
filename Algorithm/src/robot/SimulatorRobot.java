@@ -33,7 +33,7 @@ public class SimulatorRobot extends Robot {
 		sensorArr[1] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_MIDDLE, simulateMap, this.direction, x, y);
 		sensorArr[2] = new SimulatorSensor(RangeType.SHORT, SensorLocation.UP_RIGHT, simulateMap, this.direction, x, y);
 		// 1 long for left
-		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap, this.direction, x, y);
+		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_UP, simulateMap, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap, this.direction, x, y);
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_UP, simulateMap, this.direction, x, y);
@@ -146,8 +146,8 @@ public class SimulatorRobot extends Robot {
 		System.out.println("Direction" + direction);
 		switch (direction) {
 		case WEST:
-			// LEFT_MIDDLE(3)
-			sensorArr[3].setXCoord(x);
+			// LEFT_UP(3)
+			sensorArr[3].setXCoord(x-1);
 			sensorArr[3].setYCoord(y - 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x + 1);
@@ -171,8 +171,8 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case EAST:
-			// LEFT_MIDDLE(3)
-			sensorArr[3].setXCoord(x);
+			// LEFT_UP(3)
+			sensorArr[3].setXCoord(x+1);
 			sensorArr[3].setYCoord(y + 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 1);
@@ -196,9 +196,9 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case SOUTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_UP(3)
 			sensorArr[3].setXCoord(x + 2);
-			sensorArr[3].setYCoord(y);
+			sensorArr[3].setYCoord(y-1);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 2);
 			sensorArr[4].setYCoord(y + 1);
@@ -221,9 +221,9 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case NORTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_UP(3)
 			sensorArr[3].setXCoord(x - 2);
-			sensorArr[3].setYCoord(y);
+			sensorArr[3].setYCoord(y+2);
 			// System.out.println(sensorArr[3].getXCoord());
 			// System.out.println(sensorArr[3].getYCoord());
 			// RIGHT_DOWN(4)
@@ -300,6 +300,58 @@ public class SimulatorRobot extends Robot {
 	@Override
 	public void calibrateFront() {
 
+	}
+
+	@Override
+	public void uTurn() {
+		SimulatorSensor simulatorSensor;
+		switch (direction) {
+			case WEST:
+
+				for (Sensor sensor : sensorArr) {
+
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=EAST;
+				break;
+			case EAST:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=WEST;
+				break;
+			case SOUTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=NORTH;
+				break;
+			case NORTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=SOUTH;
+				break;
+			default:
+				break;
+		}
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	/*
