@@ -6,6 +6,8 @@ import map.MapPanel;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
+import java.util.ArrayList;
+
 import static main.Constants.Direction.*;
 
 public abstract class Robot {
@@ -98,6 +100,7 @@ public abstract class Robot {
     public abstract Direction peekRobotLeftDir();
     public abstract void calibrateFront();
     public abstract void uTurn();
+    public abstract void takePhoto(ArrayList<int[]> coordinates);
 
 
     //getter and setter

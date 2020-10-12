@@ -8,6 +8,8 @@ import map.SimulatorMap;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
+import java.util.ArrayList;
+
 public class SimulatorRobot extends Robot {
 
 	private MapPanel map;
@@ -352,6 +354,24 @@ public class SimulatorRobot extends Robot {
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+	@Override
+	public void takePhoto(ArrayList<int[]> coordinates) {
+		StringBuilder message= new StringBuilder();
+		message.append("C[");
+		int[] coordinate;
+		for (int i=0; i<coordinates.size();i++){
+			coordinate = coordinates.get(i);
+			message.append(coordinate[0]);
+			message.append(",");
+			message.append(coordinate[1]);
+			if (i!=coordinates.size()-1){
+				message.append("|");
+			}
+		}
+		message.append("]");
+		System.out.println("PHOTO TAKEN >>>"+message.toString());
 	}
 
 	/*

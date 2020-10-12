@@ -460,6 +460,17 @@ public class ActualRobot extends Robot {
 	@Override
 	public void uTurn() {
 		//robot coord doesnt change
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			//calibrateCounter++;
+		}
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		socketConnection.sendMessage(U_TURN);
 		System.out.println("SEND U TURN");
 		switch (direction) {
@@ -497,12 +508,35 @@ public class ActualRobot extends Robot {
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
 		}
+
 		try {
 			// ms timeout
 			Thread.sleep(100); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
+
+
 		updateSensor();
+	}
+
+	@Override
+	public void takePhoto(ArrayList<int[]> coordinates) {
+    	//send C[1,1|-1,-1|-1,-1] x,y
+    	StringBuilder message= new StringBuilder();
+    	message.append("C[");
+    	int[] coordinate;
+		for (int i=0; i<coordinates.size();i++){
+			coordinate = coordinates.get(i);
+			message.append(coordinate[0]);
+			message.append(",");
+			message.append(coordinate[1]);
+			if (i!=coordinates.size()-1){
+				message.append("|");
+			}
+		}
+		message.append("]");
+		socketConnection.sendMessage(message.toString());
+
 	}
 
 	public void sendMdfString(){
@@ -833,19 +867,19 @@ public class ActualRobot extends Robot {
 			case WEST:
 				x=actualRobot.getXCoord()-2;
 				y=actualRobot.getYCoord()-1;
-				return checkObstacleWholeRow(false,y,x);
+				return checkObstacleRow(false,y,x);
 			case EAST:
 				x=actualRobot.getXCoord()+2;
 				y=actualRobot.getYCoord()-1;
-				return checkObstacleWholeRow(false,y,x);
+				return checkObstacleRow(false,y,x);
 			case SOUTH:
 				x=actualRobot.getXCoord()-1;
 				y=actualRobot.getYCoord()-2;
-				return checkObstacleWholeRow(true,y,x);
+				return checkObstacleRow(true,y,x);
 			case NORTH:
 				x=actualRobot.getXCoord()-1;
 				y=actualRobot.getYCoord()+2;
-				return checkObstacleWholeRow(true,y,x);
+				return checkObstacleRow(true,y,x);
 		}
 		return true;
 	}
@@ -897,6 +931,31 @@ public class ActualRobot extends Robot {
 		}
 		System.out.println("check obstacle row false");
 		return true;
+	}
+
+
+
+	private boolean checkObstacleRow(boolean xIncrease, int y, int x){
+		GridCell gridCell;
+		if (xIncrease){
+			for (int i=0;i<3;i++){
+				gridCell = map.getGridCell(y,x+i);
+				if (gridCell == null || gridCell.getObstacle()) {
+					System.out.println("check obstacle row: y=" + y +" "+true);
+					return true;
+				}
+			}
+		}
+		else{
+			for (int i=0;i<3;i++){
+				gridCell = map.getGridCell(y+i,x);
+				if (gridCell == null || gridCell.getObstacle()) {
+					return true;
+				}
+			}
+		}
+		System.out.println("check obstacle row false");
+		return false;
 	}
 
 

@@ -514,11 +514,6 @@ public class Exploration {
             System.out.println("turn right.....");
             robot.turn(robot.robotRightDir());
             senseMap();
-            if (hasObstacleOnRight()){
-                System.out.println("obstacle on right...calibrate");
-                robot.calibrate();
-            }
-            //simulatorMap.getMap().displayDirection(robot.getXCoord(), robot.getYCoord(), robot.getDirection());
 
             System.out.println("MOVE FORWARD.....");
             movement.add(Constants.Movement.TURN_RIGHT);
@@ -547,6 +542,135 @@ public class Exploration {
             System.out.println("uturn");
             robot.uTurn();
         }
+    }
+
+    public void imageRecognitionExplortion(){
+        GridCell nearestUnexploredGrid;
+        ArrayList<GridCell> path ;
+        ArrayList<Movement> moveInstructions;
+        boolean terminate=false;
+        boolean start = false;
+        int calibrateCounter =0;
+        ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
+
+        System.out.println("image regconition");
+
+        //init start grid to be explored alr
+        boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
+        for (int i = 0; i < 3; i++) {
+            for (int r = 0; r < 3; r++) {
+                map.setExploredForGridCell(i, r, true);
+            }
+        }
+        //init
+
+        robot.initSensor();
+        System.out.println("EXPLORATION-FINISH INITIALISE SENSOR");
+
+        while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime){
+            senseMap();
+
+            System.out.println("after sense map");
+            for (int col = 0; col < WIDTH; col++) {
+                for (int row = 0; row < HEIGHT; row++){
+                    printGridCell(map.getGridCell(row, col));
+                }
+                System.out.println();
+            }
+            System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord() + "direction" + robot.getDirection());
+            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start){
+                System.out.println("break right wall hugging");
+                break;
+            }
+            start=true;
+            System.out.println("percentage covered:" + actual_percentage);
+            //check back of robot for unexplored grid
+
+            robot.setMap(map);
+            rightWallHugging();
+            //fastest path to nearest unexplored grid
+            if (hasAnyObstacleOnRight()){
+                //get right coordinates
+                rightObstacleCoordinates = getRightObstacleCoordinates();
+
+                //send command
+                robot.takePhoto(rightObstacleCoordinates);
+            }
+            actual_percentage = getActualPerc();
+        }
+
+        /*
+        logic
+        while (rightWallHuggingNotCompleted) {
+            1. senseMap()
+            2. rightWallHugging()
+            3. if obstacle on right -->take photo  (first 2 grids?)
+        }
+
+        while (a* search){
+            1. senseMap()
+            2. if obstacle on right --> take photo (first 2 grids?)
+        }
+
+        if there are still sides of obstacle which camera nvr take pic--> put them into pq --> then a* to the right
+        (aka island hugging)
+         */
+    }
+
+    public ArrayList<int[]> getRightObstacleCoordinates(){
+        //order --> front, mid, back
+        ArrayList<int[]> obstacles = new ArrayList<>();
+        int x = robot.getXCoord();
+        int y = robot.getYCoord();
+        switch (robot.getDirection()){
+            case WEST: obstacles.add(new int[] {x-1,y+2});
+                        obstacles.add(new int[] {x,y+2});
+                        obstacles.add(new int[] {x+1,y+2});
+                        break;
+            case EAST:
+                obstacles.add(new int[] {x+1,y-2});
+                obstacles.add(new int[] {x,y-2});
+                obstacles.add(new int[] {x-1,y-2});
+                break;
+            case NORTH:
+                obstacles.add(new int[] {x+2,y+1});
+                obstacles.add(new int[] {x+2,y});
+                obstacles.add(new int[] {x+2,y-1});
+
+
+                break;
+            case SOUTH:
+                obstacles.add(new int[] {x-2,y-1});
+                obstacles.add(new int[] {x-2,y});
+                obstacles.add(new int[] {x-2,y+1});
+                break;
+        }
+        return obstacles;
+    }
+
+    public boolean hasAnyObstacleOnRight(){
+        System.out.println("check if hav n obstacle on the right");
+        int x,y;
+
+        switch (robot.getDirection()){
+            case WEST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()+2;
+                return checkObstacleRow(true,y,x);
+            case EAST:
+                x=robot.getXCoord()-1;
+                y=robot.getYCoord()-2;
+                return checkObstacleRow(true,y,x);
+            case SOUTH:
+                x=robot.getXCoord()-2;
+                y=robot.getYCoord()-1;
+                return checkObstacleRow(false,y,x);
+            case NORTH:
+                x=robot.getXCoord()+2;
+                y=robot.getYCoord()-1;
+                return checkObstacleRow(false,y,x);
+        }
+        return true;
     }
 
 
@@ -627,6 +751,7 @@ public class Exploration {
         }
         return false;
     }
+
 
     //return true if whole row is obstacle, false if there is no obstacle in any of the 3 grid
     private boolean checkObstacleWholeRow(boolean xIncrease, int y, int x){
@@ -1371,9 +1496,6 @@ public class Exploration {
         Exploration.map = map;
     }
 
-    ////--------------check map accuracy
 
-    //have a list of coordinates of all the obstacle
-    
 
 }
