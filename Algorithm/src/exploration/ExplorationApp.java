@@ -50,6 +50,7 @@ public class ExplorationApp extends Thread{
         Exploration exploration = new Exploration(robot,time, percentage, speed, image_recognition);
         System.out.println("robot start exploring...");
         robot = exploration.explore();
+        //robot = exploration.imageRecognitionExploration();
         MapPanel map = robot.getMap();
         System.out.println("in exploration app");
         for (int col = 0; col < WIDTH; col++) {

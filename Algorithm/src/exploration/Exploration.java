@@ -607,8 +607,6 @@ public class Exploration {
             //check back of robot for unexplored grid
 
             robot.setMap(map);
-            rightWallHugging();
-
             rightObstacleCoordinates = getRightSurfaceCoordinates();
             if (!rightObstacleCoordinates.isEmpty()){
                 for (int[] coordinate: rightObstacleCoordinates){
@@ -622,7 +620,22 @@ public class Exploration {
                     robot.takePhoto(rightObstacleCoordinates);
             }
             actual_percentage = getActualPerc();
+            rightWallHugging();
+
         }
+        rightObstacleCoordinates = getRightSurfaceCoordinates();
+        if (!rightObstacleCoordinates.isEmpty()){
+            for (int[] coordinate: rightObstacleCoordinates){
+                if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                    visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
+                    takePhoto=true;
+                }
+            }
+            //send command
+            if (takePhoto)
+                robot.takePhoto(rightObstacleCoordinates);
+        }
+        actual_percentage = getActualPerc();
 
 
         System.out.println("percentage covered:" + actual_percentage);
@@ -722,13 +735,26 @@ public class Exploration {
             System.out.println("------------------------------------------------------");
         }
 
+        //print all the visble surface
+        for (int y=0; y<20; y++){
+            for (int x=0; x<15; x++){
+                for (int i=0; i<4; i++){
+                    System.out.println(x + " " + y + "direction: " + i+ " "+ visibleSurface.getSurface(x,y,i));
+                }
+            }
+        }
         //a*star to capture image that haven capture
         getAllSurfaces();
 
         PriorityQueue<GridCell> goToGrids = getGridsImageReg();
+
         int irGridX, irGridY;
         GridCell irGrid;
         while (!goToGrids.isEmpty()){
+            System.out.println("image reg pq..");
+            for (GridCell gridCell:goToGrids){
+                System.out.println("x:"  +gridCell.getHorCoord() + "y: " + gridCell.getVerCoord());
+            }
             System.out.println("POLLLLLLL");
             irGrid = goToGrids.poll();
             irGridX = irGrid.getHorCoord();
@@ -826,25 +852,26 @@ public class Exploration {
                     //double check it doesnt account for null value
                     if (allVisibleSurface.getSurface(x,y,i)!=null){
                         if (!allVisibleSurface.getSurface(x,y,i)){
-                            visibleSurface.setSurfaceFalse(x,y,i);
+                            if (visibleSurface.getSurface(x,y,i)==null)
+                                visibleSurface.setSurfaceFalse(x,y,i);
                         }
                     }
 
                 }
-
             }
         }
+
     }
 
     public PriorityQueue<GridCell> getGridsImageReg(){
         PriorityQueue<GridCell> goToGrids = new PriorityQueue<>(11, (o1, o2) -> Integer.compare(o1.getgCost(), o2.getgCost()));
-        System.out.println("unexplored grid....pq");
+        System.out.println("get grid image reg...");
         int curX = robot.getXCoord();
         int curY= robot.getYCoord();
         System.out.println("start from: "+curX+" "+curY);
         int cost;
         GridCell gridCell = null;
-        Boolean result;
+        Boolean result, gridPresent=false;
         //MapPanel map = map;
         for (int y =0; y<=19;y++){
             for (int x=0; x<=14; x++){
@@ -855,21 +882,65 @@ public class Exploration {
                         //surface not taken
                         //TODO: a* take into consideration of the direction too?
                         switch (i){
-                            case 0: gridCell = map.getGridCell(y+2, x);
+                            case 0:
+                                if (checkSurroundingGrid(x,y+2)){
+                                    gridCell = map.getGridCell(y+2, x);
+                                }else{
+                                    visibleSurface.setSurfaceNull(x,y,i);
+                                }
                                     break;
-                            case 1: gridCell = map.getGridCell(y, x+2);
+                            case 1:
+                                if (checkSurroundingGrid(x+2,y)){
+                                    gridCell = map.getGridCell(y, x+2);
+                                }
+                                else{
+                                    visibleSurface.setSurfaceNull(x,y,i);
+                                }
                                     break;
-                            case 2: gridCell = map.getGridCell(y-2, x);
+                            case 2:
+                                if (checkSurroundingGrid(x,y-2)){
+                                    gridCell = map.getGridCell(y-2, x);
+                                }
+                                else{
+                                    visibleSurface.setSurfaceNull(x,y,i);
+                                }
                                     break;
-                            case 3: gridCell = map.getGridCell(y, x-2);
+                            case 3:
+                                if (checkSurroundingGrid(x-2, y)){
+                                    gridCell = map.getGridCell(y, x-2);
+                                }
+                                else{
+                                    visibleSurface.setSurfaceNull(x,y,i);
+                                }
                                     break;
                         }
-                        System.out.println("grid... "+ gridCell.getHorCoord() +" " +gridCell.getVerCoord());
-                        cost = calculateHeuristicCost(curX,curY,gridCell.getHorCoord(),gridCell.getVerCoord());
-                        //update g cost
-                        gridCell.setgCost(cost);
-                        goToGrids.add(gridCell);
+                        if (gridCell!=null){
+                            for (GridCell gridCellpq: goToGrids){
+                                if (gridCellpq.getHorCoord()==gridCell.getHorCoord() && gridCellpq.getVerCoord() == gridCell.getVerCoord()){
+                                    gridPresent= true;
+                                    break;
+                                }
+                            }
+                            if (!gridPresent){
+                                System.out.println("grid... "+ gridCell.getHorCoord() +" " +gridCell.getVerCoord());
+                                cost = calculateHeuristicCost(curX,curY,gridCell.getHorCoord(),gridCell.getVerCoord());
+                                //update g cost
+                                gridCell.setgCost(cost);
+                                goToGrids.add(gridCell);
+                            }
+
+                        }
                     }
+                }
+            }
+
+            //remove duplicated coordinates
+        }
+        System.out.println("FINAL GRID LIST");
+        for (int y=0; y<20; y++){
+            for (int x=0; x<15; x++){
+                for (int i=0; i<4; i++){
+                    System.out.println(x + " " + y + "direction: " + i+ " "+ visibleSurface.getSurface(x,y,i));
                 }
             }
         }
@@ -1135,10 +1206,12 @@ public class Exploration {
         boolean noSurface = true;
         int x = robot.getXCoord();
         int y = robot.getYCoord();
+        GridCell gridCell;
         switch (robot.getDirection()){
             case WEST:
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y+2+i,x-1).getObstacle()){
+                    gridCell = map.getGridCell(y+2+i,x-1);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x-1,y+2+i});
                         noSurface= false;
                         break;
@@ -1147,7 +1220,8 @@ public class Exploration {
                 if (obstacles.isEmpty())
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y+2+i,x).getObstacle()){
+                    gridCell = map.getGridCell(y+2+i,x);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x,y+2+i});
                         noSurface= false;
                         break;
@@ -1156,7 +1230,8 @@ public class Exploration {
                 if (obstacles.size()==1)
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y+2+i,x+1).getObstacle()){
+                    gridCell = map.getGridCell(y+2+i,x+1);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x+1,y+2+i});
                         noSurface= false;
                         break;
@@ -1171,7 +1246,8 @@ public class Exploration {
                 break;
             case EAST:
                 for (int i=0; i>-IMAGE_RANGE; i--){
-                    if (map.getGridCell(y-2+i,x+1).getObstacle()){
+                    gridCell = map.getGridCell(y-2+i,x+1);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x+1,y-2+i});
                         noSurface= false;
                         break;
@@ -1180,7 +1256,8 @@ public class Exploration {
                 if (obstacles.isEmpty())
                     obstacles.add(null);
                 for (int i=0; i>-IMAGE_RANGE; i--){
-                    if (map.getGridCell(y-2+i,x).getObstacle()){
+                    gridCell = map.getGridCell(y-2+i,x);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x,y-2+i});
                         noSurface= false;
                         break;
@@ -1189,7 +1266,8 @@ public class Exploration {
                 if (obstacles.size()==1)
                     obstacles.add(null);
                 for (int i=0; i>-IMAGE_RANGE; i--){
-                    if (map.getGridCell(y-2+i,x-1).getObstacle()){
+                    gridCell = map.getGridCell(y-2+i,x-1);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x-1,y-2+i});
                         noSurface= false;
                         break;
@@ -1204,7 +1282,8 @@ public class Exploration {
                 break;
             case NORTH:
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y+1,x+2+i).getObstacle()){
+                    gridCell = map.getGridCell(y+1,x+2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x+2+i,y+1});
                         noSurface= false;
                         break;
@@ -1213,7 +1292,8 @@ public class Exploration {
                 if (obstacles.isEmpty())
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y,x+2+i).getObstacle()){
+                    gridCell = map.getGridCell(y,x+2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x+2+i,y});
                         noSurface= false;
                         break;
@@ -1222,7 +1302,8 @@ public class Exploration {
                 if (obstacles.size()==1)
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y-1,x+2+i).getObstacle()){
+                    gridCell = map.getGridCell(y-1,x+2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x+2+i,y-1});
                         noSurface= false;
                         break;
@@ -1239,7 +1320,8 @@ public class Exploration {
                 break;
             case SOUTH:
                 for (int i=0; i>-IMAGE_RANGE; i--){
-                    if (map.getGridCell(y-1,x-2+i).getObstacle()){
+                    gridCell = map.getGridCell(y-1,x-2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x-2+i,y-1});
                         noSurface= false;
                         break;
@@ -1248,7 +1330,8 @@ public class Exploration {
                 if (obstacles.isEmpty())
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y,x-2+i).getObstacle()){
+                    gridCell = map.getGridCell(y,x-2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x-2+i,y});
                         noSurface= false;
                         break;
@@ -1257,7 +1340,8 @@ public class Exploration {
                 if (obstacles.size()==1)
                     obstacles.add(null);
                 for (int i=0; i<IMAGE_RANGE; i++){
-                    if (map.getGridCell(y+1,x-2+i).getObstacle()){
+                    gridCell = map.getGridCell(y+1,x-2+i);
+                    if (gridCell!=null && gridCell.getObstacle()){
                         obstacles.add(new int[] {x-2+i,y+1});
                         noSurface= false;
                         break;

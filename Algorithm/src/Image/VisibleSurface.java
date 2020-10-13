@@ -73,4 +73,8 @@ public class VisibleSurface {
     public void setSurfaceFalse(int x, int y, int i){
         surfaces[y][x][i]=false;
     }
+
+    public void setSurfaceNull(int x, int y, int i){
+        surfaces[y][x][i]= null;
+    }
 }

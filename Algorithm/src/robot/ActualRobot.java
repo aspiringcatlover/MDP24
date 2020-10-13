@@ -10,7 +10,9 @@ import sensor.ActualSensor;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
@@ -58,7 +60,7 @@ public class ActualRobot extends Robot {
 		sensorArr[1] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_MIDDLE, this.direction, x, y);
 		sensorArr[2] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.UP_RIGHT, this.direction, x, y);
 		// 1 long for left
-		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, Constants.SensorLocation.LEFT_UP, this.direction, x, y);
+		sensorArr[3] = new ActualSensor(Constants.RangeType.LONG, SensorLocation.LEFT_MIDDLE, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_DOWN, this.direction, x, y);
 		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_UP, this.direction, x, y);
@@ -177,8 +179,8 @@ public class ActualRobot extends Robot {
 		System.out.println("Direction" + direction);
 		switch (direction) {
 		case WEST:
-// LEFT_UP(3)
-			sensorArr[3].setXCoord(x-1);
+			// LEFT_MId(3)
+			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y - 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x + 1);
@@ -200,8 +202,8 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case EAST:
-			// LEFT_UP(3)
-			sensorArr[3].setXCoord(x+1);
+			// LEFT_MID(3)
+			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y + 2);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 1);
@@ -223,9 +225,9 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case SOUTH:
-			// LEFT_UP(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x + 2);
-			sensorArr[3].setYCoord(y-1);
+			sensorArr[3].setYCoord(y);
 			// RIGHT_DOWN(4)
 			sensorArr[4].setXCoord(x - 2);
 			sensorArr[4].setYCoord(y + 1);
@@ -246,9 +248,9 @@ public class ActualRobot extends Robot {
 			}
 			break;
 		case NORTH:
-			// LEFT_UP(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x - 2);
-			sensorArr[3].setYCoord(y+2);
+			sensorArr[3].setYCoord(y);
 			// System.out.println(sensorArr[3].getXCoord());
 			// System.out.println(sensorArr[3].getYCoord());
 			// RIGHT_DOWN(4)
@@ -288,6 +290,11 @@ public class ActualRobot extends Robot {
 
 		System.out.println("is there any calibration?");
 		//calibrate here
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -295,11 +302,7 @@ public class ActualRobot extends Robot {
 			//calibrateCounter++;
 		}
 
-		if (hasObstacleOnRight()){
-			System.out.println("obstacle on corner...calibrate");
-			actualRobot.calibrate();
-			//calibrateCounter= 0;
-		}
+
 
 		try {
 			// ms timeout
@@ -309,6 +312,7 @@ public class ActualRobot extends Robot {
 
 		updateSensor();
 
+		/*
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -320,7 +324,7 @@ public class ActualRobot extends Robot {
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
 	}
 
 	@Override
@@ -334,17 +338,18 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotRightDir() {
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
 		}
-		if (hasObstacleOnRight()){
-			System.out.println("obstacle on corner...calibrate");
-			actualRobot.calibrate();
-			//calibrateCounter= 0;
-		}
+
 		socketConnection.sendMessage(Constants.TURN_RIGHT);
 		// acknowledge();
 		int bearing;
@@ -396,17 +401,18 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotLeftDir() {
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
 		}
-		 if (hasObstacleOnRight()){
-			System.out.println("obstacle on corner...calibrate");
-			actualRobot.calibrate();
-			//calibrateCounter= 0;
-		}
+
 		socketConnection.sendMessage(Constants.TURN_LEFT);
 		// send instruction to arduino to turn left
 		// acknowledge();
@@ -460,16 +466,17 @@ public class ActualRobot extends Robot {
 	@Override
 	public void uTurn() {
 		//robot coord doesnt change
+
+		if (hasObstacleOnRight()){
+			System.out.println("obstacle on corner...calibrate");
+			actualRobot.calibrate();
+			//calibrateCounter= 0;
+		}
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
 			actualRobot.calibrateFront();
 			//calibrateCounter++;
-		}
-		if (hasObstacleOnRight()){
-			System.out.println("obstacle on corner...calibrate");
-			actualRobot.calibrate();
-			//calibrateCounter= 0;
 		}
 		socketConnection.sendMessage(U_TURN);
 		System.out.println("SEND U TURN");
@@ -589,21 +596,79 @@ public class ActualRobot extends Robot {
 	}
 
 	private String[][] getSensorValue(int num){
-		String s;
-		String[][] arr = null;
+		StringBuilder s= new StringBuilder();
+		String message;
+		String[][] arr = new String[SENSOR_VALUES][6];
+		String[] arrCheck;
+		boolean skip=false;
+		int skipCounter=0;
+        int length;
 
-		 socketConnection.sendMessage(num + Constants.SENSE_ALL);
+
+		for (int i=0; i<num;i++){
+			s.append(SENSE_ALL);
+		}
+
+		socketConnection.sendMessage(s.toString());
 		System.out.println("sense to arudino in update sensor");
+		System.out.println("send multiple sensor request....");
 		boolean completed = false;
 
 		if  (!completed) {
 			for (int i=0; i<num;i++){
-				s = socketConnection.receiveMessage();
-				System.out.println("MESSAGE>>>> " + s);
-				arr[i] = s.split(",");
+				if (skip){
+					if (skipCounter==1){
+						skip=false;
+					}
+					skipCounter--;
+					continue;
+				}
+				message = socketConnection.receiveMessage();
+				System.out.println("MESSAGE>>>> " + message);
+				//check if 2 msg is joint tgt
+				arrCheck = message.split(",");
+                arr[i] = Arrays.copyOfRange(arrCheck, 0, 6) ;
+
+                length = 6;
+				while (arrCheck.length>length){
+				    skip = true;
+                    skipCounter++;
+                    arr[i+skipCounter] = Arrays.copyOfRange(arrCheck, length, length+6) ;
+                    length = length+6;
+                }
+				/*
+				if (arrCheck.length>6)
+				{
+					skip=true;
+					arr[i] = Arrays.copyOfRange(arrCheck, 0, 6) ;
+					arr[i+1] = Arrays.copyOfRange(arrCheck, 6, 12) ;
+					skipCounter++;
+
+					if (arrCheck.length>12){
+						arr[i+2] = Arrays.copyOfRange(arrCheck, 12, 18) ;
+						skipCounter++;
+					}
+					if (arrCheck.length>18){
+						arr[i+3] = Arrays.copyOfRange(arrCheck, 18, 24) ;
+						skipCounter++;
+					}
+					if (arrCheck.length>24){
+						arr[i+4] = Arrays.copyOfRange(arrCheck, 24, 30) ;
+						skipCounter++;
+					}
+				}
+				arr[i] = Arrays.copyOf(arrCheck, arrCheck.length);*/
 			}
 			System.out.println("length of sensor values" + sensorValues.length);
 			//break;
+		}
+		System.out.println("CHECK SENSOR VALUES");
+		for (int i=0; i<SENSOR_VALUES;i++){
+			for (int r=0; r<6; r++){
+				System.out.print(arr[i][r]+ " ");
+
+			}
+			System.out.println();
 		}
 		return arr;
 	}
@@ -621,9 +686,13 @@ public class ActualRobot extends Robot {
 
     	ArrayList<String[]> sensorValueArrayList= new ArrayList<>();
 
+		String[][] result = getSensorValue(SENSOR_VALUES);
+		for (int i=0; i<SENSOR_VALUES;i++){
+			sensorValueArrayList.add(result[i]);
+		}
 
 
-
+		/*
     	for (int i=0; i<SENSOR_VALUES;i++){
 			sensorValueArrayList.add(getSensorValue());
 			/*
@@ -632,7 +701,7 @@ public class ActualRobot extends Robot {
 				Thread.sleep(20); // Customize your refresh time
 			} catch (InterruptedException e) {
 			}*/
-		}
+		//}
 
 		ArrayList<Integer> individualValue1 = new ArrayList<>();
 		ArrayList<Integer> individualValue2 = new ArrayList<>();
@@ -860,9 +929,6 @@ public class ActualRobot extends Robot {
 		}
 
 	}
-
-
-
 
 	public boolean hasObstacleOnFront(){
 		System.out.println("check if hav 3 obstacle on the right");

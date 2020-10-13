@@ -36,8 +36,8 @@ public abstract class Sensor {
         switch (direction){
             case WEST:
                 switch (location){
-                    case LEFT_UP:
-                        this.x = x-1;
+                    case LEFT_MIDDLE:
+                        this.x = x;
                         this.y = y - 2;
                         break;
                     case RIGHT_DOWN:
@@ -64,8 +64,8 @@ public abstract class Sensor {
                 break;
             case EAST:
                 switch (location){
-                    case LEFT_UP:
-                        this.x = x+1;
+                    case LEFT_MIDDLE:
+                        this.x = x;
                         this.y = y+2;
                         break;
                     case RIGHT_DOWN:
@@ -92,9 +92,9 @@ public abstract class Sensor {
                 break;
             case SOUTH:
                 switch (location){
-                    case LEFT_UP:
+                    case LEFT_MIDDLE:
                         this.x = x+2;
-                        this.y = y-1;
+                        this.y = y;
                         break;
                     case RIGHT_DOWN:
                         this.x = x-2;
@@ -120,9 +120,9 @@ public abstract class Sensor {
                 break;
             case NORTH:
                 switch (location){
-                    case LEFT_UP:
+                    case LEFT_MIDDLE:
                         this.x = x-2;
-                        this.y = y+1;
+                        this.y = y;
                         break;
                     case RIGHT_DOWN:
                         this.x = x+2;
