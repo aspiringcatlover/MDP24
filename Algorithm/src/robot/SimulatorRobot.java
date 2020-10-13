@@ -363,9 +363,14 @@ public class SimulatorRobot extends Robot {
 		int[] coordinate;
 		for (int i=0; i<coordinates.size();i++){
 			coordinate = coordinates.get(i);
-			message.append(coordinate[0]);
-			message.append(",");
-			message.append(coordinate[1]);
+			if (coordinate==null){
+				message.append("-1,-1");
+			}
+			else{
+				message.append(coordinate[0]);
+				message.append(",");
+				message.append(coordinate[1]);
+			}
 			if (i!=coordinates.size()-1){
 				message.append("|");
 			}

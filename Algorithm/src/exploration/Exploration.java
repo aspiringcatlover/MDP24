@@ -10,6 +10,7 @@ import robot.Robot;
 import robot.SimulatorRobot;
 import sensor.Sensor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -608,13 +609,10 @@ public class Exploration {
             robot.setMap(map);
             rightWallHugging();
 
-            if (hasAnyObstacleOnRight()){
-                //get right coordinates
-                rightObstacleCoordinates = getRightObstacleCoordinates();
-
-
+            rightObstacleCoordinates = getRightSurfaceCoordinates();
+            if (!rightObstacleCoordinates.isEmpty()){
                 for (int[] coordinate: rightObstacleCoordinates){
-                    if (coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                    if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
                         visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
                         takePhoto=true;
                     }
@@ -622,7 +620,6 @@ public class Exploration {
                 //send command
                 if (takePhoto)
                     robot.takePhoto(rightObstacleCoordinates);
-
             }
             actual_percentage = getActualPerc();
         }
@@ -918,13 +915,10 @@ public class Exploration {
                     break;
             }
 
-            if (hasAnyObstacleOnRight()){
-                //get right coordinates
-                rightObstacleCoordinates = getRightObstacleCoordinates();
-
-
+            rightObstacleCoordinates = getRightSurfaceCoordinates();
+            if (!rightObstacleCoordinates.isEmpty()){
                 for (int[] coordinate: rightObstacleCoordinates){
-                    if (coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                    if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
                         visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
                         takePhoto=true;
                     }
@@ -932,7 +926,6 @@ public class Exploration {
                 //send command
                 if (takePhoto)
                     robot.takePhoto(rightObstacleCoordinates);
-
             }
 
             map.updateMap(robot.getXCoord(),robot.getYCoord());
@@ -947,6 +940,7 @@ public class Exploration {
         ArrayList<Movement> moveInstructions;
         boolean takePhoto = false;
         moveInstructions = pathFinder.getRobotInstructions(path, robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
+
         //System.out.println("^^^^^movement length"+moveInstructions.size());
 
         for (Movement movement: moveInstructions){
@@ -985,6 +979,21 @@ public class Exploration {
             }
 
             //take photo if there is obstacle on right
+            rightObstacleCoordinates = getRightSurfaceCoordinates();
+            if (!rightObstacleCoordinates.isEmpty()){
+                for (int[] coordinate: rightObstacleCoordinates){
+                    if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                        visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
+                        takePhoto=true;
+                    }
+                }
+                //send command
+                if (takePhoto)
+                    robot.takePhoto(rightObstacleCoordinates);
+            }
+
+
+            /*
             if (hasAnyObstacleOnRight()){
                 //get right coordinates
                 rightObstacleCoordinates = getRightObstacleCoordinates();
@@ -1000,7 +1009,7 @@ public class Exploration {
                 if (takePhoto)
                     robot.takePhoto(rightObstacleCoordinates);
 
-            }
+            }*/
 
             //System.out.println(movement);
             //System.out.println("robot where u at: "+robot.getXCoord()+ " "+ robot.getYCoord());
@@ -1119,6 +1128,155 @@ public class Exploration {
 
         }
         return path;
+    }
+
+    public ArrayList<int[]> getRightSurfaceCoordinates(){
+        ArrayList<int[]> obstacles = new ArrayList<>();
+        boolean noSurface = true;
+        int x = robot.getXCoord();
+        int y = robot.getYCoord();
+        switch (robot.getDirection()){
+            case WEST:
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y+2+i,x-1).getObstacle()){
+                        obstacles.add(new int[] {x-1,y+2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y+2+i,x).getObstacle()){
+                        obstacles.add(new int[] {x,y+2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==1)
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y+2+i,x+1).getObstacle()){
+                        obstacles.add(new int[] {x+1,y+2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==2)
+                    obstacles.add(null);
+                /*
+                obstacles.add(new int[] {x-1,y+2});
+                        obstacles.add(new int[] {x,y+2});
+                        obstacles.add(new int[] {x+1,y+2});*/
+                break;
+            case EAST:
+                for (int i=0; i>-IMAGE_RANGE; i--){
+                    if (map.getGridCell(y-2+i,x+1).getObstacle()){
+                        obstacles.add(new int[] {x+1,y-2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i=0; i>-IMAGE_RANGE; i--){
+                    if (map.getGridCell(y-2+i,x).getObstacle()){
+                        obstacles.add(new int[] {x,y-2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==1)
+                    obstacles.add(null);
+                for (int i=0; i>-IMAGE_RANGE; i--){
+                    if (map.getGridCell(y-2+i,x-1).getObstacle()){
+                        obstacles.add(new int[] {x-1,y-2+i});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==2)
+                    obstacles.add(null);
+                /*
+                obstacles.add(new int[] {x+1,y-2});
+                obstacles.add(new int[] {x,y-2});
+                obstacles.add(new int[] {x-1,y-2});*/
+                break;
+            case NORTH:
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y+1,x+2+i).getObstacle()){
+                        obstacles.add(new int[] {x+2+i,y+1});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y,x+2+i).getObstacle()){
+                        obstacles.add(new int[] {x+2+i,y});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==1)
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y-1,x+2+i).getObstacle()){
+                        obstacles.add(new int[] {x+2+i,y-1});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==2)
+                    obstacles.add(null);
+                /*
+                obstacles.add(new int[] {x+2,y+1});
+                obstacles.add(new int[] {x+2,y});
+                obstacles.add(new int[] {x+2,y-1});*/
+
+
+                break;
+            case SOUTH:
+                for (int i=0; i>-IMAGE_RANGE; i--){
+                    if (map.getGridCell(y-1,x-2+i).getObstacle()){
+                        obstacles.add(new int[] {x-2+i,y-1});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y,x-2+i).getObstacle()){
+                        obstacles.add(new int[] {x-2+i,y});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==1)
+                    obstacles.add(null);
+                for (int i=0; i<IMAGE_RANGE; i++){
+                    if (map.getGridCell(y+1,x-2+i).getObstacle()){
+                        obstacles.add(new int[] {x-2+i,y+1});
+                        noSurface= false;
+                        break;
+                    }
+                }
+                if (obstacles.size()==2)
+                    obstacles.add(null);
+
+                /*obstacles.add(new int[] {x-2,y-1});
+                obstacles.add(new int[] {x-2,y});
+                obstacles.add(new int[] {x-2,y+1});*/
+                break;
+        }
+
+        //no surface then return empty array list
+        if (noSurface)
+            return new ArrayList<>();
+
+        return obstacles;
     }
 
     public ArrayList<int[]> getRightObstacleCoordinates(){

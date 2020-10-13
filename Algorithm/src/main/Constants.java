@@ -108,4 +108,7 @@ public final class Constants {
 
 	//num of sensor values to average
 	public static final int SENSOR_VALUES = 5;
+
+	//num grid for image range
+	public static final int IMAGE_RANGE = 2;
 }
