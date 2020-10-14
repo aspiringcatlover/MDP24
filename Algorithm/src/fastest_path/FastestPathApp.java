@@ -150,7 +150,10 @@ public class FastestPathApp extends Thread{
                 }
             }
         }
-        if (count > 0) {
+        if (count==1){
+            sb.append("W|");
+        }
+        else if (count > 1) {
             sb.append(count).append("|");
         }
         String msg = sb.toString();

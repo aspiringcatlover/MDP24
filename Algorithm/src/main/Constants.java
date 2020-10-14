@@ -74,7 +74,7 @@ public final class Constants {
 
 	public static final int LONG_RANGE_DISTANCE = 70; // range is 19-90cm, technically 19cm-151cm
 	public static final int SHORT_RANGE_DISTANCE = 20; // range is 9-50cm, technically 9cm-81cm
-	public static final int GRID_LONG_RANGE_DISTANCE = 4; // in terms of number of grids, starting outside of robot
+	public static final int GRID_LONG_RANGE_DISTANCE = 5; // in terms of number of grids, starting outside of robot
 	public static final int GRID_SHORT_RANGE_DISTANCE = 2; // in terms of number of grids, starting outside of robot
 	public static final int DISTANCE_FROM_OBSTACLE = 10; // set the preferred distance robot should be away from wall
 

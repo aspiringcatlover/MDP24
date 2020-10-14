@@ -174,6 +174,7 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public void turn(Constants.Direction dir) {
+        boolean calibrateDone=false;
 		// update coordinates(robot and sensor) + sensemap
 		direction = dir;
 		System.out.println("Direction" + direction);
@@ -293,22 +294,24 @@ public class ActualRobot extends Robot {
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
+			calibrateDone = true;
 			//calibrateCounter= 0;
 		}
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
 			actualRobot.calibrateFront();
+			calibrateDone = true;
 			//calibrateCounter++;
 		}
 
-
-
-		try {
-			// ms timeout
-			Thread.sleep(100); // Customize your refresh time
-		} catch (InterruptedException e) {
-		}
+		if (calibrateDone){
+            try {
+                // ms timeout
+                Thread.sleep(200); // Customize your refresh time
+            } catch (InterruptedException e) {
+            }
+        }
 
 		updateSensor();
 
