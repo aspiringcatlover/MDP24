@@ -98,7 +98,7 @@ public class Exploration {
           actual_percentage = getActualPerc();
         }
         System.out.println("percentage covered:" + actual_percentage);
-        resetRobotDirectionToEast();
+        //resetRobotDirectionToEast();
 
         PriorityQueue<GridCell> unexploredGrids = getUnexploredGrid();
 
