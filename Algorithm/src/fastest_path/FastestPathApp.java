@@ -50,10 +50,10 @@ public class FastestPathApp extends Thread{
             completed.set(false);
         }
         running.set(false);
-        ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructions(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
+        ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructionWithCalibration(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
 
-            arudinoInstructions(robotMovements1);
+            aurdinoInstructionsWithCalibrationStepByStep(robotMovements1);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
             }
@@ -90,6 +90,40 @@ public class FastestPathApp extends Thread{
             robot.getMap().displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
         }
 
+    }
+
+    public void aurdinoInstructionsWithCalibrationStepByStep(ArrayList<Constants.Movement> robotMovements){
+        // Append all the movement message into one full string and send at once
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for (Constants.Movement move : robotMovements) {
+            if (move == Constants.Movement.MOVE_FORWARD) {
+                sb.append(Constants.MOVE_FORWARD);
+            }
+
+               else if (move == Constants.Movement.TURN_RIGHT) {
+                    sb.append(Constants.TURN_RIGHT);
+                    count = 0;
+                } else if (move == Constants.Movement.TURN_LEFT) {
+                    sb.append(Constants.TURN_LEFT);
+                    count = 0;
+                } else if (move == Constants.Movement.FRONT_CALIBRATION){
+                    sb.append(Constants.FRONT_CALIBRATION);
+                    count = 0;
+                } else if (move == Constants.Movement.RIGHT_CALIBRATION){
+                    sb.append(CALIBRATE);
+                    count = 0;
+                }
+
+                else {
+                    System.out.println("Error!");
+                    return;
+                }
+            }
+
+        String msg = sb.toString();
+        //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
+        SocketConnection.getInstance().sendMessage(msg);
     }
 
     public void aurdinoInstructionsWithCalibration(ArrayList<Constants.Movement> robotMovements){
