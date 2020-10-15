@@ -557,7 +557,6 @@ public class ActualRobot extends Robot {
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){
-			System.out.println("send mdf string in actual robot");
 			socketConnection.sendMessage("M{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
 					"\"}]}");
 		}
@@ -613,8 +612,6 @@ public class ActualRobot extends Robot {
 		}
 
 		socketConnection.sendMessage(s.toString());
-		System.out.println("sense to arudino in update sensor");
-		System.out.println("send multiple sensor request....");
 		boolean completed = false;
 
 		if  (!completed) {
@@ -639,28 +636,7 @@ public class ActualRobot extends Robot {
                     arr[i+skipCounter] = Arrays.copyOfRange(arrCheck, length, length+6) ;
                     length = length+6;
                 }
-				/*
-				if (arrCheck.length>6)
-				{
-					skip=true;
-					arr[i] = Arrays.copyOfRange(arrCheck, 0, 6) ;
-					arr[i+1] = Arrays.copyOfRange(arrCheck, 6, 12) ;
-					skipCounter++;
 
-					if (arrCheck.length>12){
-						arr[i+2] = Arrays.copyOfRange(arrCheck, 12, 18) ;
-						skipCounter++;
-					}
-					if (arrCheck.length>18){
-						arr[i+3] = Arrays.copyOfRange(arrCheck, 18, 24) ;
-						skipCounter++;
-					}
-					if (arrCheck.length>24){
-						arr[i+4] = Arrays.copyOfRange(arrCheck, 24, 30) ;
-						skipCounter++;
-					}
-				}
-				arr[i] = Arrays.copyOf(arrCheck, arrCheck.length);*/
 			}
 			System.out.println("length of sensor values" + sensorValues.length);
 			//break;
@@ -695,17 +671,6 @@ public class ActualRobot extends Robot {
 		}
 
 
-		/*
-    	for (int i=0; i<SENSOR_VALUES;i++){
-			sensorValueArrayList.add(getSensorValue());
-			/*
-			try {
-				// ms timeout
-				Thread.sleep(20); // Customize your refresh time
-			} catch (InterruptedException e) {
-			}*/
-		//}
-
 		ArrayList<Integer> individualValue1 = new ArrayList<>();
 		ArrayList<Integer> individualValue2 = new ArrayList<>();
 		ArrayList<Integer> individualValue3 = new ArrayList<>();
@@ -737,14 +702,7 @@ public class ActualRobot extends Robot {
 
 
 
-		/*
 
-		//get average
-		for (int i=0; i<6;i++){
-			sensorValues[i] = Integer.toString(total[i]/SENSOR_VALUES);
-			System.out.println("after average sensor "+ i +" :" + sensorValues[i]);
-			//maybe can change sensorvalues to int
-		}*/
 
 		for (int i = 0; i < 6; i++) {
 			System.out.println("SENSOR VALUE" +sensorValues[i]);
@@ -767,28 +725,8 @@ public class ActualRobot extends Robot {
 			//raw value from sensor
 			double numGridInDeci = value / 10;
 			numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
-			// find number of grids that it can detect
-			/*
-			calibrateValue = value -2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}
 
-			calibrateValue = value +2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}*/
-
-			System.out.println("num grid detected" + numGridDetected);
-			System.out.println("num of grids suppose to be" + numGridsSensor);
 			if (numGridDetected==0){
-				System.out.println("grid in front....");
 				sensorResult.add(true);
 				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
 				for (int r = 0; r < numGridNotDetected; r++) {
@@ -825,15 +763,8 @@ public class ActualRobot extends Robot {
 	}
 
 	private void updateSensor1() {
-		/*
-		 * get sensor value from arudino, put them into ArrayList<boolean> into their
-		 * respective sensor true --> obstacle present false --> obstacle not present
-		 * null --> cannot detected as block by obstacle
-		 *
-		 * arrangement of sensor values: UL, UM, UR, LT (long sensor for this), LM, RT
-		 */
 
-		// Accept only all integer sensor values or all double sensor values
+
 		String s;
 		String[] arr = null;
 		ArrayList<Boolean> sensorResult = new ArrayList<>();
@@ -848,9 +779,9 @@ public class ActualRobot extends Robot {
             System.out.println("MESSAGE>>>> " + s);
 			sensorValues = s.split(",");
 			System.out.println("length of sensor values" + sensorValues.length);
-			//break;
+
         }
-//        System.arraycopy(arr, 0, sensorValues, 0, 6);
+
         this.sensePosition[0] = x;
         this.sensePosition[1] = y;
         this.sensePosition[2] = getDirection().bearing;
@@ -878,27 +809,10 @@ public class ActualRobot extends Robot {
 			double numGridInDeci = value / 10;
 			numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
 			// find number of grids that it can detect
-			/*
-			calibrateValue = value -2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}
 
-			calibrateValue = value +2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}*/
 
-			System.out.println("num grid detected" + numGridDetected);
-			System.out.println("num of grids suppose to be" + numGridsSensor);
 			if (numGridDetected==0){
-				System.out.println("grid in front....");
+
 				sensorResult.add(true);
 				numGridNotDetected = numGridsSensor - numGridDetected - 1; // 1 is the obstacle
 				for (int r = 0; r < numGridNotDetected; r++) {
@@ -934,7 +848,6 @@ public class ActualRobot extends Robot {
 	}
 
 	public boolean hasObstacleOnFront(){
-		System.out.println("check if hav 3 obstacle on the right");
 		int x,y;
 
 		switch (actualRobot.getDirection()){
@@ -960,7 +873,6 @@ public class ActualRobot extends Robot {
 
 
 	public boolean hasObstacleOnRight(){
-		System.out.println("check if hav 3 obstacle on the right");
 		int x,y;
 
 		switch (actualRobot.getDirection()){
@@ -990,7 +902,6 @@ public class ActualRobot extends Robot {
 			for (int i=0;i<3;i++){
 				gridCell = map.getGridCell(y,x+i);
 				if (gridCell != null && !gridCell.getObstacle()) {
-					System.out.println("check obstacle row: y=" + y +" "+true);
 					return false;
 				}
 			}
@@ -1003,7 +914,6 @@ public class ActualRobot extends Robot {
 				}
 			}
 		}
-		System.out.println("check obstacle row false");
 		return true;
 	}
 
@@ -1015,7 +925,6 @@ public class ActualRobot extends Robot {
 			for (int i=0;i<3;i++){
 				gridCell = map.getGridCell(y,x+i);
 				if (gridCell == null || gridCell.getObstacle()) {
-					System.out.println("check obstacle row: y=" + y +" "+true);
 					return true;
 				}
 			}
@@ -1028,7 +937,6 @@ public class ActualRobot extends Robot {
 				}
 			}
 		}
-		System.out.println("check obstacle row false");
 		return false;
 	}
 
