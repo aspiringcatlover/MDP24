@@ -50,7 +50,7 @@ public class FastestPathApp extends Thread{
             completed.set(false);
         }
         running.set(false);
-        ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructionWithCalibration(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
+        ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructions(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
 
             aurdinoInstructionsWithCalibrationStepByStep(robotMovements1);
@@ -120,6 +120,8 @@ public class FastestPathApp extends Thread{
                     return;
                 }
             }
+
+        sb.append(Constants.FASTEST_PATH_END);
 
         String msg = sb.toString();
         //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);

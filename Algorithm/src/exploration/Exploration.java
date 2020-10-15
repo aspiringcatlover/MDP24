@@ -87,14 +87,20 @@ public class Exploration {
                 System.out.println("break right wall hugging");
                 break;
             }
-            start=true;
+
             System.out.println("percentage covered:" + actual_percentage);
             //check back of robot for unexplored grid
 
             robot.setMap(map);
             rightWallHugging();
+            if (robot.getYCoord()==1&&robot.getXCoord()==1&&!start)
+            {
+                start=false;
+            }
+            else{
+                start = true;
+            }
             //fastest path to nearest unexplored grid
-
           actual_percentage = getActualPerc();
         }
         System.out.println("percentage covered:" + actual_percentage);
