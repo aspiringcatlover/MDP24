@@ -98,7 +98,7 @@ public class Exploration {
           actual_percentage = getActualPerc();
         }
         System.out.println("percentage covered:" + actual_percentage);
-        resetRobotDirectionToEast();
+        //resetRobotDirectionToEast();
 
         PriorityQueue<GridCell> unexploredGrids = getUnexploredGrid();
 
@@ -449,6 +449,11 @@ public class Exploration {
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
+            try {
+                // ms timeout
+                Thread.sleep(50); // Customize your refresh time
+            } catch (InterruptedException e) {
+            }
         }
 
            System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
@@ -794,6 +799,11 @@ public class Exploration {
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
+            try {
+                // ms timeout
+                Thread.sleep(50); // Customize your refresh time
+            } catch (InterruptedException e) {
+            }
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
@@ -1655,7 +1665,7 @@ public class Exploration {
 
                     //update information from sensor
 
-
+                    /*
                     try{
                         if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
                             //if explored alr dont change the grid
@@ -1663,8 +1673,7 @@ public class Exploration {
                         }
                     }catch (NullPointerException e){
 
-                    }
-
+                    }*/
                     map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                     //if no obstacle on the existing, then set ; if not dont update the update
                     try{
@@ -1696,14 +1705,14 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
 
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
 
@@ -1730,13 +1739,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
 
@@ -1767,13 +1776,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()-i).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()-i, true);
                         try{
@@ -1800,13 +1809,13 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + x + ", "+(y+i)+ "sensor result "+ sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i)==null)
                             break;
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                         try{
@@ -1832,13 +1841,13 @@ public class Exploration {
                         System.out.println("sensor corrdinate: " + (x+i) + ", "+y+ "sensor result " + sensorResultArrayList.get(i));
                         if (sensorResultArrayList.get(i) == null)
                             break;
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() + i, true);
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getObstacle()){
@@ -1867,13 +1876,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord()+i, sensor.getXCoord()).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord()+i, sensor.getXCoord(), true);
                         try{
@@ -1900,13 +1909,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
-
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
 
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                         try{
@@ -1934,12 +1943,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i) == null)
                             break;
 
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord() - i, sensor.getXCoord()).getExplored()){
                                 continue;
                             }
                         } catch (NullPointerException e){
-                        }
+                        }*/
                         map.setExploredForGridCell(sensor.getYCoord() - i, sensor.getXCoord(), true);
                         try{
                             if (map.getGridCell(sensor.getYCoord() - i, sensor.getXCoord()).getObstacle()){
@@ -1968,13 +1978,13 @@ public class Exploration {
                     if (sensorResultArrayList.get(i)==null)
                         break;
 
-
+                    /*
                     try{
                         if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getExplored()){
                             continue;
                         }
                     }catch (NullPointerException e){
-                    }
+                    }*/
                     map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord()+i, true);
                     try{
                         if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord()+i).getObstacle()){
@@ -2001,12 +2011,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i)==null)
                             break;
 
+                        /*
                         try{
                             if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
                         map.setExploredForGridCell(sensor.getYCoord()-i, sensor.getXCoord(), true);
                         try{
                             if (map.getGridCell(sensor.getYCoord()-i, sensor.getXCoord()).getObstacle()){
@@ -2030,12 +2041,13 @@ public class Exploration {
                         if (sensorResultArrayList.get(i) == null)
                             break;
 
+                        /*
                         try {
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord() - i).getExplored()){
                                 continue;
                             }
                         }catch (NullPointerException e){
-                        }
+                        }*/
                         map.setExploredForGridCell(sensor.getYCoord(), sensor.getXCoord() - i, true);
                         try {
                             if (map.getGridCell(sensor.getYCoord(), sensor.getXCoord() - i).getObstacle()){
@@ -2068,7 +2080,7 @@ public class Exploration {
                 //delay
                 try {
                     // ms timeout
-                    Thread.sleep(100); // Customize your refresh time
+                    Thread.sleep(50); // Customize your refresh time
                 } catch (InterruptedException e) {
                 }
             }
