@@ -53,7 +53,7 @@ public class FastestPathApp extends Thread{
         ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructions(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
 
-            arudinoInstructions(robotMovements1);
+            arudinoInstructionsStepByStepInInstruction(robotMovements1);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
             }
@@ -161,7 +161,32 @@ public class FastestPathApp extends Thread{
         SocketConnection.getInstance().sendMessage(msg);
     }
 
-    public void arudinoInstructionsStepByStep(ArrayList<Constants.Movement> robotMovements){
+    public void arudinoInstructionsStepByStepInInstruction(ArrayList<Constants.Movement> robotMovements){
+        // Append all the movement message into one full string and send at once
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for (Constants.Movement move : robotMovements) {
+            if (move == Constants.Movement.MOVE_FORWARD) {
+                sb.append(Constants.MOVE_FORWARD);
+            }
+           else if (move == Constants.Movement.TURN_RIGHT) {
+                sb.append(Constants.TURN_RIGHT);
+            }
+           else if (move == Constants.Movement.TURN_LEFT) {
+                sb.append(Constants.TURN_LEFT);
+            }
+           else {
+                System.out.println("Error!");
+                return;
+            }
+        }
+
+        String msg = sb.toString();
+        //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
+        SocketConnection.getInstance().sendMessage(msg);
+    }
+
+    public void arudinoInstructionsStepByStepConnection(ArrayList<Constants.Movement> robotMovements){
         // Append all the movement message into one full string and send at once
         Constants.Direction direction;
         int count = 0;
