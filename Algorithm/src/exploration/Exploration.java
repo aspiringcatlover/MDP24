@@ -777,15 +777,17 @@ public class Exploration {
         PriorityQueue<GridCell> goToGrids = getGridsImageReg();
 
         int irGridX, irGridY;
+        Direction irDirection;
         GridCell irGrid;
         ArrayList<Movement> movementsToFaceCorrectDirection;
         while (!goToGrids.isEmpty()){
             System.out.println("image reg pq..");
             for (GridCell gridCell:goToGrids){
-                System.out.println("x:"  +gridCell.getHorCoord() + "y: " + gridCell.getVerCoord());
+                System.out.println("x:"  +gridCell.getHorCoord() + "y: " + gridCell.getVerCoord() + "direction.." + gridCell.getDirection());
             }
             System.out.println("POLLLLLLL");
             irGrid = goToGrids.poll();
+            irDirection = irGrid.getDirection();
             irGridX = irGrid.getHorCoord();
             irGridY= irGrid.getVerCoord();
             pathFinder = new PathFinder(map);
@@ -793,9 +795,12 @@ public class Exploration {
             if (path!=null&&path.size()!=0)
                 sendRobotInstructionFromPathNoSensorWithImageReg(path, path.get(path.size()-1));
             //turn to face direction
-            if (robot.getDirection()!=irGrid.getDirection()){
+            System.out.println("grid... " + robot.getXCoord() + " " + robot.getYCoord() + " stupid robot direction" + robot.getDirection() +" is suppose to face here:" + irDirection);
+            if (robot.getDirection()!=irDirection){
+                System.out.println("eh hello robot move to face correct direction");
                 movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(irGrid.getDirection());
                 sendRobotInstruction(movementsToFaceCorrectDirection);
+                System.out.println("robot final position? " + robot.getDirection());
             }
             goToGrids = getGridsImageReg();
 
