@@ -554,6 +554,36 @@ public class ActualRobot extends Robot {
 
 	}
 
+	@Override
+	public ArrayList<Movement> movementForRobotFaceDirection(Direction direction) {
+		int bearing;
+		ArrayList<Movement> movements = new ArrayList<>();
+    	if (this.direction==direction)
+    		return null;
+
+		bearing = this.direction.bearing - direction.bearing;
+
+		if (bearing>180){
+			bearing = bearing-360;
+		}
+		else if (bearing<-180){
+			bearing = 360+bearing;
+		}
+
+		while (bearing!=0){
+			//positive turn left, negative turn right
+			if (bearing<0){
+				movements.add(Movement.TURN_RIGHT);
+				bearing+= 90;
+			}
+			else if (bearing>0){
+				movements.add(Movement.TURN_LEFT);
+				bearing-=90;
+			}
+		}
+		return movements;
+	}
+
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){

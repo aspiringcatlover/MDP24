@@ -33,7 +33,7 @@ public class TestFastestPath {
         }
         System.out.println("----------------------------");*/
         //ArrayList<GridCell> result = pathFinder.getShortestPath(14,10,14,19);
-        ArrayList<GridCell> result =  pathFinder.getShortestPathWithWaypoint(1, 1, 5, 7);
+        ArrayList<GridCell> result =  pathFinder.getShortestPathWithWaypoint(1, 1, 5, 7, Constants.Direction.NORTH);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +

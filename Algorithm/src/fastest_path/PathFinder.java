@@ -22,18 +22,18 @@ public class PathFinder {
         this.map = map;
     }
 
-    public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd){
+    public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection){
         calculateHeuristicCostOfMap(xEnd, yEnd);
         //System.out.println("check hcost: " + map.getGridCell(10,10).gethCost());
-        search(xStart, yStart,xEnd,yEnd);
+        search(xStart, yStart,xEnd,yEnd, startDirection);
         //checkPath(xEnd,yEnd);
 
         return pathList;
     }
 
-    public ArrayList<GridCell> getShortestPathWithWaypoint(int xStart, int yStart, int xEnd, int yEnd){
+    public ArrayList<GridCell> getShortestPathWithWaypoint(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection){
 
-        getShortestPath(xStart,yStart,xEnd,yEnd);
+        getShortestPath(xStart,yStart,xEnd,yEnd, startDirection);
         if (xEnd!=14||yEnd!=19){
             int size = pathList.size();
             GridCell gridCell = pathList.get(size-1);
@@ -45,7 +45,7 @@ public class PathFinder {
 
             System.out.println("what is happening here");
             closedList = new ArrayList<>();
-            getShortestPath(xWaypoint,yWaypoint,14,19);
+            getShortestPath(xWaypoint,yWaypoint,14,19, getCurrentDirection(gridCell));
             //pathList.remove(0);
             pathFirstPart.addAll(pathList);
             pathList = pathFirstPart;
@@ -389,7 +389,7 @@ public class PathFinder {
     /**
      * after heuristic cost is calculated, then a* search will be performed
      */
-    private void search(int xStart, int yStart, int xEnd, int yEnd) {
+    private void search(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection) {
         int xTemp, yTemp;
         boolean strict;
         strict = false; //this should be param, to be added to make sure tat the actual a* search can find path
@@ -416,6 +416,7 @@ public class PathFinder {
 
         //Adds the Starting grid inside the openList
         GridCell startGrid = map.getGridCell(yStart, xStart);
+        startGrid.setDirection(startDirection);
         startGrid.setgCost(0);
         openList.add(startGrid);
 
@@ -716,7 +717,8 @@ public class PathFinder {
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){
-            return Direction.NORTH;
+            //initial direction stored in grid cell>
+            return gridCell.getDirection();
         }
 
         //calculate

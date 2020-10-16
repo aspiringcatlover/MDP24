@@ -101,6 +101,7 @@ public abstract class Robot {
     public abstract void calibrateFront();
     public abstract void uTurn();
     public abstract void takePhoto(ArrayList<int[]> coordinates);
+    public abstract ArrayList<Movement> movementForRobotFaceDirection(Direction direction);
 
 
     //getter and setter

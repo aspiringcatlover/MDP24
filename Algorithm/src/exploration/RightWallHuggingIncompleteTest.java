@@ -34,7 +34,7 @@ public class RightWallHuggingIncompleteTest {
         }
         System.out.println("map complete?"+map.getActualPerc());
         ArrayList<GridCell> result = null;
-                result = pathFinder.getShortestPath(1,1,12,0);
+                result = pathFinder.getShortestPath(1,1,12,0, Constants.Direction.NORTH);
         if (result!=null){
             System.out.println("num grid in result: "+result.size());
             for (GridCell gridCell: result){

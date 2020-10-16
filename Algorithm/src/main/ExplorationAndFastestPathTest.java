@@ -29,7 +29,7 @@ public class ExplorationAndFastestPathTest {
         robot = exploration.explore();
 
         PathFinder  pathFinder = new PathFinder(robot.getMap());
-        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 14, 19);
+        ArrayList<GridCell> result =  pathFinder.getShortestPath(1, 1, 14, 19, Constants.Direction.NORTH);
         System.out.println("num grid in result: "+result.size());
         for (GridCell gridCell: result){
             System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +

@@ -38,7 +38,7 @@ public class FastestPathApp extends Thread{
         //get waypoint from map in the robot
         int[] waypoint = robot.getMap().getWayPoint();
         System.out.println("way point" + waypoint[0]+" "+waypoint[1]);
-        ArrayList<GridCell> fastestPath1 = pathFinder.getShortestPathWithWaypoint(robot.getXCoord(), robot.getYCoord(),waypoint[0], waypoint[1]);
+        ArrayList<GridCell> fastestPath1 = pathFinder.getShortestPathWithWaypoint(robot.getXCoord(), robot.getYCoord(),waypoint[0], waypoint[1], robot.getDirection());
 
 
         //convert path to instructins
