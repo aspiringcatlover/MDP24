@@ -35,7 +35,7 @@ public class ConnectionManager {
     public boolean connectToRPi() {
         if (robot == null){
             //UNCOMMENT THIS
-                    robot = ActualRobot.getInstance();
+            robot = ActualRobot.getInstance();
         }
 
         return socketConnection.connectToRPI();
@@ -199,7 +199,9 @@ public class ConnectionManager {
                 //robot.displayMessage("{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +"\"}]}", 2);
                 complete = true;
             }
+            else if (s.contains("D")) {
 
+            }
             // Store valid message if the program is running exploration or fastest path
             else {
                 // If the command is an acknowledgement or sensor values, put into buffer

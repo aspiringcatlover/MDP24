@@ -535,13 +535,14 @@ public class PathFinder {
             }
 
 
+            /*
             System.out.println("check");
 
             System.out.println("COUNT " + debugCounter+"------------------------------------------------------------");
             for (GridCell gridCell: openList){
                 System.out.println("x:"+gridCell.getHorCoord()+" y:" +gridCell.getVerCoord()+", fcost"+gridCell.getfCost()+", gcost"+gridCell.getgCost()+", hcost"+gridCell.gethCost());
             }
-            debugCounter++;
+            debugCounter++;*/
 
             //System.out.println("openlist" + Arrays.toString(openList.toArray()));
             lowestCostGridCell = openList.poll();

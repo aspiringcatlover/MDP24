@@ -74,6 +74,7 @@ public class ActualRobot extends Robot {
     //TODO: int step this is for fastest path
     @Override
     public void moveForward() {
+		boolean calibrateDone=false;
         //update coordinates(both robot and sensor) + sensemap
         socketConnection.sendMessage(MOVE_FORWARD);
         System.out.println("SEND MOVE FORWARD");
@@ -110,16 +111,28 @@ public class ActualRobot extends Robot {
             default:
                 break;
         }
+		actualRobot.calibrate();
+        /*
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
+		}*/
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+			calibrateDone = true;
+			//calibrateCounter++;
 		}
-		try {
-			// ms timeout
-			Thread.sleep(100); // Customize your refresh time
-		} catch (InterruptedException e) {
+		if (calibrateDone){
+			try {
+				// ms timeout
+				Thread.sleep(100); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
 		}
+
         updateSensor();
         //acknowledge();
     }
@@ -161,13 +174,14 @@ public class ActualRobot extends Robot {
 			default:
 				break;
 		}
-
-		//TODO: to remove?
+		actualRobot.calibrate();
+		/*
+		//
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
 		//updateSensor();
 		//acknowledge();
 	}
@@ -291,12 +305,13 @@ public class ActualRobot extends Robot {
 
 		System.out.println("is there any calibration?");
 		//calibrate here
-		if (hasObstacleOnRight()){
+		actualRobot.calibrate();
+		/*if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			calibrateDone = true;
 			//calibrateCounter= 0;
-		}
+		}*/
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -308,7 +323,7 @@ public class ActualRobot extends Robot {
 		if (calibrateDone){
             try {
                 // ms timeout
-                Thread.sleep(200); // Customize your refresh time
+                Thread.sleep(100); // Customize your refresh time
             } catch (InterruptedException e) {
             }
         }
@@ -341,11 +356,14 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotRightDir() {
+		actualRobot.calibrate();
+		/*
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
+
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -404,11 +422,13 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public Constants.Direction robotLeftDir() {
+		actualRobot.calibrate();
+		/*
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -469,12 +489,13 @@ public class ActualRobot extends Robot {
 	@Override
 	public void uTurn() {
 		//robot coord doesnt change
-
+		actualRobot.calibrate();
+		/*
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
 		if (hasObstacleOnFront()){
 			System.out.println("obstacle on front...calibrate");
 			//calibrate front
@@ -513,11 +534,16 @@ public class ActualRobot extends Robot {
 			default:
 				break;
 		}
+
+
+		actualRobot.calibrate();
+
+		/*
 		if (hasObstacleOnRight()){
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}
+		}*/
 
 		try {
 			// ms timeout
@@ -525,12 +551,11 @@ public class ActualRobot extends Robot {
 		} catch (InterruptedException e) {
 		}
 
-
 		updateSensor();
 	}
 
 	@Override
-	public void takePhoto(ArrayList<int[]> coordinates) {
+	public String takePhoto(ArrayList<int[]> coordinates) {
     	//send C[1,1|-1,-1|-1,-1] x,y
     	StringBuilder message= new StringBuilder();
     	message.append("C[");
@@ -551,7 +576,9 @@ public class ActualRobot extends Robot {
 		}
 		message.append("]");
 		socketConnection.sendMessage(message.toString());
-
+		String messageReceive = socketConnection.receiveMessage();
+		System.out.println("message receive: " + messageReceive);
+		return messageReceive;
 	}
 
 	@Override

@@ -357,7 +357,7 @@ public class SimulatorRobot extends Robot {
 	}
 
 	@Override
-	public void takePhoto(ArrayList<int[]> coordinates) {
+	public String takePhoto(ArrayList<int[]> coordinates) {
 		StringBuilder message= new StringBuilder();
 		message.append("C[");
 		int[] coordinate;
@@ -377,6 +377,7 @@ public class SimulatorRobot extends Robot {
 		}
 		message.append("]");
 		System.out.println("PHOTO TAKEN >>>"+message.toString());
+		return "D";
 	}
 
     @Override
@@ -387,6 +388,7 @@ public class SimulatorRobot extends Robot {
             return null;
 
         bearing = this.direction.bearing - direction.bearing;
+        System.out.println("bearing change ..." + bearing);
 
         if (bearing>180){
             bearing = bearing-360;
@@ -395,14 +397,19 @@ public class SimulatorRobot extends Robot {
             bearing = 360+bearing;
         }
 
+        System.out.println("bearing change 2 ..." + bearing);
+
         while (bearing!=0){
             //positive turn left, negative turn right
             if (bearing<0){
                 movements.add(Movement.TURN_RIGHT);
+                System.out.println("turn right ");
                 bearing+= 90;
             }
             else if (bearing>0){
                 movements.add(Movement.TURN_LEFT);
+                System.out.println("turn left ");
+
                 bearing-=90;
             }
         }

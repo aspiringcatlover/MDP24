@@ -378,29 +378,32 @@ public class Exploration {
                         //System.out.println("^^^^move forward, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                         robot.moveForward();
                         senseMap();
+                        /*
                         if (hasObstacleOnRight()){
                             System.out.println("obstacle on right...calibrate");
                             robot.calibrate();
-                        }
+                        }*/
                     }
                     else if (movement.equals(Movement.TURN_RIGHT)){
                         //System.out.println("^^^^turn right, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                         robot.turn(robot.robotRightDir());
                         senseMap();
+                        /*
                         if (hasObstacleOnRight()){
                             System.out.println("obstacle on right...calibrate");
                             robot.calibrate();
-                        }
+                        }*/
 
                     }
                     else{
                         //System.out.println("^^^^move left, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                         robot.turn(robot.robotLeftDir());
                         senseMap();
+                        /*
                         if (hasObstacleOnRight()){
                             System.out.println("obstacle on right...calibrate");
                             robot.calibrate();
-                        }
+                        }*/
                     }
 
                 if (terminate)
@@ -421,10 +424,11 @@ public class Exploration {
                     robot.turn(directionToFace);
                     System.out.println("direction to face ..." + directionToFace);
                     senseMap();
+                    /*
                     if (hasObstacleOnRight()){
                         System.out.println("obstacle on right...calibrate");
                         robot.calibrate();
-                    }
+                    }*/
                     map.updateMap(robot.getXCoord(),robot.getYCoord());
                     map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
                     map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
@@ -600,6 +604,7 @@ public class Exploration {
         boolean terminate=false;
         boolean start = false;
         boolean takePhoto = false;
+        String photoReturnValue = "";
         ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
 
         System.out.println("image regconition");
@@ -645,8 +650,11 @@ public class Exploration {
                     }
                 }
                 //send command
-                if (takePhoto)
-                    robot.takePhoto(rightObstacleCoordinates);
+                if (takePhoto){
+                     robot.takePhoto(rightObstacleCoordinates);
+
+                }
+
             }
             actual_percentage = getActualPerc();
             rightWallHugging();
@@ -736,10 +744,11 @@ public class Exploration {
                     robot.turn(directionToFace);
                     System.out.println("direction to face ..." + directionToFace);
                     senseMap();
+                    /*
                     if (hasObstacleOnRight()){
                         System.out.println("obstacle on right...calibrate");
                         robot.calibrate();
-                    }
+                    }*/
                     map.updateMap(robot.getXCoord(),robot.getYCoord());
                     map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
                     map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
@@ -780,6 +789,7 @@ public class Exploration {
         Direction irDirection;
         GridCell irGrid;
         ArrayList<Movement> movementsToFaceCorrectDirection;
+
         while (!goToGrids.isEmpty()){
             System.out.println("image reg pq..");
             for (GridCell gridCell:goToGrids){
@@ -793,13 +803,25 @@ public class Exploration {
             pathFinder = new PathFinder(map);
             path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), irGridX, irGridY, robot.getDirection());
             if (path!=null&&path.size()!=0)
-                sendRobotInstructionFromPathNoSensorWithImageReg(path, path.get(path.size()-1));
+                photoReturnValue = sendRobotInstructionFromPathNoSensorWithImageReg(path, path.get(path.size()-1));
+
+            if (photoReturnValue.equals("I")){
+                //terminate a* for image reg
+                System.out.println("TERMINATE image reg a*");
+                break;
+            }
+
             //turn to face direction
             System.out.println("grid... " + robot.getXCoord() + " " + robot.getYCoord() + " stupid robot direction" + robot.getDirection() +" is suppose to face here:" + irDirection);
             if (robot.getDirection()!=irDirection){
                 System.out.println("eh hello robot move to face correct direction");
-                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(irGrid.getDirection());
-                sendRobotInstruction(movementsToFaceCorrectDirection);
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(irDirection);
+                photoReturnValue = sendRobotInstructionWithImageReg(movementsToFaceCorrectDirection);
+                if (photoReturnValue.equals("I")){
+                    //terminate a* for image reg
+                    System.out.println("TERMINATE image reg a*");
+                    break;
+                }
                 System.out.println("robot final position? " + robot.getDirection());
             }
             goToGrids = getGridsImageReg();
@@ -1026,6 +1048,8 @@ public class Exploration {
 
             //remove duplicated coordinates
         }
+
+        /* --- debug
         System.out.println("FINAL GRID LIST");
         for (int y=0; y<20; y++){
             for (int x=0; x<15; x++){
@@ -1033,7 +1057,7 @@ public class Exploration {
                     System.out.println(x + " " + y + "direction: " + i+ " "+ visibleSurface.getSurface(x,y,i));
                 }
             }
-        }
+        }*/
         return goToGrids;
     }
 
@@ -1059,9 +1083,13 @@ public class Exploration {
         }
     }
 
-    public void sendRobotInstruction(ArrayList<Movement> movements){
+    public String sendRobotInstructionWithImageReg(ArrayList<Movement> movements){
+
+        ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
+        boolean takePhoto = false;
+        String photoReturnValue="";
         if (movements==null)
-            return;
+            return photoReturnValue;
         for (Movement movement: movements) {
             switch (movement) {
                 case MOVE_FORWARD:
@@ -1077,13 +1105,29 @@ public class Exploration {
             map.updateMap(robot.getXCoord(),robot.getYCoord());
             map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         }
+        rightObstacleCoordinates = getRightSurfaceCoordinates();
+        if (!rightObstacleCoordinates.isEmpty()){
+            for (int[] coordinate: rightObstacleCoordinates){
+                if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                    visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
+                    takePhoto=true;
+                }
+            }
+            //send command
+            if (takePhoto){
+                photoReturnValue = robot.takePhoto(rightObstacleCoordinates);
+            }
+
+        }
+        return  photoReturnValue;
     }
 
-    public void sendRobotInstructionFromPathNoSensorWithImageReg(ArrayList<GridCell> path, GridCell lastGridCell){
+    public String sendRobotInstructionFromPathNoSensorWithImageReg(ArrayList<GridCell> path, GridCell lastGridCell){
         PathFinder pathFinder = new PathFinder(map);
         ArrayList<Movement> moveInstructions;
         moveInstructions = pathFinder.getRobotInstructions(path,robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
         ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
+        String photoReturnValue =" ";
         boolean takePhoto = false;
         System.out.println("move instruction"+moveInstructions.size());
         for (Movement movement: moveInstructions){
@@ -1105,15 +1149,22 @@ public class Exploration {
                     }
                 }
                 //send command
-                if (takePhoto)
-                    robot.takePhoto(rightObstacleCoordinates);
+                if (takePhoto){
+                    photoReturnValue = robot.takePhoto(rightObstacleCoordinates);
+                    if (photoReturnValue.equals("I")){
+                        break;
+                    }
+                }
+
             }
 
             map.updateMap(robot.getXCoord(),robot.getYCoord());
             map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         }
+        return photoReturnValue;
         //robot turn right until .... shld change this
 
+        /*
         if (robot.getDirection()!=lastGridCell.getDirection()){
             while (robot.getDirection()!=lastGridCell.getDirection()){
                 robot.turn(robot.robotRightDir());
@@ -1131,7 +1182,7 @@ public class Exploration {
                         robot.takePhoto(rightObstacleCoordinates);
                 }
             }
-        }
+        }&/
 
 
         /*
@@ -1176,29 +1227,29 @@ public class Exploration {
                 //System.out.println("^^^^move forward, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                 robot.moveForward();
                 senseMap();
-                if (hasObstacleOnRight()){
-                    System.out.println("obstacle on right...calibrate");
-                    robot.calibrate();
-                }
+                robot.calibrate();
+
             }
             else if (movement.equals(Movement.TURN_RIGHT)){
                 //System.out.println("^^^^turn right, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                 robot.turn(robot.robotRightDir());
                 senseMap();
+                /*
                 if (hasObstacleOnRight()){
                     System.out.println("obstacle on right...calibrate");
                     robot.calibrate();
-                }
+                }*/
 
             }
             else{
                 //System.out.println("^^^^move left, robot coordinate: " +  robot.getXCoord() +" "+ robot.getYCoord());
                 robot.turn(robot.robotLeftDir());
                 senseMap();
+                /*
                 if (hasObstacleOnRight()){
                     System.out.println("obstacle on right...calibrate");
                     robot.calibrate();
-                }
+                }*/
             }
 
             //take photo if there is obstacle on right
@@ -1591,58 +1642,6 @@ public class Exploration {
         return true;
     }
 
-
-
-    public boolean hasObstacleOnFront(){
-        System.out.println("check if hav 3 obstacle on the right");
-        int x,y;
-
-        switch (robot.getDirection()){
-            case WEST:
-                x=robot.getXCoord()-2;
-                y=robot.getYCoord()-1;
-                return checkObstacleWholeRow(false,y,x);
-            case EAST:
-                x=robot.getXCoord()+2;
-                y=robot.getYCoord()-1;
-                return checkObstacleWholeRow(false,y,x);
-            case SOUTH:
-                x=robot.getXCoord()-1;
-                y=robot.getYCoord()-2;
-                return checkObstacleWholeRow(true,y,x);
-            case NORTH:
-                x=robot.getXCoord()-1;
-                y=robot.getYCoord()+2;
-                return checkObstacleWholeRow(true,y,x);
-        }
-        return true;
-    }
-
-
-    public boolean hasObstacleOnRight(){
-        System.out.println("check if hav 3 obstacle on the right");
-        int x,y;
-
-        switch (robot.getDirection()){
-            case WEST:
-                x=robot.getXCoord()-1;
-                y=robot.getYCoord()+2;
-                return checkObstacleWholeRow(true,y,x);
-            case EAST:
-                x=robot.getXCoord()-1;
-                y=robot.getYCoord()-2;
-                return checkObstacleWholeRow(true,y,x);
-            case SOUTH:
-                x=robot.getXCoord()-2;
-                y=robot.getYCoord()-1;
-                return checkObstacleWholeRow(false,y,x);
-            case NORTH:
-                x=robot.getXCoord()+2;
-                y=robot.getYCoord()-1;
-                return checkObstacleWholeRow(false,y,x);
-        }
-        return true;
-    }
 
 
     private boolean hasObstacle(Direction dir){
