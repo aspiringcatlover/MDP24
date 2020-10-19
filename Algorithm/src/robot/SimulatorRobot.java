@@ -4,7 +4,7 @@ import static main.Constants.*;
 import static main.Constants.Direction.*;
 
 import map.MapPanel;
-import map.SimulatorMap;
+import simulator.Simulator;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
@@ -39,7 +39,7 @@ public class SimulatorRobot extends Robot {
 		// 2 short for right
 		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap, this.direction, x, y);
 		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_UP, simulateMap, this.direction, x, y);
-		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+		MapPanel emptyMap = new MapPanel(Simulator.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
 			for (int r = 0; r < 3; r++) {
@@ -58,6 +58,52 @@ public class SimulatorRobot extends Robot {
 		// 3 short for front
 
 
+	}
+
+	@Override
+	public void turnWithoutSensor(Direction dir) {
+		System.out.println("turn without sensors");
+		direction = dir; //set robot direction
+		System.out.println("Direction" + direction);
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	@Override
+	public void moveForwardWithoutSensor() {
+		System.out.println("move forward without sensors");
+		switch (direction) {
+			case WEST:
+				x -= 1;
+				break;
+			case EAST:
+				x += 1;
+				break;
+			case SOUTH:
+				y -= 1;
+				break;
+			case NORTH:
+				y += 1;
+				break;
+			default:
+				break;
+		}
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	public MapPanel getMap() {

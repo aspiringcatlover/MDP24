@@ -4,17 +4,14 @@ import connection.SocketConnection;
 import main.Constants;
 import map.GridCell;
 import map.MapPanel;
-import map.SimulatorActualRobot;
-import map.SimulatorMap;
+import simulator.SimulatorActualRun;
+import simulator.Simulator;
 import sensor.ActualSensor;
 import sensor.Sensor;
-import sensor.SimulatorSensor;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Pattern;
 
 import static main.Constants.*;
 import static main.Constants.Direction.*;
@@ -22,10 +19,9 @@ import static main.Constants.Direction.*;
 public class ActualRobot extends Robot {
 	private ActualSensor[] sensorArr = new ActualSensor[6];
 	private static ActualRobot actualRobot = null;
-	private RobotCamera camera;
 	private SocketConnection socketConnection = SocketConnection.getInstance();
-	protected String[] sensorValues = new String[6];
-	protected int[] sensePosition = new int[] { -1, -1, -1 };
+	private String[] sensorValues = new String[6];
+	private int[] sensePosition = new int[] { -1, -1, -1 };
 
 	// Singleton
 	public static ActualRobot getInstance() {
@@ -36,22 +32,21 @@ public class ActualRobot extends Robot {
 	}
 
 	// constructor for actual
-	public ActualRobot() {
+	private ActualRobot() {
 		super();
 
 		// initialize sensors for robot
 		// 3 short for front
 
-
 		//TODO: pass the simulator map into this robot instead
-		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+		MapPanel emptyMap = new MapPanel(Simulator.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
 			for (int r = 0; r < 3; r++) {
 				emptyMap.setExploredForGridCell(i, r, true);
 			}
 		}
-		this.map = SimulatorActualRobot.getRobot().getMap();
+		this.map = SimulatorActualRun.getRobot().getMap();
 	}
 
 	public void initialise(int x, int y, int direction){
@@ -66,10 +61,55 @@ public class ActualRobot extends Robot {
 		sensorArr[5] = new ActualSensor(Constants.RangeType.SHORT, Constants.SensorLocation.RIGHT_UP, this.direction, x, y);
 	}
 
+	@Override
+	public void turnWithoutSensor(Direction dir) {
+		// update coordinates(robot only)
+		direction = dir;
+		System.out.println("Direction" + direction);
+
+		System.out.println("is there any calibration?");
+		//calibrate here
+		actualRobot.calibrate();
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+		}
+	}
+
+	@Override
+	public void moveForwardWithoutSensor() {
+		//update coordinates(both robot only)
+		socketConnection.sendMessage(MOVE_FORWARD);
+		System.out.println("SEND MOVE FORWARD");
+		switch (direction) {
+			case WEST:
+				x -= 1;
+				break;
+			case EAST:
+				x += 1;
+				break;
+			case SOUTH:
+				y -= 1;
+				break;
+			case NORTH:
+				y += 1;
+				break;
+			default:
+				break;
+		}
+		actualRobot.calibrate();
+		if (hasObstacleOnFront()){
+			System.out.println("obstacle on front...calibrate");
+			//calibrate front
+			actualRobot.calibrateFront();
+		}
+	}
+
 	// check if robot sensor detects an obstacle in the specified direction
 	public boolean hasObstacle(Constants.Direction dir) {
 		return true;
-	};
+	}
 
     //TODO: int step this is for fastest path
     @Override
@@ -139,7 +179,7 @@ public class ActualRobot extends Robot {
 
 	@Override
 	public void moveForward(int steps) {
-		socketConnection.sendMessage(Integer.toString(steps)+ "|"); //eg 3|
+		socketConnection.sendMessage(steps + "|"); //eg 3|
 		System.out.println("SEND MOVE FORWARD x" + steps);
 		switch (direction) {
 			case WEST:
@@ -185,6 +225,8 @@ public class ActualRobot extends Robot {
 		//updateSensor();
 		//acknowledge();
 	}
+
+
 
 	@Override
 	public void turn(Constants.Direction dir) {
@@ -603,7 +645,7 @@ public class ActualRobot extends Robot {
 				movements.add(Movement.TURN_RIGHT);
 				bearing+= 90;
 			}
-			else if (bearing>0){
+			else {
 				movements.add(Movement.TURN_LEFT);
 				bearing-=90;
 			}
@@ -696,31 +738,10 @@ public class ActualRobot extends Robot {
                     arr[i+skipCounter] = Arrays.copyOfRange(arrCheck, length, length+6) ;
                     length = length+6;
                 }
-				/*
-				if (arrCheck.length>6)
-				{
-					skip=true;
-					arr[i] = Arrays.copyOfRange(arrCheck, 0, 6) ;
-					arr[i+1] = Arrays.copyOfRange(arrCheck, 6, 12) ;
-					skipCounter++;
 
-					if (arrCheck.length>12){
-						arr[i+2] = Arrays.copyOfRange(arrCheck, 12, 18) ;
-						skipCounter++;
-					}
-					if (arrCheck.length>18){
-						arr[i+3] = Arrays.copyOfRange(arrCheck, 18, 24) ;
-						skipCounter++;
-					}
-					if (arrCheck.length>24){
-						arr[i+4] = Arrays.copyOfRange(arrCheck, 24, 30) ;
-						skipCounter++;
-					}
-				}
-				arr[i] = Arrays.copyOf(arrCheck, arrCheck.length);*/
 			}
 			System.out.println("length of sensor values" + sensorValues.length);
-			//break;
+
 		}
 		System.out.println("CHECK SENSOR VALUES");
 		for (int i=0; i<SENSOR_VALUES;i++){
@@ -734,7 +755,7 @@ public class ActualRobot extends Robot {
 	}
 
 	private void updateSensor(){
-		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		ArrayList<Boolean> sensorResult;
 		int sensorDistance, numGridsSensor = 0, numGridNotDetected;
 		boolean obstacleDetected = false;
     	int[] total = new int[6];
@@ -751,17 +772,6 @@ public class ActualRobot extends Robot {
 			sensorValueArrayList.add(result[i]);
 		}
 
-
-		/*
-    	for (int i=0; i<SENSOR_VALUES;i++){
-			sensorValueArrayList.add(getSensorValue());
-			/*
-			try {
-				// ms timeout
-				Thread.sleep(20); // Customize your refresh time
-			} catch (InterruptedException e) {
-			}*/
-		//}
 
 		ArrayList<Integer> individualValue1 = new ArrayList<>();
 		ArrayList<Integer> individualValue2 = new ArrayList<>();
@@ -794,14 +804,6 @@ public class ActualRobot extends Robot {
 
 
 
-		/*
-
-		//get average
-		for (int i=0; i<6;i++){
-			sensorValues[i] = Integer.toString(total[i]/SENSOR_VALUES);
-			System.out.println("after average sensor "+ i +" :" + sensorValues[i]);
-			//maybe can change sensorvalues to int
-		}*/
 
 		for (int i = 0; i < 6; i++) {
 			System.out.println("SENSOR VALUE" +sensorValues[i]);
@@ -824,23 +826,6 @@ public class ActualRobot extends Robot {
 			//raw value from sensor
 			double numGridInDeci = value / 10;
 			numGridDetected = (int) Math.floor(numGridInDeci); // TODO: check this
-			// find number of grids that it can detect
-			/*
-			calibrateValue = value -2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}
-
-			calibrateValue = value +2; //try
-			calibrateNumGridInDeci = calibrateValue/10;
-			calibrateNumGridDetected = (int) Math.floor(calibrateNumGridInDeci);
-			if (calibrateNumGridDetected!=numGridDetected){
-				System.out.println("calibrate grid...." + calibrateNumGridDetected);
-				numGridDetected = calibrateNumGridDetected;
-			}*/
 
 			System.out.println("num grid detected" + numGridDetected);
 			System.out.println("num of grids suppose to be" + numGridsSensor);
@@ -893,7 +878,7 @@ public class ActualRobot extends Robot {
 		// Accept only all integer sensor values or all double sensor values
 		String s;
 		String[] arr = null;
-		ArrayList<Boolean> sensorResult = new ArrayList<>();
+		ArrayList<Boolean> sensorResult;
 		int sensorDistance, numGridsSensor = 0, numGridNotDetected;
 		boolean obstacleDetected = false;
 		socketConnection.sendMessage(Constants.SENSE_ALL);

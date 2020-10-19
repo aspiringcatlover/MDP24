@@ -1,4 +1,6 @@
-package connection;
+package connection.test;
+import connection.SocketConnection;
+
 import java.util.Scanner;
 
 // This is used to test your connection between PC and Rpi

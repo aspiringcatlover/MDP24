@@ -1,33 +1,50 @@
-package exploration;
+package exploration.test;
 
+import fastestPath.PathFinder;
 import main.Constants;
+import map.GridCell;
 import map.MapPanel;
-import map.SimulatorMap;
-import robot.Robot;
-import robot.SimulatorRobot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ExplorationTest {
+public class RightWallHuggingIncompleteTest {
     public static void main(String[] args) {
-        String[][] sampleMap = getSampleMap(8);
+        String[][] sampleMap = getSampleMap(6666);
         MapPanel map = new MapPanel(sampleMap);
 
-        MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
-
-        for (int i = 0; i < 3; i++) {
-            for (int r = 0; r < 3; r++) {
-                emptyMap.setExploredForGridCell(i, r, true);
+        PathFinder pathFinder = new PathFinder(map);
+        for (int i=0; i<19;i++){
+            for (int r=0;r<14;r++){
+                if ((i==9||i==10)&&(r>=4&&r<=10))
+                    continue;
+                map.setExploredForGridCell(i,r,true);
             }
         }
 
+        for (int i=0; i<19;i++){
+            for (int r=0;r<14;r++){
+                System.out.println("x:" + map.getGridCell(i,r).getHorCoord() + " y: " +map.getGridCell(i,r).getVerCoord() +
+                        " unexplored " + map.getGridCell(i,r).getExplored() +"obstacle?"+map.getGridCell(i,r).getObstacle());
+            }
+        }
+        System.out.println("map complete?"+map.getActualPerc());
+        ArrayList<GridCell> result = null;
+                result = pathFinder.getShortestPath(1,1,12,0, Constants.Direction.NORTH);
+        if (result!=null){
+            System.out.println("num grid in result: "+result.size());
+            for (GridCell gridCell: result){
+                System.out.println("x:" + gridCell.getHorCoord() + " y: " +gridCell.getVerCoord() +
+                        " fcost: " + gridCell.getfCost() + " gcost:"+gridCell.getgCost()+" hcost:"+gridCell.gethCost());
+            }
+        }
+        else
+            System.out.println("result empty");
 
-        Robot robot = new SimulatorRobot(emptyMap, 1000, map);
-        Exploration exploration = new Exploration(robot, 360000,100, 2,false);
-        exploration.explore();
     }
+
     public static String[][] getSampleMap(int mapChoice){
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {

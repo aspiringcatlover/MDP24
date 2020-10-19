@@ -1,10 +1,8 @@
-package fastest_path;
+package fastestPath;
 
 import main.Constants.*;
 import map.GridCell;
 import map.MapPanel;
-import robot.Robot;
-import robot.SimulatorRobot;
 
 
 import java.util.ArrayList;
@@ -714,7 +712,7 @@ public class PathFinder {
 
     }
 
-   Direction getCurrentDirection(GridCell gridCell){
+   public Direction getCurrentDirection(GridCell gridCell){
         //get parent of current grid cell
         GridCell parentGridCell=gridCell.getParentGrid();
         if (parentGridCell==null){

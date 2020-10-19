@@ -1,50 +1,35 @@
-package map;
+package simulator;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.html.ImageView;
 
-import exploration.Exploration;
 import exploration.ExplorationApp;
-import fastest_path.FastestPathApp;
+import fastestPath.FastestPathApp;
 import main.*;
-import robot.ActualRobot;
+import map.GridCell;
+import map.MapPanel;
 import robot.Robot;
 import robot.SimulatorRobot;
 
-public class SimulatorMap extends JFrame {
+public class Simulator extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private int goal_coverage_perc;
@@ -69,7 +54,7 @@ public class SimulatorMap extends JFrame {
 	public Thread tSimExplore;
 
 	// constructor
-	public SimulatorMap() {
+	public Simulator() {
 
 		// simulation will only start when button "apply settings" is clicked
 		startSimulation = false;
@@ -295,7 +280,7 @@ public class SimulatorMap extends JFrame {
 				}*/
 
 				refreshMap();
-				MapPanel simulateMap = new MapPanel(SimulatorMap.getSampleMap(mapChoice));
+				MapPanel simulateMap = new MapPanel(Simulator.getSampleMap(mapChoice));
 
 				for (int i = 0; i < 3; i++) {
 					for (int r = 0; r < 3; r++) {
@@ -304,7 +289,7 @@ public class SimulatorMap extends JFrame {
 				}
 
                 robot = new SimulatorRobot(map, steps_per_sec, simulateMap);
-                startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, false);
+                startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, true);
                 mapExplored=true;
                 actual_coverage_perc =  (int) robot.getMap().getActualPerc();
 
@@ -450,7 +435,7 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+			path_name = System.getProperty("user.dir")+"/Algorithm/src/sampleMapTxt/map" +Integer.toString(mapChoice) + ".txt";
 //			System.out.println(path_name);
 			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
@@ -620,7 +605,7 @@ public class SimulatorMap extends JFrame {
 	}
 
 	public static void setRobot(Robot robot) {
-		SimulatorMap.robot = robot;
+		Simulator.robot = robot;
 	}
 	
 	public String getMdfStringEnt() {

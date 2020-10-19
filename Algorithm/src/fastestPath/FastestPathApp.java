@@ -1,9 +1,8 @@
-package fastest_path;
+package fastestPath;
 
 import connection.SocketConnection;
 import main.Constants;
 import map.GridCell;
-import map.MapPanel;
 import robot.Robot;
 import robot.SimulatorRobot;
 
@@ -53,7 +52,7 @@ public class FastestPathApp extends Thread{
         ArrayList<Constants.Movement> robotMovements1 = pathFinder.getRobotInstructions(fastestPath1, robot.getDirection(),robot.getXCoord(), robot.getYCoord());
         if (!isSimulated){
 
-            aurdinoInstructionsWithCalibrationStepByStep(robotMovements1);
+            arudinoInstructions(robotMovements1);
             if (SocketConnection.checkConnection()) {
                 SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
             }
@@ -171,9 +170,18 @@ public class FastestPathApp extends Thread{
         int count = 0;
         for (Constants.Movement move : robotMovements) {
             if (move == Constants.Movement.MOVE_FORWARD) {
+                if (count==10){
+                    //reset count to 0 as max is 10 step --> 0| represent 10 steps
+                    sb.append("0|");
+                    count = 0;
+                }
                 count++;
             } else if (count > 0) {
-                sb.append(count).append("|");
+                if (count==1)
+                    sb.append("W|");
+                else
+                    sb.append(count).append("|");
+                //sb.append(count).append("|");
                 if (move == Constants.Movement.TURN_RIGHT) {
                     sb.append(Constants.TURN_RIGHT);
                     count = 1;
@@ -186,12 +194,15 @@ public class FastestPathApp extends Thread{
                 }
             }
         }
+        sb.append("M|");
+
+        /*
         if (count==1){
             sb.append("W|");
         }
         else if (count > 1) {
             sb.append(count).append("|");
-        }
+        }*/
         String msg = sb.toString();
         //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
         SocketConnection.getInstance().sendMessage(msg);

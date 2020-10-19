@@ -16,7 +16,7 @@ public abstract class Robot {
     int y;
     Sensor[] sensorArr= new Sensor[6];
     MapPanel map;
-    String[] mdfString;
+    private String[] mdfString;
 
 
     public Robot(Direction direction, int x, int y) {
@@ -65,7 +65,7 @@ public abstract class Robot {
         }*/
     }
 
-    protected int checkValidX(int x) {
+    private int checkValidX(int x) {
         if (x >= Constants.WIDTH - 1) {
             x = Constants.WIDTH - 2;
         }
@@ -76,7 +76,7 @@ public abstract class Robot {
         return x;
     }
 
-    protected int checkValidY(int y) {
+    private int checkValidY(int y) {
         if (y >= Constants.HEIGHT - 1) {
             y = Constants.HEIGHT - 2;
         }
@@ -87,7 +87,8 @@ public abstract class Robot {
         return y;
     }
 
-
+    public abstract void turnWithoutSensor(Direction dir);
+    public abstract void moveForwardWithoutSensor();
     public abstract void moveForward();
     public abstract void moveForward(int steps);
     public abstract void turn(Direction dir);

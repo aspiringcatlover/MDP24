@@ -1,4 +1,4 @@
-package robot;
+package robot.test;
 
 import main.Constants;
 

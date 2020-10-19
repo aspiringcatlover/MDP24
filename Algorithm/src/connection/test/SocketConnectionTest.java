@@ -1,5 +1,7 @@
-package connection;
+package connection.test;
 
+import connection.ConnectionManager;
+import connection.SocketConnection;
 import main.Constants;
 import sensor.ActualSensor;
 

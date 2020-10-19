@@ -4,7 +4,7 @@ import connection.SocketConnection;
 import main.Constants;
 import map.GridCell;
 import map.MapPanel;
-import map.SimulatorMap;
+import simulator.Simulator;
 import robot.Robot;
 import robot.SimulatorRobot;
 
@@ -49,8 +49,9 @@ public class ExplorationApp extends Thread{
         System.out.println("???");
         Exploration exploration = new Exploration(robot,time, percentage, speed, image_recognition);
         System.out.println("robot start exploring...");
-        //robot = exploration.explore();
-        robot = exploration.imageRecognitionExploration();
+        robot = exploration.startExploration();
+        //robot = exploration.normalExploration();
+        //robot = exploration.imageRecognitionExploration();
         MapPanel map = robot.getMap();
         System.out.println("in exploration app");
         for (int col = 0; col < WIDTH; col++) {
@@ -59,8 +60,7 @@ public class ExplorationApp extends Thread{
             }
             System.out.println();
         }
-        SimulatorMap.setRobot(robot);
-        //exploration.Exploration(robot, time, percentage, speed, image_recognition);
+        Simulator.setRobot(robot);
         if (running.get()) {
             completed.set(true);
         }
@@ -72,20 +72,6 @@ public class ExplorationApp extends Thread{
             SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
         }
         stopThread();
-
-        /*
-        if (!isSimulated){
-            if (SocketConnection.checkConnection()) {
-                // Send the MDF String at the end when it is completed
-                String[] arr2 = robot.getMdfString();
-                SocketConnection.getInstance().sendMessage("M{\"map\":[{\"explored\": \"" + arr2[0] + "\",\"length\":" + arr2[1] + ",\"obstacle\":\"" + arr2[2] +
-                        "\"}]}");
-                SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
-            }
-        }
-        else{
-
-        }*/
     }
 
     public static Robot getRobot(){
