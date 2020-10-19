@@ -636,7 +636,6 @@ public class Exploration {
                 System.out.println("break right wall hugging");
                 break;
             }
-            start=true;
             System.out.println("percentage covered:" + actual_percentage);
             //check back of robot for unexplored grid
 
@@ -658,6 +657,13 @@ public class Exploration {
             }
             actual_percentage = getActualPerc();
             rightWallHugging();
+            if (robot.getYCoord()==1&&robot.getXCoord()==1&&!start)
+            {
+                start=false;
+            }
+            else{
+                start = true;
+            }
 
         }
         rightObstacleCoordinates = getRightSurfaceCoordinates(); //dont use grid cell, use surface instead
