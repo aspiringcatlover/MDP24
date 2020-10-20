@@ -436,6 +436,7 @@ public class Simulator extends JFrame {
 		try {
 			String path_name = new File("").getAbsolutePath();
 			path_name = System.getProperty("user.dir")+"/Algorithm/src/sampleMapTxt/map" +Integer.toString(mapChoice) + ".txt";
+			//path_name = System.getProperty("user.dir")+"/src/sampleMapTxt/map" +Integer.toString(mapChoice) + ".txt";
 //			System.out.println(path_name);
 			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
