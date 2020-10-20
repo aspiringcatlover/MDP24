@@ -618,9 +618,14 @@ public class ActualRobot extends Robot {
 		}
 		message.append("]");
 		socketConnection.sendMessage(message.toString());
-		String messageReceive = socketConnection.receiveMessage();
-		System.out.println("message receive: " + messageReceive);
-		return messageReceive;
+		try {
+			// ms timeout
+			Thread.sleep(500); // Customize your refresh time
+		} catch (InterruptedException e) {
+		}
+		//String messageReceive = socketConnection.receiveMessage();
+		//System.out.println("message receive: " + messageReceive);
+		return "";
 	}
 
 	@Override

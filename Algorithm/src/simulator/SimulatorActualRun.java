@@ -72,7 +72,7 @@ public class SimulatorActualRun extends JFrame {
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();
-            path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" + mapChoice + ".txt";
+            path_name = System.getProperty("user.dir")+"/Algorithm/src/sampleMapTxt/map" + mapChoice + ".txt";
 //			System.out.println(path_name);
             //path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             //C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt

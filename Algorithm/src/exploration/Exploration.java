@@ -14,6 +14,7 @@ import sensor.Sensor;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
+import static main.Constants.Direction.SOUTH;
 import static main.Constants.HEIGHT;
 import static main.Constants.WIDTH;
 import static main.Constants.*;
@@ -340,6 +341,8 @@ public class Exploration {
         robot.initSensor();
         System.out.println("EXPLORATION-FINISH INITIALISE SENSOR");
 
+        //without a*
+        //while (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start)
         while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime){
             senseMap();
 
@@ -351,7 +354,7 @@ public class Exploration {
                 System.out.println();
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord() + "direction" + robot.getDirection());
-            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start){
+            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start&&actual_percentage>50){
                 System.out.println("break right wall hugging");
                 break;
             }
@@ -524,6 +527,13 @@ public class Exploration {
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
         //update robot map
+
+        //to test , calibrate before reset robot direction
+        if (robot.getDirection()==SOUTH)
+            robot.calibrate(); //right wall calibrate
+
+        robot.calibrateFront();
+
         resetRobotDirection();
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
         robot.setMap(map);
@@ -646,7 +656,7 @@ public class Exploration {
 
                     if (map.getGridCell(y+1,x)!=null){
                         if (!map.getGridCell(y+1,x).getObstacle()){
-                            allVisibleSurface.surfaceCaptureObstacleDirection(x, y, Direction.SOUTH);
+                            allVisibleSurface.surfaceCaptureObstacleDirection(x, y, SOUTH);
                             System.out.println("surface on south");
                         }
                     }
@@ -714,15 +724,15 @@ public class Exploration {
                             case 1:
                                 if (checkSurroundingGrid(x+2,y)){
                                     gridCell = map.getGridCell(y, x+2);
-                                    gridCell.setDirection(Direction.SOUTH);
+                                    gridCell.setDirection(SOUTH);
                                 }
                                 else if (checkSurroundingGrid(x+2,y-1)){
                                     gridCell = map.getGridCell(y-1, x+2);
-                                    gridCell.setDirection(Direction.SOUTH);
+                                    gridCell.setDirection(SOUTH);
                                 }
                                 else if (checkSurroundingGrid(x+2,y+1)){
                                     gridCell = map.getGridCell(y+1, x+2);
-                                    gridCell.setDirection(Direction.SOUTH);
+                                    gridCell.setDirection(SOUTH);
                                 }
 
                                 else{
@@ -1910,7 +1920,7 @@ public class Exploration {
         }
         else if (yCal>=2){
             //face east
-            return Direction.SOUTH;
+            return SOUTH;
         }
         else if (yCal<=-2){
             //face west
