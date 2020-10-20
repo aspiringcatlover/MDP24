@@ -14,16 +14,17 @@ public class PathFinder {
     private MapPanel map;
     private ArrayList<GridCell> closedList = new ArrayList<>();
     private ArrayList<GridCell> pathList = new ArrayList<>();
+    private int fastestPathCost;
 
 
     public PathFinder(MapPanel map) {
         this.map = map;
     }
 
-    public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection){
+    public ArrayList<GridCell> getShortestPath(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection, Direction endDirection){
         calculateHeuristicCostOfMap(xEnd, yEnd);
         //System.out.println("check hcost: " + map.getGridCell(10,10).gethCost());
-        search(xStart, yStart,xEnd,yEnd, startDirection);
+        search(xStart, yStart,xEnd,yEnd, startDirection, endDirection);
         //checkPath(xEnd,yEnd);
 
         return pathList;
@@ -31,7 +32,7 @@ public class PathFinder {
 
     public ArrayList<GridCell> getShortestPathWithWaypoint(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection){
 
-        getShortestPath(xStart,yStart,xEnd,yEnd, startDirection);
+        getShortestPath(xStart,yStart,xEnd,yEnd, startDirection, null);
         if (xEnd!=14||yEnd!=19){
             int size = pathList.size();
             GridCell gridCell = pathList.get(size-1);
@@ -43,7 +44,7 @@ public class PathFinder {
 
             System.out.println("what is happening here");
             closedList = new ArrayList<>();
-            getShortestPath(xWaypoint,yWaypoint,14,19, getCurrentDirection(gridCell));
+            getShortestPath(xWaypoint,yWaypoint,14,19, getCurrentDirection(gridCell), null);
             //pathList.remove(0);
             pathFirstPart.addAll(pathList);
             pathList = pathFirstPart;
@@ -387,7 +388,7 @@ public class PathFinder {
     /**
      * after heuristic cost is calculated, then a* search will be performed
      */
-    private void search(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection) {
+    private void search(int xStart, int yStart, int xEnd, int yEnd, Direction startDirection, Direction endDirection) {
         int xTemp, yTemp;
         boolean strict;
         strict = false; //this should be param, to be added to make sure tat the actual a* search can find path
@@ -554,6 +555,7 @@ public class PathFinder {
             if (endPoint.getHorCoord()!=xEnd||endPoint.getVerCoord()!=yEnd){
                 System.out.println("no path");
                 this.pathList=null;
+                fastestPathCost=0;
                 return;
             }
         }
@@ -567,6 +569,19 @@ public class PathFinder {
         retracePath(endPoint);
         clearParent();
         System.out.println(endPoint.getHorCoord());
+
+        ArrayList<Movement> movementsToFaceDirection;
+        Direction curDirection =  getCurrentDirection(endPoint);
+        int cost = endPoint.getfCost();
+        //add in cost to face end direction
+        if (endDirection!=null && curDirection!=endDirection){
+            movementsToFaceDirection = movementForRobotToFaceDirection(xEnd, yEnd, curDirection, endDirection );
+            for (Movement movement: movementsToFaceDirection){
+                cost += 4; //4 for each turning
+            }
+        }
+        fastestPathCost = cost;
+
         /*
         while (endNode.parent != null) {
             Node currentNode = endNode;
@@ -574,6 +589,35 @@ public class PathFinder {
             endNode = endNode.parent;
         }
          */
+    }
+
+    public ArrayList<Movement> movementForRobotToFaceDirection(int x, int y, Direction curDirection, Direction directionToFace){
+        int bearing;
+        ArrayList<Movement> movements = new ArrayList<>();
+        if (curDirection==directionToFace)
+            return null;
+
+        bearing = curDirection.bearing - directionToFace.bearing;
+
+        if (bearing>180){
+            bearing = bearing-360;
+        }
+        else if (bearing<-180){
+            bearing = 360+bearing;
+        }
+
+        while (bearing!=0){
+            //positive turn left, negative turn right
+            if (bearing<0){
+                movements.add(Movement.TURN_RIGHT);
+                bearing+= 90;
+            }
+            else {
+                movements.add(Movement.TURN_LEFT);
+                bearing-=90;
+            }
+        }
+        return movements;
     }
 
     /**
@@ -785,16 +829,6 @@ public class PathFinder {
             return xEnd == x && yEnd == y; //if coordinate is waypoint then its fine --> assuming that it just need to pass through, so means got extra space
         }
 
-        /*
-        System.out.println(!map.getGridCell(y+1,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x-1).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y+1,x-1).getObstacle());
-        System.out.println(!map.getGridCell(y,x+1).getObstacle());
-        System.out.println(!map.getGridCell(y+1,x).getObstacle());
-        System.out.println(!map.getGridCell(y-1,x).getObstacle());
-        System.out.println(!map.getGridCell(y,x-1).getObstacle());*/
-
         return (!map.getGridCell(y+1,x+1).getObstacle()&&!map.getGridCell(y-1,x-1).getObstacle()&&!map.getGridCell(y-1,x+1).getObstacle()&&!map.getGridCell(y+1,x-1).getObstacle()
                 &&!map.getGridCell(y,x+1).getObstacle()&&!map.getGridCell(y+1,x).getObstacle()&&!map.getGridCell(y-1,x).getObstacle()&&!map.getGridCell(y,x-1).getObstacle());
     }
@@ -924,5 +958,13 @@ public class PathFinder {
         }
         System.out.println("check obstacle row false");
         return true;
+    }
+
+    public int getFastestPathCost() {
+        return fastestPathCost;
+    }
+
+    public void setFastestPathCost(int fastestPathCost) {
+        this.fastestPathCost = fastestPathCost;
     }
 }

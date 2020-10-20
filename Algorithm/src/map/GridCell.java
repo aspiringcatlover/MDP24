@@ -58,8 +58,26 @@ public class GridCell extends JPanel {
 		setOpaque(true); 
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setPreferredSize(new Dimension (25, 25));
-        
-        
+	}
+
+	@Override
+	public int hashCode() {
+		return ver_coord*15+hor_coord;
+	}
+
+	//Compare only x, y, direction
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GridCell other = (GridCell) obj;
+		if (hor_coord != other.hor_coord || ver_coord != other.ver_coord || direction !=other.direction)
+			return false;
+		return true;
 	}
 
 	public Direction getDirection() {
