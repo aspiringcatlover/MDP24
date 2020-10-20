@@ -492,67 +492,6 @@ public class Exploration {
         }
         clearParent();
 
-        //print all the visble surface
-        System.out.println("AALLL Visible surface");
-        for (int y=0; y<20; y++){
-            for (int x=0; x<15; x++){
-                for (int i=0; i<4; i++){
-                    System.out.println(x + " " + y + "direction: " + i+ " "+ visibleSurface.getSurface(x,y,i));
-                }
-            }
-        }
-        //a*star to capture image that haven capture
-        getAllSurfaces();
-
-        PriorityQueue<GridCell> goToGrids = getGridsImageReg();
-
-        int irGridX, irGridY;
-        Direction irDirection;
-        GridCell irGrid;
-
-
-        while (!goToGrids.isEmpty()){
-            System.out.println("image reg pq..");
-            for (GridCell gridCell:goToGrids){
-                System.out.println("x:"  +gridCell.getHorCoord() + "y: " + gridCell.getVerCoord() + "direction.." + gridCell.getDirection());
-            }
-            System.out.println("POLLLLLLL");
-            irGrid = goToGrids.poll();
-            irDirection = irGrid.getDirection();
-            irGridX = irGrid.getHorCoord();
-            irGridY= irGrid.getVerCoord();
-            pathFinder = new PathFinder(map);
-            path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), irGridX, irGridY, robot.getDirection());
-            if (path!=null&&path.size()!=0)
-                //photoReturnValue = sendRobotInstructionBash(path);
-                photoReturnValue = sendRobotInstructionFromPathNoSensorWithImageReg(path, path.get(path.size()-1));
-
-            if (photoReturnValue.equals("I")){
-                //terminate a* for image reg
-                System.out.println("TERMINATE image reg a*");
-                break;
-            }
-
-            //turn to face direction
-            System.out.println("grid... " + robot.getXCoord() + " " + robot.getYCoord() + " stupid robot direction" + robot.getDirection() +" is suppose to face here:" + irDirection);
-            if (robot.getDirection()!=irDirection){
-                System.out.println("eh hello robot move to face correct direction");
-                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(irDirection);
-                photoReturnValue = sendRobotInstructionWithImageReg(movementsToFaceCorrectDirection);
-                if (photoReturnValue.equals("I")){
-                    //terminate a* for image reg
-                    System.out.println("TERMINATE image reg a*");
-                    break;
-                }
-                System.out.println("robot final position? " + robot.getDirection());
-            }
-            goToGrids = getGridsImageReg();
-
-        }
-
-        //send final mdf string
-        robot.setMap(map);
-
         if(!isSimulated){
             ActualRobot actualRobot = (ActualRobot) robot;
             //send mdf shit
