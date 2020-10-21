@@ -267,7 +267,7 @@ public class Exploration {
             actualRobot.sendMdfString();
             try {
                 // ms timeout
-                Thread.sleep(50); // Customize your refresh time
+                Thread.sleep(100); // Customize your refresh time
             } catch (InterruptedException e) {
             }
         }
@@ -538,7 +538,7 @@ public class Exploration {
             //delay for mdf string so that rpi will not send other command tgt with mdf string
             try {
                 // ms timeout
-                Thread.sleep(50); // Customize your refresh time
+                Thread.sleep(100); // Customize your refresh time
             } catch (InterruptedException e) {
             }
         }
@@ -2237,7 +2237,7 @@ public class Exploration {
                 //delay
                 try {
                     // ms timeout
-                    Thread.sleep(50); // Customize your refresh time
+                    Thread.sleep(100); // Customize your refresh time
                 } catch (InterruptedException e) {
                 }
             }
