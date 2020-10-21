@@ -83,12 +83,13 @@ public class Server {
 				else if(message.equals(Constants.SENSE_ALL) || message.equals(Constants.CALIBRATE) || message.equals(Constants.RIGHTALIGN)) {
 					System.out.println(pos[0] + ", " + pos[1]);
 				}
+				/*
  				else if (message.equals(Constants.END_TOUR) || message.contains("N")) {
 
 					exploring = false;
 					fastestpath = false;
 					acknowledge = false;
-				}
+				}*/
 				else {
 					acknowledge = false;
 					System.out.println("Error.");

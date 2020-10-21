@@ -99,7 +99,7 @@ public final class Constants {
 	public static final String TURN_RIGHT = "D|";
 	public static final String CALIBRATE = "L|";
 	public static final String RIGHTALIGN = "B|";
-	public static final String END_TOUR = "N";
+	//public static final String END_TOUR = "N";
 	public static final String U_TURN="S|";
 	public static final String FRONT_CALIBRATION = "V|";
 	public static final String FASTEST_PATH_END = "M|";

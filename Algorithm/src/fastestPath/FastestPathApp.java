@@ -54,7 +54,7 @@ public class FastestPathApp extends Thread{
 
             arudinoInstructions(robotMovements1);
             if (SocketConnection.checkConnection()) {
-                SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
+                //SocketConnection.getInstance().sendMessage(Constants.END_TOUR);
             }
         }
         else{
@@ -184,10 +184,10 @@ public class FastestPathApp extends Thread{
                 //sb.append(count).append("|");
                 if (move == Constants.Movement.TURN_RIGHT) {
                     sb.append(Constants.TURN_RIGHT);
-                    count = 1;
+                    count = 0;
                 } else if (move == Constants.Movement.TURN_LEFT) {
                     sb.append(Constants.TURN_LEFT);
-                    count = 1;
+                    count = 0;
                 } else {
                     System.out.println("Error!");
                     return;

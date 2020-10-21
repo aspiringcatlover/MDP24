@@ -63,6 +63,7 @@ public class Exploration {
         ArrayList<Movement> moveInstructions;
         boolean terminate=false;
         boolean start = false;
+        boolean midpoint = false;
 
 
         //init start grid to be explored alr
@@ -82,7 +83,13 @@ public class Exploration {
             System.out.println("robot direction .... " + robot.getDirection());
             System.out.println("before sense map");
             //aft sense map calibrate
-            senseMap();
+            if (!midpoint){
+                senseMap();
+            }
+            else{
+                midpoint= false;
+            }
+
            // robot.setMap(map);
                 System.out.println("after sense map");
             for (int col = 0; col < WIDTH; col++) {
@@ -102,6 +109,12 @@ public class Exploration {
 
             robot.setMap(map);
             rightWallHugging();
+            if (checkMidPointOfMaze()){
+                senseMap();
+                midpoint= true;
+                System.out.println("MID POINT OF MAZE .. "  + robot.getXCoord() + "  " + robot.getYCoord());
+                takePhotoMidPointOfMaze();
+            }
             if (robot.getYCoord()==1&&robot.getXCoord()==1&&!start)
             {
                 start=false;
@@ -289,6 +302,8 @@ public class Exploration {
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
+        robot.calibrateFront();
+        robot.calibrate();
 
         //reset robot to face north
         resetRobotDirection();
@@ -329,6 +344,7 @@ public class Exploration {
         boolean terminate=false;
         boolean start = false;
         boolean takePhoto = false;
+        boolean midpoint = false;
         String photoReturnValue = "";
         ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
 
@@ -349,7 +365,12 @@ public class Exploration {
         //without a*
         //while (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start)
         while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime){
-            senseMap();
+            if (!midpoint){
+                senseMap();
+            }
+            else{
+                midpoint= false;
+            }
 
             System.out.println("after sense map");
             for (int col = 0; col < WIDTH; col++) {
@@ -384,10 +405,13 @@ public class Exploration {
             }
             actual_percentage = getActualPerc();
             rightWallHugging();
+            /*
             if (checkMidPointOfMaze()){
+                senseMap();
+                midpoint= true;
                 System.out.println("MID POINT OF MAZE .. "  + robot.getXCoord() + "  " + robot.getYCoord());
                 takePhotoMidPointOfMaze();
-            }
+            }*/
 
             if (robot.getYCoord()==1&&robot.getXCoord()==1&&!start)
             {
@@ -535,6 +559,14 @@ public class Exploration {
             clearParent();
         }
 
+        System.out.println("delay after exploration finish");
+        //delay before any calibration and resetting
+        try {
+            // ms timeout
+            Thread.sleep(10000); // Customize your refresh time
+        } catch (InterruptedException e) {
+        }
+
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
         //update robot map
 
@@ -551,6 +583,8 @@ public class Exploration {
         map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
         //map.displayDirection(robot.getYCoord(),robot.getXCoord(),robot.getDirection());
         //return robot
+        System.out.println("done calibrating");
+
         return robot;
     }
 
@@ -599,7 +633,7 @@ public class Exploration {
         boolean takePhoto=false;
         Direction turnBackDirection= NORTH;
         if (robot.getXCoord()==7){
-            if (robot.getYCoord()>=0 && robot.getYCoord()<4){
+            if (robot.getYCoord()>=0 && robot.getYCoord()<=4){
                 turnBackDirection = robot.getDirection();
                         //cam face north
                 movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(WEST);
@@ -608,7 +642,7 @@ public class Exploration {
                 turnBack=true;
 
             }
-            else if (robot.getYCoord()>16 && robot.getYCoord()<20){
+            else if (robot.getYCoord()>=16 && robot.getYCoord()<20){
                 turnBackDirection = robot.getDirection();
                 //cam face south
                 movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(EAST);
@@ -619,7 +653,7 @@ public class Exploration {
         }
         else if (robot.getYCoord()==10){
             //or switch to 9, see which one better
-            if (robot.getXCoord()>=0 && robot.getYCoord()<3){
+            if (robot.getXCoord()>=0 && robot.getYCoord()<=3){
                 turnBackDirection = robot.getDirection();
                 //cam face east
                 movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(NORTH);
@@ -627,7 +661,7 @@ public class Exploration {
                 takePhoto = true;
 
             }
-            else if (robot.getXCoord()>12 && robot.getXCoord()<15){
+            else if (robot.getXCoord()>=12 && robot.getXCoord()<15){
                 turnBackDirection = robot.getDirection();
                 //cam face west
                 movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(SOUTH);
@@ -636,6 +670,7 @@ public class Exploration {
                 turnBack=true;
             }
         }
+
         if (takePhoto){
             System.out.println("take photo...");
             takePhoto = false;
@@ -663,26 +698,26 @@ public class Exploration {
 
     public boolean checkMidPointOfMaze(){
         if (robot.getXCoord()==7){
-            if (!mid1&&robot.getYCoord()>=0 && robot.getYCoord()<4){
+            if (!mid1&&robot.getYCoord()>=0 && robot.getYCoord()<=4){
                 //turn 180 degrees to take photo
                 mid1 = true;
                 return true;
             }
-            else if (!mid3&&robot.getYCoord()>16 && robot.getYCoord()<20){
+            else if (!mid3&&robot.getYCoord()>=16 && robot.getYCoord()<20){
                 mid3 = true;
                 //turn 180 degrees to take photo
                 return true;
             }
         }
-        else if (robot.getYCoord()==10){
+        else if (robot.getYCoord()==10 || robot.getYCoord()==9){
             //or switch to 9, see which one better
-            if (!mid4&&robot.getXCoord()>=0 && robot.getYCoord()<3){
+            if (!mid4&&robot.getXCoord()>=0 && robot.getYCoord()<=3){
                 //3 coord
                 //turn 180 degrees to take photo
                 mid4= true;
                 return true;
             }
-            else if (!mid2&&robot.getXCoord()>12 && robot.getXCoord()<15){
+            else if (!mid2&&robot.getXCoord()>=12 && robot.getXCoord()<15){
                 mid2=true;
                 //3 cord
                 //turn 180 degrees to take photo
@@ -694,26 +729,27 @@ public class Exploration {
 
     private void resetRobotDirection(){
         switch (robot.getDirection()){
-            case SOUTH: robot.turn(robot.robotRightDir());
-                robot.turn(robot.robotRightDir());
+            case SOUTH: robot.turnWithoutSensor(robot.robotRightDir());
+                robot.calibrate();
+                robot.turnWithoutSensor(robot.robotRightDir());
                 break;
             case WEST:
-                robot.turn(robot.robotRightDir());
+                robot.turnWithoutSensor(robot.robotRightDir());
                 break;
-            case EAST: robot.turn(robot.robotLeftDir());
+            case EAST: robot.turnWithoutSensor(robot.robotLeftDir());
                 break;
         }
     }
 
     private void resetRobotDirectionToEast(){
         switch (robot.getDirection()){
-            case SOUTH: robot.turn(robot.robotLeftDir());
+            case SOUTH: robot.turnWithoutSensor(robot.robotLeftDir());
                 break;
             case WEST:
-                robot.turn(robot.robotRightDir());
-                robot.turn(robot.robotRightDir());
+                robot.turnWithoutSensor(robot.robotRightDir());
+                robot.turnWithoutSensor(robot.robotRightDir());
                 break;
-            case NORTH: robot.turn(robot.robotRightDir());
+            case NORTH: robot.turnWithoutSensor(robot.robotRightDir());
                 break;
         }
     }
@@ -923,7 +959,27 @@ public class Exploration {
         return goToGrids;
     }
 
-    public String sendRobotInstructionBash(ArrayList<GridCell>  path){
+    public void sendRobotInstructionBash(ArrayList<GridCell> path){
+        //note: need to calibrate before bash
+        PathFinder pathFinder = new PathFinder(map);
+        ArrayList<Movement> moveInstructions;
+        moveInstructions = pathFinder.getRobotInstructions(path,robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
+        System.out.println("move instruction"+moveInstructions.size());
+        //bash
+        sendRobotInstructions(moveInstructions);
+        int xEnd, yEnd;
+        xEnd = path.get(path.size()-1).getHorCoord();
+        yEnd = path.get(path.size()-1).getVerCoord();
+        robot.setXCoord(xEnd);
+        robot.setYCoord(yEnd);
+        robot.setDirection(pathFinder.getCurrentDirection(path.get(path.size()-1)));
+        System.out.println("bash robot coordinate: " + xEnd +  " " + yEnd + " direction:" + robot.getDirection());
+        //take photo
+        map.updateMap(robot.getXCoord(),robot.getYCoord());
+        map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
+    }
+
+    public String sendRobotInstructionImageRegBash(ArrayList<GridCell>  path){
         //buggie --> if want to use need to test again
         PathFinder pathFinder = new PathFinder(map);
         ArrayList<Movement> moveInstructions;
@@ -1010,6 +1066,7 @@ public class Exploration {
             sb.append(count).append("|");
         }
         String msg = sb.toString();
+        System.out.println("BASH INSTRUCTIONS: " + msg);
         //robot.displayMessage("Message sent for FastestPath real run: " + msg, 2);
         SocketConnection.getInstance().sendMessage(msg);
     }
