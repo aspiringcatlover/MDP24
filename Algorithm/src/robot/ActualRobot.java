@@ -620,7 +620,7 @@ public class ActualRobot extends Robot {
 		socketConnection.sendMessage(message.toString());
 		try {
 			// ms timeout
-			Thread.sleep(500); // Customize your refresh time
+			Thread.sleep(200); // Customize your refresh time
 		} catch (InterruptedException e) {
 		}
 		//String messageReceive = socketConnection.receiveMessage();
