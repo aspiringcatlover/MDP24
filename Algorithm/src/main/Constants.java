@@ -112,4 +112,5 @@ public final class Constants {
 
 	//num grid for image range
 	public static final int IMAGE_RANGE = 2;
+	public static final int IMAGE_RANGE_GUESS=10;
 }

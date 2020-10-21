@@ -14,7 +14,7 @@ import sensor.Sensor;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import static main.Constants.Direction.SOUTH;
+import static main.Constants.Direction.*;
 import static main.Constants.HEIGHT;
 import static main.Constants.WIDTH;
 import static main.Constants.*;
@@ -28,6 +28,7 @@ public class Exploration {
     private int steps_per_sec;
     private boolean imageRecognition;
     private VisibleSurface visibleSurface;
+    private boolean mid1, mid2, mid3, mid4;
 
     public Exploration(Robot robot, int timeLimitMs, int coveragePercentage, int steps_per_sec, boolean imageRecognition){
         this.robot = robot;
@@ -39,6 +40,10 @@ public class Exploration {
         this.steps_per_sec = steps_per_sec;
         this.imageRecognition = imageRecognition;
         map.setSteps_per_sec(steps_per_sec);
+        mid1 = false;
+        mid4 = false;
+        mid3 = false;
+        mid2 = false;
     }
 
     Robot startExploration(){
@@ -379,6 +384,11 @@ public class Exploration {
             }
             actual_percentage = getActualPerc();
             rightWallHugging();
+            if (checkMidPointOfMaze()){
+                System.out.println("MID POINT OF MAZE .. "  + robot.getXCoord() + "  " + robot.getYCoord());
+                takePhotoMidPointOfMaze();
+            }
+
             if (robot.getYCoord()==1&&robot.getXCoord()==1&&!start)
             {
                 start=false;
@@ -580,6 +590,106 @@ public class Exploration {
             System.out.println("uturn");
             robot.uTurn();
         }*/
+    }
+
+    public void takePhotoMidPointOfMaze(){
+        ArrayList<Movement> movementsToFaceCorrectDirection;
+        ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
+        boolean turnBack= false;
+        boolean takePhoto=false;
+        Direction turnBackDirection= NORTH;
+        if (robot.getXCoord()==7){
+            if (robot.getYCoord()>=0 && robot.getYCoord()<4){
+                turnBackDirection = robot.getDirection();
+                        //cam face north
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(WEST);
+                sendRobotInstructionNoSensor(movementsToFaceCorrectDirection);sendRobotInstructionWithSensorOnly(movementsToFaceCorrectDirection);
+                takePhoto = true;
+                turnBack=true;
+
+            }
+            else if (robot.getYCoord()>16 && robot.getYCoord()<20){
+                turnBackDirection = robot.getDirection();
+                //cam face south
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(EAST);
+                sendRobotInstructionNoSensor(movementsToFaceCorrectDirection);
+                takePhoto=true;
+                turnBack=true;
+            }
+        }
+        else if (robot.getYCoord()==10){
+            //or switch to 9, see which one better
+            if (robot.getXCoord()>=0 && robot.getYCoord()<3){
+                turnBackDirection = robot.getDirection();
+                //cam face east
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(NORTH);
+                sendRobotInstructionNoSensor(movementsToFaceCorrectDirection);
+                takePhoto = true;
+
+            }
+            else if (robot.getXCoord()>12 && robot.getXCoord()<15){
+                turnBackDirection = robot.getDirection();
+                //cam face west
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(SOUTH);
+                sendRobotInstructionNoSensor(movementsToFaceCorrectDirection);
+                takePhoto = true;
+                turnBack=true;
+            }
+        }
+        if (takePhoto){
+            System.out.println("take photo...");
+            takePhoto = false;
+            rightObstacleCoordinates = getRightSurfaceCoordinatesGuess();
+            if (!rightObstacleCoordinates.isEmpty()){
+                for (int[] coordinate: rightObstacleCoordinates){
+                    if (coordinate!=null && coordinate[0]>=0 && coordinate[0]<15 && coordinate[1]>=0&&coordinate[1]<20){
+                        visibleSurface.surfaceCapture(coordinate[0], coordinate[1], robot.getDirection());
+                        System.out.println("guess right coord: " + coordinate[0] + " " + coordinate[1]);
+                        takePhoto=true;
+                    }
+                }
+                if (takePhoto){
+                    robot.takePhoto(rightObstacleCoordinates);
+                }
+
+            }
+        }
+        if (turnBack){
+            System.out.println("turn back.. " + turnBackDirection);
+            movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(turnBackDirection);
+            sendRobotInstructionNoSensor(movementsToFaceCorrectDirection);
+        }
+    }
+
+    public boolean checkMidPointOfMaze(){
+        if (robot.getXCoord()==7){
+            if (!mid1&&robot.getYCoord()>=0 && robot.getYCoord()<4){
+                //turn 180 degrees to take photo
+                mid1 = true;
+                return true;
+            }
+            else if (!mid3&&robot.getYCoord()>16 && robot.getYCoord()<20){
+                mid3 = true;
+                //turn 180 degrees to take photo
+                return true;
+            }
+        }
+        else if (robot.getYCoord()==10){
+            //or switch to 9, see which one better
+            if (!mid4&&robot.getXCoord()>=0 && robot.getYCoord()<3){
+                //3 coord
+                //turn 180 degrees to take photo
+                mid4= true;
+                return true;
+            }
+            else if (!mid2&&robot.getXCoord()>12 && robot.getXCoord()<15){
+                mid2=true;
+                //3 cord
+                //turn 180 degrees to take photo
+                return true;
+            }
+        }
+        return false;
     }
 
     private void resetRobotDirection(){
@@ -975,6 +1085,30 @@ public class Exploration {
         return  photoReturnValue;
     }
 
+    public void sendRobotInstructionNoSensor(ArrayList<Movement> movements){
+
+        ArrayList<int[]> rightObstacleCoordinates = new ArrayList<>();
+        boolean takePhoto = false;
+
+        if (movements==null)
+            return ;
+        for (Movement movement: movements) {
+            switch (movement) {
+                case MOVE_FORWARD:
+                    robot.moveForwardWithoutSensor();
+                    break;
+                case TURN_RIGHT:
+                    robot.turnWithoutSensor(robot.robotRightDir());
+                    break;
+                case TURN_LEFT:
+                    robot.turnWithoutSensor(robot.robotLeftDir());
+                    break;
+            }
+            map.updateMap(robot.getXCoord(),robot.getYCoord());
+            map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
+        }
+    }
+
     /**
      * send  robot instructions (multiple movement) through ActualRobot
      * robot instruction here is instructions with sensor & NO camera command
@@ -1221,6 +1355,156 @@ public class Exploration {
 
         }
         return path;
+    }
+
+    public ArrayList<int[]> getRightSurfaceCoordinatesGuess() {
+        //order --> front, mid, back of the robot
+        ArrayList<int[]> obstacles = new ArrayList<>();
+        boolean noSurface = true;
+        int x = robot.getXCoord();
+        int y = robot.getYCoord();
+        GridCell gridCell;
+        switch (robot.getDirection()) {
+            case WEST:
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y + 2 + i, x - 1);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x - 1, y + 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y + 2 + i, x);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x, y + 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 1)
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y + 2 + i, x + 1);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x + 1, y + 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 2)
+                    obstacles.add(null);
+
+                break;
+            case EAST:
+                for (int i = 0; i > -IMAGE_RANGE_GUESS; i--) {
+                    gridCell = map.getGridCell(y - 2 + i, x + 1);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x + 1, y - 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i = 0; i > -IMAGE_RANGE_GUESS; i--) {
+                    gridCell = map.getGridCell(y - 2 + i, x);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x, y - 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 1)
+                    obstacles.add(null);
+                for (int i = 0; i > -IMAGE_RANGE_GUESS; i--) {
+                    gridCell = map.getGridCell(y - 2 + i, x - 1);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x - 1, y - 2 + i});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 2)
+                    obstacles.add(null);
+
+                break;
+            case NORTH:
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y + 1, x + 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x + 2 + i, y + 1});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y, x + 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x + 2 + i, y});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 1)
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y - 1, x + 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x + 2 + i, y - 1});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 2)
+                    obstacles.add(null);
+
+                break;
+            case SOUTH:
+                for (int i = 0; i > -IMAGE_RANGE_GUESS; i--) {
+                    gridCell = map.getGridCell(y - 1, x - 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x - 2 + i, y - 1});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.isEmpty())
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y, x - 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x - 2 + i, y});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 1)
+                    obstacles.add(null);
+                for (int i = 0; i < IMAGE_RANGE_GUESS; i++) {
+                    gridCell = map.getGridCell(y + 1, x - 2 + i);
+                    if (gridCell != null && gridCell.getObstacle()) {
+                        obstacles.add(new int[]{x - 2 + i, y + 1});
+                        noSurface = false;
+                        break;
+                    }
+                }
+                if (obstacles.size() == 2)
+                    obstacles.add(null);
+
+                break;
+        }
+
+        //no surface then return empty array list
+        if (noSurface)
+            obstacles.add(new int[]{7, 10});
+
+
+        return obstacles;
     }
 
     /**
