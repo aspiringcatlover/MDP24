@@ -89,7 +89,7 @@ public final class Constants {
 
 	public static final String START_EXPLORATION = "ES|";
 	public static final String FASTEST_PATH = "FS|";
-	public static final String IMAGE_STOP = "I";
+	public static final String IMAGE_STOP = "I|";
 	public static final String SEND_ARENA = "SendArena";
 	public static final String INITIALISING = "starting";
 	public static final String SETWAYPOINT = "waypoint";

@@ -617,7 +617,7 @@ public class ActualRobot extends Robot {
 			}
 		}
 		message.append("]");
-		socketConnection.sendMessage(message.toString());
+		socketConnection.sendMessage(message.toString()+"\n");
 		try {
 			// ms timeout
 			Thread.sleep(200); // Customize your refresh time
@@ -663,7 +663,7 @@ public class ActualRobot extends Robot {
 		if (arr!=null){
 			System.out.println("send mdf string in actual robot");
 			socketConnection.sendMessage("M{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
-					"\"}]}");
+					"\"}]}\n");
 		}
 
 	}

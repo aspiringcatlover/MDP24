@@ -2218,7 +2218,7 @@ public class Exploration {
 
         robot.setMap(map);
 
-
+        /*
         if(!isSimulated){
             //send mdf shit
             if (robot!=null){
@@ -2231,7 +2231,7 @@ public class Exploration {
                 } catch (InterruptedException e) {
                 }
             }
-        }
+        }*/
     }
 
     //get direction to face the unexplored grid
