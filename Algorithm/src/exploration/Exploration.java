@@ -267,7 +267,7 @@ public class Exploration {
             actualRobot.sendMdfString();
             try {
                 // ms timeout
-                Thread.sleep(100); // Customize your refresh time
+                Thread.sleep(200); // Customize your refresh time
             } catch (InterruptedException e) {
             }
         }
@@ -358,12 +358,11 @@ public class Exploration {
             }
         }
         //init
-
         robot.initSensor();
         System.out.println("EXPLORATION-FINISH INITIALISE SENSOR");
 
         //without a*
-        //while (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start)
+        //while ((robot.getXCoord()!=1&&robot.getYCoord()!=1&&start) && System.currentTimeMillis() <endTime){
         while (actual_percentage < goal_percentage && System.currentTimeMillis() <endTime){
             if (!midpoint){
                 senseMap();
@@ -380,7 +379,7 @@ public class Exploration {
                 System.out.println();
             }
             System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord() + "direction" + robot.getDirection());
-            if (robot.getXCoord()==1&&robot.getYCoord()==5&&start||robot.getXCoord()==1&&robot.getYCoord()==1&&start&&actual_percentage>50){
+            if (robot.getXCoord()==1&&robot.getYCoord()==1&&start&&actual_percentage>50){
                 System.out.println("break right wall hugging");
                 break;
             }
@@ -450,6 +449,9 @@ public class Exploration {
         find out grid is obstacle or what
         then unexploredGrids = getUnexploredGrid();
          */
+
+        // comment here to get rid of a* for unexplored grid
+
         while (!unexploredGrids.isEmpty()&&actual_percentage < goal_percentage&& System.currentTimeMillis() < endTime){
             for (GridCell gridCell:unexploredGrids){
                 System.out.println(gridCell.getHorCoord() + " "+gridCell.getVerCoord());
@@ -529,6 +531,8 @@ public class Exploration {
         }
         clearParent();
 
+        //----comment above to get rid of a*
+
         if(!isSimulated){
             ActualRobot actualRobot = (ActualRobot) robot;
             //send mdf shit
@@ -581,8 +585,6 @@ public class Exploration {
         robot.setMap(map);
         map.updateMap(robot.getXCoord(),robot.getYCoord());
         map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
-        //map.displayDirection(robot.getYCoord(),robot.getXCoord(),robot.getDirection());
-        //return robot
         System.out.println("done calibrating");
 
         return robot;
@@ -610,20 +612,6 @@ public class Exploration {
             System.out.println("turn left....");
             robot.turn(robot.robotLeftDir());
         }
-
-        /*
-        // else, turn left
-        else if (!hasObstacle(robot.peekRobotLeftDir())){
-            //check right for unexplored grid
-            System.out.println("turn left....");
-            robot.turn(robot.robotLeftDir());
-            movement.add(Constants.Movement.TURN_LEFT);
-        }
-        else{
-            //uturn
-            System.out.println("uturn");
-            robot.uTurn();
-        }*/
     }
 
     public void takePhotoMidPointOfMaze(){
@@ -729,9 +717,9 @@ public class Exploration {
 
     private void resetRobotDirection(){
         switch (robot.getDirection()){
-            case SOUTH: robot.turnWithoutSensor(robot.robotRightDir());
+            case SOUTH: robot.turnWithoutSensor(robot.robotLeftDir());  //turn left so that can right wall cali
                 robot.calibrate();
-                robot.turnWithoutSensor(robot.robotRightDir());
+                robot.turnWithoutSensor(robot.robotLeftDir());
                 break;
             case WEST:
                 robot.turnWithoutSensor(robot.robotRightDir());
@@ -2229,6 +2217,8 @@ public class Exploration {
         boolean isSimulated = robot.getClass().equals(SimulatorRobot.class);
 
         robot.setMap(map);
+
+
         if(!isSimulated){
             //send mdf shit
             if (robot!=null){
@@ -2237,11 +2227,10 @@ public class Exploration {
                 //delay
                 try {
                     // ms timeout
-                    Thread.sleep(100); // Customize your refresh time
+                    Thread.sleep(200); // Customize your refresh time
                 } catch (InterruptedException e) {
                 }
             }
-
         }
     }
 
