@@ -452,85 +452,6 @@ public class Exploration {
 
         // comment here to get rid of a* for unexplored grid
 
-        while (!unexploredGrids.isEmpty()&&actual_percentage < goal_percentage&& System.currentTimeMillis() < endTime){
-            for (GridCell gridCell:unexploredGrids){
-                System.out.println(gridCell.getHorCoord() + " "+gridCell.getVerCoord());
-            }
-
-            System.out.println("POLLLLLLL");
-            nearestUnexploredGrid = unexploredGrids.poll();
-            unexploredGridX = nearestUnexploredGrid.getHorCoord();
-            unexploredGridY = nearestUnexploredGrid.getVerCoord();
-            System.out.println("unexplored grid:" + nearestUnexploredGrid.getHorCoord()+" " +nearestUnexploredGrid.getVerCoord());
-
-            pathFinder = new PathFinder(map); //do singleton or smth
-            System.out.println("what happen start:" + robot.getXCoord()+" "+ robot.getYCoord()+" end:"+  nearestUnexploredGrid.getHorCoord()+" "+  nearestUnexploredGrid.getVerCoord());
-            path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), unexploredGridX, unexploredGridY, robot.getDirection());
-
-            //path = checkPath(path);
-
-            while (path==null){
-                //try all the 4 grid beside if there is path
-                path = findPathForSurroundingGrid(unexploredGridX, unexploredGridY);
-                if (path!=null)
-                    break;
-
-                //clearParent();
-                if (unexploredGrids.isEmpty()){
-                    //shouldnt happen at all
-                    terminate=true;
-                    break;
-                }
-                pathFinder = new PathFinder(map);
-                System.out.println("get next unexplored grid in list: " + unexploredGrids.peek().getHorCoord() + " "+unexploredGrids.peek().getVerCoord());
-                nearestUnexploredGrid = unexploredGrids.poll();
-                unexploredGridX = nearestUnexploredGrid.getHorCoord();
-                unexploredGridY = nearestUnexploredGrid.getVerCoord();
-                System.out.println("robot current position: " + robot.getXCoord() +" "+robot.getYCoord() +" grid to go to: " +nearestUnexploredGrid.getHorCoord()+" "+ nearestUnexploredGrid.getVerCoord());
-                path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), nearestUnexploredGrid.getHorCoord(), nearestUnexploredGrid.getVerCoord(), robot.getDirection());
-                if (path==null) {
-                    path = findPathForSurroundingGrid(unexploredGridX, unexploredGridY);
-                }
-                if (terminate) //force break and go to start point
-                    break;
-            }
-
-            clearParent();
-
-            if (path!=null){
-                //maybe nid change
-                sendRobotInstructionFromPathWithSensorWithImageReg(path, unexploredGridX, unexploredGridY);
-                if (!map.getGridCell(unexploredGridY,unexploredGridX).getExplored()){
-                    //by right shouldnt happen
-                    //turn to face the coordinate
-                    Direction directionToFace = getDirectionForRobotToFaceGrid(unexploredGridX, unexploredGridY);
-                    movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(directionToFace);
-                    sendRobotInstructionWithSensorOnly(movementsToFaceCorrectDirection);
-                    //robot.turn(directionToFace);
-                    System.out.println("direction to face ..." + directionToFace);
-                    senseMap();
-                    map.updateMap(robot.getXCoord(),robot.getYCoord());
-                    map.displayDirection(robot.getYCoord(),robot.getXCoord(),directionToFace);
-                    map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
-                }
-            }
-
-            //unexploredGrids = getUnexploredGrid();
-
-            unexploredGrids = getUnexploredGrid();
-            actual_percentage = getActualPerc();
-            for (int col = 0; col < WIDTH; col++) {
-                for (int row = 0; row < HEIGHT; row++){
-                    printGridCell(map.getGridCell(row, col));
-                }
-                System.out.println();
-            }
-            System.out.println("robot x:"+ robot.getXCoord() + " ,y:"+robot.getYCoord());
-            System.out.println("percentage covered:" + actual_percentage);
-            System.out.println("------------------------------------------------------");
-        }
-        clearParent();
-
         //----comment above to get rid of a*
 
         if(!isSimulated){
@@ -538,13 +459,6 @@ public class Exploration {
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
-
-            //delay for mdf string so that rpi will not send other command tgt with mdf string
-            try {
-                // ms timeout
-                Thread.sleep(100); // Customize your refresh time
-            } catch (InterruptedException e) {
-            }
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
