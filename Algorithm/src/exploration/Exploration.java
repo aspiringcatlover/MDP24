@@ -559,7 +559,8 @@ public class Exploration {
             for(GridCell gridCell:path){
                 System.out.println(gridCell.getHorCoord()+" "+gridCell.getVerCoord());
             }
-            sendRobotInstructionFromPathNoSensor(path);
+            sendRobotInstructionFromPath(path);
+            robot.goToWall();
             clearParent();
         }
 
@@ -567,8 +568,10 @@ public class Exploration {
         //delay before any calibration and resetting
         try {
             // ms timeout
+            System.out.println("sleep.....");
             Thread.sleep(10000); // Customize your refresh time
         } catch (InterruptedException e) {
+            System.out.println("NO DELAY");
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord() + "direction: "+ robot.getDirection());
@@ -1076,6 +1079,32 @@ public class Exploration {
                 case TURN_RIGHT: robot.turnWithoutSensor(robot.robotRightDir());
                     break;
                 case TURN_LEFT: robot.turnWithoutSensor(robot.robotLeftDir());
+                    break;
+            }
+            map.updateMap(robot.getXCoord(),robot.getYCoord());
+            map.setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
+
+            try {
+                // ms timeout
+                Thread.sleep(50); // Customize your refresh time
+            } catch (InterruptedException e) {
+            }
+
+        }
+    }
+
+    public void sendRobotInstructionFromPath(ArrayList<GridCell> path){
+        PathFinder pathFinder = new PathFinder(map);
+        ArrayList<Movement> moveInstructions;
+        moveInstructions = pathFinder.getRobotInstructions(path,robot.getDirection(),robot.getXCoord(), robot.getYCoord() );
+        System.out.println("move instruction"+moveInstructions.size());
+        for (Movement movement: moveInstructions){
+            switch (movement){
+                case MOVE_FORWARD: robot.moveForward();
+                    break;
+                case TURN_RIGHT: robot.turn(robot.robotRightDir());
+                    break;
+                case TURN_LEFT: robot.turn(robot.robotLeftDir());
                     break;
             }
             map.updateMap(robot.getXCoord(),robot.getYCoord());
@@ -2218,20 +2247,21 @@ public class Exploration {
 
         robot.setMap(map);
 
-        /*
+
         if(!isSimulated){
             //send mdf shit
             if (robot!=null){
                 System.out.println("sending mdf string...");
                 ((ActualRobot) robot).sendMdfString();
                 //delay
+                /*
                 try {
                     // ms timeout
                     Thread.sleep(200); // Customize your refresh time
                 } catch (InterruptedException e) {
-                }
+                }*/
             }
-        }*/
+        }
     }
 
     //get direction to face the unexplored grid

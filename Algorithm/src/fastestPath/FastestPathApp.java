@@ -192,6 +192,17 @@ public class FastestPathApp extends Thread{
                     System.out.println("Error!");
                     return;
                 }
+            } else if (count==0){
+                if (move == Constants.Movement.TURN_RIGHT) {
+                    sb.append(Constants.TURN_RIGHT);
+                    count = 0;
+                } else if (move == Constants.Movement.TURN_LEFT) {
+                    sb.append(Constants.TURN_LEFT);
+                    count = 0;
+                } else {
+                    System.out.println("Error!");
+                    return;
+                }
             }
         }
         sb.append("M|");

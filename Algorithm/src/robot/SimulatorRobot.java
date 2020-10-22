@@ -462,7 +462,12 @@ public class SimulatorRobot extends Robot {
         return movements;
     }
 
-    /*
+	@Override
+	public void goToWall() {
+
+	}
+
+	/*
 	 * --> to translate from coordinate to movement public Movement
 	 * HelperDir(Direction dir){ if (direction.equals(dir)) return
 	 * Movement.MOVE_FORWARD; else if (direction.bearing - dir.bearing==90 ||

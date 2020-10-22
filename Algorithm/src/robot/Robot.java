@@ -103,6 +103,7 @@ public abstract class Robot {
     public abstract void uTurn();
     public abstract String takePhoto(ArrayList<int[]> coordinates);
     public abstract ArrayList<Movement> movementForRobotFaceDirection(Direction direction);
+    public abstract void goToWall();
 
 
     //getter and setter

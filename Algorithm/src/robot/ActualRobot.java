@@ -362,6 +362,7 @@ public class ActualRobot extends Robot {
 			//calibrateCounter++;
 		}
 
+
 		if (calibrateDone){
             try {
                 // ms timeout
@@ -585,13 +586,13 @@ public class ActualRobot extends Robot {
 			System.out.println("obstacle on corner...calibrate");
 			actualRobot.calibrate();
 			//calibrateCounter= 0;
-		}*/
+		}
 
 		try {
 			// ms timeout
 			Thread.sleep(100); // Customize your refresh time
 		} catch (InterruptedException e) {
-		}
+		}*/
 
 		updateSensor();
 	}
@@ -617,12 +618,13 @@ public class ActualRobot extends Robot {
 			}
 		}
 		message.append("]");
-		socketConnection.sendMessage(message.toString()+"\n");
+		socketConnection.sendMessage("\n"+ message.toString()+"\n");
+		/*
 		try {
 			// ms timeout
 			Thread.sleep(200); // Customize your refresh time
 		} catch (InterruptedException e) {
-		}
+		}*/
 		//String messageReceive = socketConnection.receiveMessage();
 		//System.out.println("message receive: " + messageReceive);
 		return "";
@@ -658,11 +660,16 @@ public class ActualRobot extends Robot {
 		return movements;
 	}
 
+	@Override
+	public void goToWall() {
+		socketConnection.sendMessage("M|");
+	}
+
 	public void sendMdfString(){
 		String[] arr = getMdfString();
 		if (arr!=null){
 			System.out.println("send mdf string in actual robot");
-			socketConnection.sendMessage("M{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
+			socketConnection.sendMessage("\nM{\"map\":[{\"explored\": \"" + arr[0] + "\",\"length\":" + arr[1] + ",\"obstacle\":\"" + arr[2] +
 					"\"}]}\n");
 		}
 
