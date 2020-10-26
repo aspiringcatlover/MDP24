@@ -2,6 +2,7 @@ package map;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -111,21 +112,21 @@ public class SimulatorMap extends JFrame {
 
 		// goal coverage percentage field
 		JLabel goalCovPer = new JLabel();
-		goalCovPer.setText("Enter goal coverage percentage :");
+		goalCovPer.setText("Enter goal coverage percentage:");
 		settingsContainer.add(goalCovPer);
 		JTextField goalCovPerField = new JTextField(5);
 		settingsContainer.add(goalCovPerField);
 
 		// steps per second field
 		JLabel stepsPerSec = new JLabel();
-		stepsPerSec.setText("Enter steps per second :");
+		stepsPerSec.setText("Enter steps per second:");
 		settingsContainer.add(stepsPerSec);
 		JTextField stepsPerSecField = new JTextField(5);
 		settingsContainer.add(stepsPerSecField);
 
 		// time field
 		JLabel timePer = new JLabel();
-		timePer.setText("Enter time in mm:ss  :");
+		timePer.setText("Enter time in mm:ss:");
 		settingsContainer.add(timePer);
 		JTextField timeField = new JTextField(5);
 		timeField.setBounds(0, 0, 10, 10);
@@ -133,7 +134,7 @@ public class SimulatorMap extends JFrame {
 
 		//waypoint x field
 		JLabel waypointX = new JLabel();
-		waypointX.setText("Enter waypoint (x) :");
+		waypointX.setText("Enter waypoint (x):");
 		settingsContainer.add(waypointX);
 		JTextField waypointXField = new JTextField(5);
 		waypointXField.setBounds(0, 0, 10, 10);
@@ -141,7 +142,7 @@ public class SimulatorMap extends JFrame {
 
 		//waypoint y field
 		JLabel waypointY = new JLabel();
-		waypointY.setText("Enter waypoint (y) :");
+		waypointY.setText("Enter waypoint (y):");
 		settingsContainer.add(waypointY);
 		JTextField waypointYField = new JTextField(5);
 		waypointYField.setBounds(0, 0, 10, 10);
@@ -149,7 +150,7 @@ public class SimulatorMap extends JFrame {
 
 		// enter mdf string
 		JLabel mdfString = new JLabel();
-		mdfString.setText("Enter MDF string  :");
+		mdfString.setText("Enter MDF string:");
 		settingsContainer.add(mdfString);
 		JTextField mdfField = new JTextField(5);
 		mdfField.setBounds(0, 0, 10, 10);
@@ -177,9 +178,9 @@ public class SimulatorMap extends JFrame {
 
 		//print settings info
 		JLabel statusInfo = new JLabel();
-		statusInfo.setText("Status Info :");
+		statusInfo.setText("Status Info:");
 		settingsContainer.add(statusInfo);
-		JTextField statusInfoField = new JTextField(40);
+		JTextField statusInfoField = new JTextField(25);
 		statusInfoField.setBounds(0, 0, 10, 50);
 		settingsContainer.add(statusInfoField);
 		
@@ -213,6 +214,10 @@ public class SimulatorMap extends JFrame {
 		JButton matchButton = new JButton();
 		matchButton.setText("Is it a match?");
 		settingsContainer.add(matchButton);
+		
+		//add vertical strut
+		add(Box.createHorizontalStrut(20));
+		
 
 		// add map
 		add(map);
@@ -450,9 +455,9 @@ public class SimulatorMap extends JFrame {
 		String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
 		try {
 			String path_name = new File("").getAbsolutePath();
-			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+//			path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
 //			System.out.println(path_name);
-			//path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+			path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
 			//C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
 			File myObj = new File(path_name);
 			Scanner myReader = new Scanner(myObj);
