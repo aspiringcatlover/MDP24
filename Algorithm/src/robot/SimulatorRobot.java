@@ -4,9 +4,11 @@ import static main.Constants.*;
 import static main.Constants.Direction.*;
 
 import map.MapPanel;
-import map.SimulatorMap;
+import simulator.Simulator;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
+
+import java.util.ArrayList;
 
 public class SimulatorRobot extends Robot {
 
@@ -36,8 +38,8 @@ public class SimulatorRobot extends Robot {
 		sensorArr[3] = new SimulatorSensor(RangeType.LONG, SensorLocation.LEFT_MIDDLE, simulateMap, this.direction, x, y);
 		// 2 short for right
 		sensorArr[4] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_DOWN, simulateMap, this.direction, x, y);
-		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_MIDDLE, simulateMap, this.direction, x, y);
-		MapPanel emptyMap = new MapPanel(SimulatorMap.getSampleMap(1));
+		sensorArr[5] = new SimulatorSensor(RangeType.SHORT, SensorLocation.RIGHT_UP, simulateMap, this.direction, x, y);
+		MapPanel emptyMap = new MapPanel(Simulator.getSampleMap(1));
 
 		for (int i = 0; i < 3; i++) {
 			for (int r = 0; r < 3; r++) {
@@ -49,6 +51,10 @@ public class SimulatorRobot extends Robot {
 		// simulator map is the one that shld be updated
 	}
 
+	public SimulatorRobot(Direction direction, int xStart, int yStart) {
+		super(direction, xStart, yStart);
+	}
+
 	public void initialise(int x, int y, int direction){
 		super.initialise(x,y,direction);
 
@@ -56,6 +62,52 @@ public class SimulatorRobot extends Robot {
 		// 3 short for front
 
 
+	}
+
+	@Override
+	public void turnWithoutSensor(Direction dir) {
+		System.out.println("turn without sensors");
+		direction = dir; //set robot direction
+		System.out.println("Direction" + direction);
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	@Override
+	public void moveForwardWithoutSensor() {
+		System.out.println("move forward without sensors");
+		switch (direction) {
+			case WEST:
+				x -= 1;
+				break;
+			case EAST:
+				x += 1;
+				break;
+			case SOUTH:
+				y -= 1;
+				break;
+			case NORTH:
+				y += 1;
+				break;
+			default:
+				break;
+		}
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	public MapPanel getMap() {
@@ -134,6 +186,11 @@ public class SimulatorRobot extends Robot {
 
 	}
 
+	@Override
+	public void moveForward(int steps) {
+
+	}
+
 	// turn robot in a specified direction
 	public void turn(Direction dir) {
 		SimulatorSensor simulatorSensor;
@@ -141,7 +198,7 @@ public class SimulatorRobot extends Robot {
 		System.out.println("Direction" + direction);
 		switch (direction) {
 		case WEST:
-			// LEFT_MIDDLE(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y - 2);
 			// RIGHT_DOWN(4)
@@ -157,7 +214,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setXCoord(x - 2);
 			sensorArr[2].setYCoord(y + 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x-1);
 			sensorArr[5].setYCoord(y + 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(WEST);
@@ -166,7 +223,7 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case EAST:
-			// LEFT_MIDDLE(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x);
 			sensorArr[3].setYCoord(y + 2);
 			// RIGHT_DOWN(4)
@@ -182,7 +239,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setXCoord(x + 2);
 			sensorArr[2].setYCoord(y - 1);
 			// RIGHT_MIDDLE(5)
-			sensorArr[5].setXCoord(x);
+			sensorArr[5].setXCoord(x+1);
 			sensorArr[5].setYCoord(y - 2);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(EAST);
@@ -191,7 +248,7 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case SOUTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x + 2);
 			sensorArr[3].setYCoord(y);
 			// RIGHT_DOWN(4)
@@ -208,7 +265,7 @@ public class SimulatorRobot extends Robot {
 			sensorArr[2].setYCoord(y - 2);
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x - 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y-1);
 			for (sensor.Sensor sensor : sensorArr) {
 				sensor.setDirection(SOUTH);
 				simulatorSensor = (SimulatorSensor) sensor; // downcasting
@@ -216,7 +273,7 @@ public class SimulatorRobot extends Robot {
 			}
 			break;
 		case NORTH:
-			// LEFT_MIDDLE(3)
+			// LEFT_MID(3)
 			sensorArr[3].setXCoord(x - 2);
 			sensorArr[3].setYCoord(y);
 			// System.out.println(sensorArr[3].getXCoord());
@@ -243,7 +300,7 @@ public class SimulatorRobot extends Robot {
 			// System.out.println(sensorArr[2].getYCoord());
 			// RIGHT_MIDDLE(5)
 			sensorArr[5].setXCoord(x + 2);
-			sensorArr[5].setYCoord(y);
+			sensorArr[5].setYCoord(y+1);
 			// System.out.println(sensorArr[5].getXCoord());
 			// System.out.println(sensorArr[5].getYCoord());
 			for (sensor.Sensor sensor : sensorArr) {
@@ -290,6 +347,153 @@ public class SimulatorRobot extends Robot {
 	// return map direction to the left of the forward direction of robot
 	public Direction peekRobotLeftDir() {
 		return HelperDir(Movement.TURN_LEFT);
+	}
+
+	@Override
+	public void calibrateFront() {
+
+	}
+
+	@Override
+	public void uTurn() {
+		SimulatorSensor simulatorSensor;
+		switch (direction) {
+			case WEST:
+
+				for (Sensor sensor : sensorArr) {
+
+					sensor.setDirection(EAST);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=EAST;
+				break;
+			case EAST:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(WEST);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=WEST;
+				break;
+			case SOUTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(NORTH);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=NORTH;
+				break;
+			case NORTH:
+				for (sensor.Sensor sensor : sensorArr) {
+					sensor.setDirection(SOUTH);
+					simulatorSensor = (SimulatorSensor) sensor; // downcasting
+					simulatorSensor.setSensorInformation();
+				}
+				direction=SOUTH;
+				break;
+			default:
+				break;
+		}
+
+		if (steps_per_sec!=9999){
+			try {
+				// ms timeout
+				int timeout = 1000/ steps_per_sec;
+				Thread.sleep(timeout); // Customize your refresh time
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	@Override
+	public String takePhoto(ArrayList<int[]> coordinates) {
+		StringBuilder message= new StringBuilder();
+		message.append("C[");
+		int[] coordinate;
+		for (int i=0; i<coordinates.size();i++){
+			coordinate = coordinates.get(i);
+			if (coordinate==null){
+				message.append("-1,-1");
+			}
+			else{
+				message.append(coordinate[0]);
+				message.append(",");
+				message.append(coordinate[1]);
+			}
+			if (i!=coordinates.size()-1){
+				message.append("|");
+			}
+		}
+		message.append("]");
+		System.out.println("PHOTO TAKEN >>>"+message.toString());
+		return "D";
+	}
+
+    @Override
+    public ArrayList<Movement> movementForRobotFaceDirection(Direction direction) {
+        int bearing;
+        ArrayList<Movement> movements = new ArrayList<>();
+        if (this.direction==direction)
+            return null;
+
+        bearing = this.direction.bearing - direction.bearing;
+        System.out.println("bearing change ..." + bearing);
+
+        if (bearing>180){
+            bearing = bearing-360;
+        }
+        else if (bearing<-180){
+            bearing = 360+bearing;
+        }
+
+        System.out.println("bearing change 2 ..." + bearing);
+
+        while (bearing!=0){
+            //positive turn left, negative turn right
+            if (bearing<0){
+                movements.add(Movement.TURN_RIGHT);
+                System.out.println("turn right ");
+                bearing+= 90;
+            }
+            else if (bearing>0){
+                movements.add(Movement.TURN_LEFT);
+                System.out.println("turn left ");
+
+                bearing-=90;
+            }
+        }
+        return movements;
+    }
+
+	@Override
+	public void goToWall() {
+
+	}
+
+	//----for optimise algor
+
+	public void fakeTurn(Direction dir){
+		direction = dir;
+	}
+
+	public void fakeMoveForward(){
+		switch (direction) {
+			case WEST:
+				x -= 1;
+				break;
+			case EAST:
+				x += 1;
+				break;
+			case SOUTH:
+				y -= 1;
+				break;
+			case NORTH:
+				y += 1;
+				break;
+			default:
+				break;
+		}
 	}
 
 	/*

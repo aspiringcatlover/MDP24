@@ -1,4 +1,4 @@
-package connection;
+package connection.test;
 
 import main.Constants;
 
@@ -12,12 +12,12 @@ public class Server {
 	public static void main(String args[]) {
 		int counter=0;
 		ConnectionServer server = ConnectionServer.getInstance();
-		String message = "";
-		String sensorMessage = "";
-		boolean acknowledge = true;
+		String message ;
+		String sensorMessage;
+		boolean acknowledge;
 		Scanner sc = new Scanner(System.in);
 		boolean exploring = false, completed = false, fastestpath = false;
-		int pos[] = new int[]{1, 1};
+		int[] pos = new int[]{1, 1};
 		int direction = 2, count = 0;
 		while (true) {
 //			message = "ES|";
@@ -83,12 +83,13 @@ public class Server {
 				else if(message.equals(Constants.SENSE_ALL) || message.equals(Constants.CALIBRATE) || message.equals(Constants.RIGHTALIGN)) {
 					System.out.println(pos[0] + ", " + pos[1]);
 				}
+				/*
  				else if (message.equals(Constants.END_TOUR) || message.contains("N")) {
 
 					exploring = false;
 					fastestpath = false;
 					acknowledge = false;
-				}
+				}*/
 				else {
 					acknowledge = false;
 					System.out.println("Error.");

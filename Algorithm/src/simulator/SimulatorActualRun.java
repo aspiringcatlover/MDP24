@@ -1,50 +1,21 @@
-package map;
+package simulator;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.html.ImageView;
 
-import exploration.Exploration;
 import exploration.ExplorationApp;
-import fastest_path.FastestPathApp;
+import fastestPath.FastestPathApp;
 import main.*;
-import robot.ActualRobot;
+import map.GridCell;
+import map.MapPanel;
 import robot.Robot;
 import robot.SimulatorRobot;
 
-public class SimulatorActualRobot extends JFrame {
+public class SimulatorActualRun extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private int goal_coverage_perc;
@@ -66,14 +37,14 @@ public class SimulatorActualRobot extends JFrame {
     private FastestPathApp fastestPathApp;
     private static Robot robot;
     private boolean mapExplored=false;
-    public Thread tSimExplore;
+    private Thread tSimExplore;
 
     // constructor
-    public SimulatorActualRobot() {
+    public SimulatorActualRun() {
         // default sample map shown is map 1
         mapChoice = 1;
 
-        String[][] sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
+        String[][] sample_map;
 
         //startActual = false;
         // default sample map shown is map 1
@@ -97,11 +68,12 @@ public class SimulatorActualRobot extends JFrame {
 
     // get sample map
 
-    public static String[][] getSampleMap(int mapChoice){
+    private static String[][] getSampleMap(int mapChoice){
         String[][] temp_sample_map = new String[Constants.HEIGHT][Constants.WIDTH];
         try {
             String path_name = new File("").getAbsolutePath();
-            path_name = System.getProperty("user.dir")+"/Algorithm/src/sample_map/map" +Integer.toString(mapChoice) + ".txt";
+            path_name = System.getProperty("user.dir")+"/Algorithm/src/sampleMapTxt/map" + mapChoice + ".txt";
+            //path_name = System.getProperty("user.dir")+"/src/sampleMapTxt/map" + mapChoice + ".txt";
 //			System.out.println(path_name);
             path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             //C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
@@ -172,7 +144,7 @@ public class SimulatorActualRobot extends JFrame {
         getContentPane().validate();
     }
 
-    public void printGridCell(GridCell gridCell) {
+    private void printGridCell(GridCell gridCell) {
         // O for obstacle
         // E for explored
         // U for unexplored

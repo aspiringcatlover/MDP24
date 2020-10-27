@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static main.Constants.*;
-import static main.Constants.SensorLocation.LEFT_MIDDLE;
+
 
 public class SimulatorSensor extends Sensor {
 
@@ -35,7 +35,7 @@ public class SimulatorSensor extends Sensor {
 		switch (direction) {
 		case WEST:
 			switch (location) {
-			case LEFT_MIDDLE:
+                case LEFT_MIDDLE:
 				sensorBlock = false;
 				for (int i = 0; i < 5; i++) {
 					sensorResultGrid = getObstacleForSensor(y - i, x);
@@ -53,7 +53,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-			case RIGHT_MIDDLE:
+			case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y + i, x);
@@ -94,7 +94,7 @@ public class SimulatorSensor extends Sensor {
 			}
 		case SOUTH:
 			switch (location) {
-			case LEFT_MIDDLE:
+                case LEFT_MIDDLE:
 				sensorBlock = false;
 				for (int i = 0; i < 5; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x + i);
@@ -112,7 +112,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x - i);
@@ -152,7 +152,7 @@ public class SimulatorSensor extends Sensor {
 			}
 		case EAST:
 			switch (location) {
-			case LEFT_MIDDLE:
+                case LEFT_MIDDLE:
 				sensorBlock = false;
 				for (int i = 0; i < 5; i++) {
 					sensorResultGrid = getObstacleForSensor(y + i, x);
@@ -177,7 +177,7 @@ public class SimulatorSensor extends Sensor {
 				 */
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y - i, x);
@@ -217,7 +217,7 @@ public class SimulatorSensor extends Sensor {
 			}
 		case NORTH:
 			switch (location) {
-			case LEFT_MIDDLE:
+                case LEFT_MIDDLE:
 				sensorBlock = false;
 				for (int i = 0; i < 5; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x - i);
@@ -235,7 +235,7 @@ public class SimulatorSensor extends Sensor {
 				}
 				break;
 			case RIGHT_DOWN:
-				case RIGHT_MIDDLE:
+				case RIGHT_UP:
 					sensorBlock = false;
 				for (int i = 0; i < 2; i++) {
 					sensorResultGrid = getObstacleForSensor(y, x + i);

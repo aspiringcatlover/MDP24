@@ -21,6 +21,7 @@ public class GridCell extends JPanel {
 	private int hCost;
 	private int fCost; //f=g+h
 	private GridCell parent;
+	private Direction direction;
 
 	//constructor
 	public GridCell(int ver_coord, int hor_coord, String state) {
@@ -61,7 +62,15 @@ public class GridCell extends JPanel {
         
         
 	}
-	
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
 	//getters and setters
 	public void setVerCoord(int ver_coord) {
 		this.ver_coord = ver_coord;

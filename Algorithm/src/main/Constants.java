@@ -8,7 +8,7 @@ public final class Constants {
 	public static final int GOAL_Y_COORD = 17;
 
 	// Actual run constraints
-	public static final int TIME = 1000000;
+	public static final int TIME = 1000000;  //set 5.30mins
 	public static final int PERCENTAGE = 100;
 	public static final int SPEED = 9999;
 	public static final boolean IMAGE_REC = false;
@@ -26,7 +26,7 @@ public final class Constants {
 
 	// forward direction of robot
 	public enum Movement {
-		MOVE_FORWARD, TURN_RIGHT, TURN_LEFT
+		MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, FRONT_CALIBRATION, RIGHT_CALIBRATION
 	}
 
 	public enum checkDirection {
@@ -50,7 +50,7 @@ public final class Constants {
 	}
 	//location of sensor and number in array
 	public enum SensorLocation {
-		LEFT_MIDDLE(3), RIGHT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_MIDDLE(5);
+		LEFT_MIDDLE(3), RIGHT_DOWN(4), UP_LEFT(0), UP_MIDDLE(1), UP_RIGHT(2), RIGHT_UP(5);
 
 		private int numVal;
 
@@ -73,7 +73,7 @@ public final class Constants {
 												};
 
 	public static final int LONG_RANGE_DISTANCE = 70; // range is 19-90cm, technically 19cm-151cm
-	public static final int SHORT_RANGE_DISTANCE = 40; // range is 9-50cm, technically 9cm-81cm
+	public static final int SHORT_RANGE_DISTANCE = 20; // range is 9-50cm, technically 9cm-81cm
 	public static final int GRID_LONG_RANGE_DISTANCE = 5; // in terms of number of grids, starting outside of robot
 	public static final int GRID_SHORT_RANGE_DISTANCE = 2; // in terms of number of grids, starting outside of robot
 	public static final int DISTANCE_FROM_OBSTACLE = 10; // set the preferred distance robot should be away from wall
@@ -89,7 +89,7 @@ public final class Constants {
 
 	public static final String START_EXPLORATION = "ES|";
 	public static final String FASTEST_PATH = "FS|";
-	public static final String IMAGE_STOP = "I";
+	public static final String IMAGE_STOP = "I|";
 	public static final String SEND_ARENA = "SendArena";
 	public static final String INITIALISING = "starting";
 	public static final String SETWAYPOINT = "waypoint";
@@ -97,10 +97,20 @@ public final class Constants {
 	public static final String MOVE_FORWARD = "W|";
 	public static final String TURN_LEFT = "A|";
 	public static final String TURN_RIGHT = "D|";
-	public static final String CALIBRATE = "C|";
+	public static final String CALIBRATE = "L|";
 	public static final String RIGHTALIGN = "B|";
-	public static final String END_TOUR = "N";
+	//public static final String END_TOUR = "N";
+	public static final String U_TURN="S|";
+	public static final String FRONT_CALIBRATION = "V|";
+	public static final String FASTEST_PATH_END = "M|";
 
 	// Connection Acknowledge
 	public static final String IMAGE_ACK = "D";
+
+	//num of sensor values to average
+	public static final int SENSOR_VALUES = 5;
+
+	//num grid for image range
+	public static final int IMAGE_RANGE = 2;
+	public static final int IMAGE_RANGE_GUESS=10;
 }

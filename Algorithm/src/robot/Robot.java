@@ -6,6 +6,8 @@ import map.MapPanel;
 import sensor.Sensor;
 import sensor.SimulatorSensor;
 
+import java.util.ArrayList;
+
 import static main.Constants.Direction.*;
 
 public abstract class Robot {
@@ -14,7 +16,7 @@ public abstract class Robot {
     int y;
     Sensor[] sensorArr= new Sensor[6];
     MapPanel map;
-    String[] mdfString;
+    private String[] mdfString;
 
 
     public Robot(Direction direction, int x, int y) {
@@ -63,7 +65,7 @@ public abstract class Robot {
         }*/
     }
 
-    protected int checkValidX(int x) {
+    private int checkValidX(int x) {
         if (x >= Constants.WIDTH - 1) {
             x = Constants.WIDTH - 2;
         }
@@ -74,7 +76,7 @@ public abstract class Robot {
         return x;
     }
 
-    protected int checkValidY(int y) {
+    private int checkValidY(int y) {
         if (y >= Constants.HEIGHT - 1) {
             y = Constants.HEIGHT - 2;
         }
@@ -85,8 +87,10 @@ public abstract class Robot {
         return y;
     }
 
-
+    public abstract void turnWithoutSensor(Direction dir);
+    public abstract void moveForwardWithoutSensor();
     public abstract void moveForward();
+    public abstract void moveForward(int steps);
     public abstract void turn(Direction dir);
     public abstract void calibrate();
     public abstract Direction robotRightDir();
@@ -95,12 +99,19 @@ public abstract class Robot {
     public abstract void initSensor();
     public abstract Direction peekRobotRightDir();
     public abstract Direction peekRobotLeftDir();
+    public abstract void calibrateFront();
+    public abstract void uTurn();
+    public abstract String takePhoto(ArrayList<int[]> coordinates);
+    public abstract ArrayList<Movement> movementForRobotFaceDirection(Direction direction);
+    public abstract void goToWall();
 
 
     //getter and setter
 
 
     public String[] getMdfString() {
+        //ask map to calculate
+        this.mdfString = map.getMdfString();
         return mdfString;
     }
 

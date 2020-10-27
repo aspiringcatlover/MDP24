@@ -56,8 +56,8 @@ public abstract class Sensor {
                         this.x = x-2;
                         this.y = y+1;
                         break;
-                    case RIGHT_MIDDLE:
-                        this.x = x;
+                    case RIGHT_UP:
+                        this.x = x-1;
                         this.y = y+2;
                         break;
                 }
@@ -84,8 +84,8 @@ public abstract class Sensor {
                         this.x = x+2;
                         this.y = y-1;
                         break;
-                    case RIGHT_MIDDLE:
-                        this.x = x;
+                    case RIGHT_UP:
+                        this.x = x+1;
                         this.y = y-2;
                         break;
                 }
@@ -112,9 +112,9 @@ public abstract class Sensor {
                         this.x = x-1;
                         this.y = y-2;
                         break;
-                    case RIGHT_MIDDLE:
+                    case RIGHT_UP:
                         this.x = x-2;
-                        this.y = y;
+                        this.y = y-1;
                         break;
                 }
                 break;
@@ -140,9 +140,9 @@ public abstract class Sensor {
                         this.x = x+1;
                         this.y = y+2;
                         break;
-                    case RIGHT_MIDDLE:
+                    case RIGHT_UP:
                         this.x = x+2;
-                        this.y = y;
+                        this.y = y+1;
                         break;
                 }
                 break;
