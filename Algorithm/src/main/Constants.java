@@ -11,7 +11,7 @@ public final class Constants {
 	public static final int TIME = 1000000;  //set 5.30mins
 	public static final int PERCENTAGE = 100;
 	public static final int SPEED = 9999;
-	public static final boolean IMAGE_REC = true;
+	public static final boolean IMAGE_REC = false;
 
 	// map direction wrt robot's forward direction
 	public enum Direction {

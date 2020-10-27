@@ -16,8 +16,10 @@ public class CameraInstructionTest {
             //connectionManager.start();
             while (connected) {
                 SocketConnection socketConnection = SocketConnection.getInstance();
+
+
                 System.out.println("CONNECTED TO SOCKET");
-                socketConnection.sendMessage("C[1,1|-1,-1|-1,-1]");
+                socketConnection.sendMessage("ma");
                 System.out.println("camera instruction send");
                 while(true){}
 
@@ -29,4 +31,6 @@ public class CameraInstructionTest {
             System.out.println("ConnectionManager is stopped");
         }
     }
+
+
 }

@@ -51,6 +51,10 @@ public class SimulatorRobot extends Robot {
 		// simulator map is the one that shld be updated
 	}
 
+	public SimulatorRobot(Direction direction, int xStart, int yStart) {
+		super(direction, xStart, yStart);
+	}
+
 	public void initialise(int x, int y, int direction){
 		super.initialise(x,y,direction);
 
@@ -465,6 +469,31 @@ public class SimulatorRobot extends Robot {
 	@Override
 	public void goToWall() {
 
+	}
+
+	//----for optimise algor
+
+	public void fakeTurn(Direction dir){
+		direction = dir;
+	}
+
+	public void fakeMoveForward(){
+		switch (direction) {
+			case WEST:
+				x -= 1;
+				break;
+			case EAST:
+				x += 1;
+				break;
+			case SOUTH:
+				y -= 1;
+				break;
+			case NORTH:
+				y += 1;
+				break;
+			default:
+				break;
+		}
 	}
 
 	/*
