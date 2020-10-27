@@ -228,36 +228,36 @@ public class MapPanel extends JPanel {
 				if ((i == 0 && j == 0) || (i == 0 && j == 1) || (i == 0 && j == 2) || (i == 1 && j == 0)
 						|| (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)
 						|| (i == 2 && j == 2)) {
-					gridcells[i][j].setBackground(Color.YELLOW); // start
+					gridcells[i][j].setBackground(new Color(255, 211, 29)); // start
 				} else if ((i == 12 && j == 17) || (i == 12 && j == 18) || (i == 12 && j == 19) || (i == 13 && j == 17)
 						|| (i == 13 && j == 18) || (i == 13 && j == 19) || (i == 14 && j == 17) || (i == 14 && j == 18)
 						|| (i == 14 && j == 19)) { 
-					gridcells[i][j].setBackground(Color.GREEN); // goal
+					gridcells[i][j].setBackground(new Color(47, 196, 178)); // goal
 				} else {
 					if (gridcells[i][j].getExplored() == true) {
 						if (gridcells[i][j].getTravelled() == true)
-							gridcells[i][j].setBackground(Color.CYAN); // travelled
+							gridcells[i][j].setBackground(new Color(60, 223, 255)); // travelled
 						else if (gridcells[i][j].getObstacle() == true)
-							gridcells[i][j].setBackground(Color.RED); // blocked
+							gridcells[i][j].setBackground(new Color(255,105,97)); // blocked
 						else
-							gridcells[i][j].setBackground(Color.BLUE); // explored
+							gridcells[i][j].setBackground(Color.WHITE); // explored
 					}
 					else
-					gridcells[i][j].setBackground(Color.WHITE); // unexplored
+					gridcells[i][j].setBackground(new Color(105,105,105)); // unexplored
 				}
 			}
 		}
 
 		//robot itself
-		gridcells[y - 1][x - 1].setBackground(Color.MAGENTA);
-		gridcells[y - 1][x].setBackground(Color.MAGENTA);
-		gridcells[y - 1][x + 1].setBackground(Color.MAGENTA);
-		gridcells[y][x + 1].setBackground(Color.MAGENTA);
-		gridcells[y + 1][x + 1].setBackground(Color.MAGENTA);
-		gridcells[y + 1][x].setBackground(Color.MAGENTA);
-		gridcells[y + 1][x - 1].setBackground(Color.MAGENTA);
-		gridcells[y][x- 1].setBackground(Color.MAGENTA);
-		gridcells[y][x].setBackground(Color.MAGENTA);
+		gridcells[y - 1][x - 1].setBackground(new Color(206, 157, 217));
+		gridcells[y - 1][x].setBackground(new Color(206, 157, 217));
+		gridcells[y - 1][x + 1].setBackground(new Color(206, 157, 217));
+		gridcells[y][x + 1].setBackground(new Color(206, 157, 217));
+		gridcells[y + 1][x + 1].setBackground(new Color(206, 157, 217));
+		gridcells[y + 1][x].setBackground(new Color(206, 157, 217));
+		gridcells[y + 1][x - 1].setBackground(new Color(206, 157, 217));
+		gridcells[y][x- 1].setBackground(new Color(206, 157, 217));
+		gridcells[y][x].setBackground(new Color(206, 157, 217));
 
 		revalidate();
 		repaint();
@@ -271,17 +271,17 @@ public class MapPanel extends JPanel {
 				if ((j == 0 && i == 0) || (j == 0 && i == 1) || (j == 0 && i == 2) || (j == 1 && i == 0)
 						|| (j == 1 && i == 1) || (j == 1 && i == 2) || (j == 2 && i == 0) || (j == 2 && i == 1)
 						|| (j == 2 && i == 2)) {
-					gridcells[i][j].setBackground(Color.YELLOW);
+					gridcells[i][j].setBackground(new Color(255, 211, 29));
 				}
 				// mark goal area
 				else if ((j == 12 && i == 17) || (j == 12 && i == 18) || (j == 12 && i == 19) || (j == 13 && i == 17)
 						|| (j == 13 && i == 18) || (j == 13 && i == 19) || (j == 14 && i == 17) || (j == 14 && i == 18)
 						|| (j == 14 && i == 19)) {
-					gridcells[i][j].setBackground(Color.GREEN);
+					gridcells[i][j].setBackground(new Color(47, 196, 178));
 				}
 				// mark unexplored area
 				else {
-					gridcells[i][j].setBackground(Color.BLUE);
+					gridcells[i][j].setBackground(new Color(105,105,105));
 				}
 			}
 		}

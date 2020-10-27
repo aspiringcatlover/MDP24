@@ -75,7 +75,7 @@ public class SimulatorActualRun extends JFrame {
             path_name = System.getProperty("user.dir")+"/Algorithm/src/sampleMapTxt/map" + mapChoice + ".txt";
             //path_name = System.getProperty("user.dir")+"/src/sampleMapTxt/map" + mapChoice + ".txt";
 //			System.out.println(path_name);
-            //path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
+            path_name = "src/sample_map/map" + Integer.toString(mapChoice) + ".txt";
             //C:\Users\CeciliaLee\IdeaProjects\MDP24\Algorithm\src\sample_map\map2.txt
             File myObj = new File(path_name);
             Scanner myReader = new Scanner(myObj);

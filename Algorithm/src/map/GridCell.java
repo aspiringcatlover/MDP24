@@ -12,6 +12,7 @@ public class GridCell extends JPanel {
 	private boolean obstacle;
 	private boolean explored;
 	private boolean travelled;
+	private boolean isWaypoint;
 	private int ver_coord;//ver_coord: along length
 	private int hor_coord;//hor_coord: along width
 	private BasicArrowButton arrow;
@@ -39,20 +40,20 @@ public class GridCell extends JPanel {
 		
 		//mark start area
 		if (state.equals("S")) {
-			setBackground(Color.YELLOW);
+			setBackground(new Color(255, 211, 29));
 		} 
 		//mark goal area
 		else if (state.equals("E")){
-			setBackground(Color.GREEN);
+			setBackground(new Color(47, 196, 178));
 		}
 		//mark unexplored area
 		else {
-			setBackground(Color.WHITE);
+			setBackground(new Color(105,105,105));
 		}
 		
 		//mark area covered by obstacle
 		if (obstacle) {
-			setBackground(Color.RED);
+			setBackground(new Color(255,105,97));
 		}
 		
 		setOpaque(true); 
@@ -103,6 +104,10 @@ public class GridCell extends JPanel {
 		return travelled;
 	}
 	
+	public boolean getIsWaypoint() {
+		return isWaypoint;
+	}
+	
 	public void setExplored(boolean explored) {
 		this.explored = explored;
 	}
@@ -111,6 +116,10 @@ public class GridCell extends JPanel {
 		this.travelled = travelled;
 	}
 
+	public void setIsWaypoint(boolean isWaypoint) {
+		this.isWaypoint = isWaypoint;
+	}
+	
 	public boolean getWall(int ver_coord, int hor_coord) {
 		if (ver_coord < 0 || ver_coord > 14)
 			return true;
