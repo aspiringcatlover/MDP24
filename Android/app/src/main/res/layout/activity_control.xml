@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/calibrateButton"
+        android:layout_width="140dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/border_darkpurple_background"
+        android:clickable="true"
+
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="CALIBRATE"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fastestToggleBtn" />
+
+    <Switch
+        android:id="@+id/phoneTiltSwitch"
+        android:layout_width="142dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:splitTrack="false"
+        android:text="TILT OFF"
+        android:textColor="@color/colorDarkPurple"
+        android:textSize="16dp"
+        android:textStyle="bold|normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backImageBtn" />
+
+    <ImageButton
+        android:id="@+id/rightImageBtn"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/leftImageBtn"
+        app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
+        app:srcCompat="@drawable/ic_right" />
+
+    <ImageButton
+        android:id="@+id/backImageBtn"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
+        app:layout_constraintVertical_bias="0.029"
+        app:srcCompat="@drawable/ic_down" />
+
+    <ImageButton
+        android:id="@+id/leftImageBtn"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="360dp"
+        android:layout_marginLeft="360dp"
+        app:layout_constraintEnd_toStartOf="@+id/backImageBtn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
+        app:srcCompat="@drawable/ic_left" />
+
+    <ImageButton
+        android:id="@+id/forwardImageBtn"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/leftImageBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_up" />
+
+    <ImageButton
+        android:id="@+id/exploreResetImageBtn"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="40dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border_white_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toEndOf="@+id/exploreToggleBtn"
+        app:layout_constraintTop_toBottomOf="@+id/fastestTimeTextView"
+        app:srcCompat="@drawable/ic_refresh" />
+
+    <ToggleButton
+        android:id="@+id/exploreToggleBtn"
+        android:layout_width="119dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_toggle"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Exploration"
+        android:textColor="#FFFFFF"
+        android:textOff="EXPLORE"
+        android:textOn="STOP"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exploreTimeTextView" />
+
+    <TextView
+        android:id="@+id/exploreTextView"
+        android:layout_width="166dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border_purple_background"
+        android:gravity="center"
+        android:text="Exploration Time"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold|normal"
+        app:layout_constraintEnd_toStartOf="@+id/fastestTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/fastestTimeTextView"
+        android:layout_width="166dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border_white_background"
+        android:gravity="center"
+        android:text="00:00"
+        android:textColor="@color/border_color"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/fastestResetImageBtn"
+        app:layout_constraintEnd_toStartOf="@+id/forwardImageBtn"
+        app:layout_constraintStart_toEndOf="@+id/exploreTimeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/fastestTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ToggleButton
+        android:id="@+id/fastestToggleBtn"
+        android:layout_width="119dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_toggle"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="FASTEST"
+        android:textColor="#FFFFFF"
+        android:textOff="FASTEST"
+        android:textOn="STOP"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/calibrateButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exploreToggleBtn" />
+
+    <TextView
+        android:id="@+id/exploreTimeTextView"
+
+        android:layout_width="166dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border_white_background"
+        android:gravity="center"
+        android:text="00:00"
+        android:textColor="@color/border_color"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/exploreToggleBtn"
+        app:layout_constraintEnd_toStartOf="@+id/fastestTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exploreTextView" />
+
+    <TextView
+        android:id="@+id/fastestTextView"
+        android:layout_width="166dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
+        android:background="@drawable/border_purple_background"
+        android:gravity="center"
+        android:text="Fastest Path"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/forwardImageBtn"
+        app:layout_constraintStart_toEndOf="@+id/exploreTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/fastestResetImageBtn"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="40dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginLeft="67dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/border_white_background"
+        app:layout_constraintStart_toEndOf="@+id/fastestToggleBtn"
+        app:layout_constraintTop_toBottomOf="@+id/exploreResetImageBtn"
+        app:srcCompat="@drawable/ic_refresh" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
