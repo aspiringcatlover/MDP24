@@ -10,9 +10,11 @@ public class Main {
 
 	private static boolean realRun = false;
 	private static boolean simulate = false;
+	public static boolean imageRegRun = false;
+
 
 	public static void main(String[] args) {
-
+		int imageReg = JOptionPane.CLOSED_OPTION;
 		int result = JOptionPane.CLOSED_OPTION;
 		while (result == JOptionPane.CLOSED_OPTION) {
 			result = JOptionPane.showConfirmDialog(null, "Is this the real run?", "Real Run", JOptionPane.YES_NO_OPTION,
@@ -22,6 +24,18 @@ public class Main {
 			}
 			if (result == JOptionPane.NO_OPTION) {
 				realRun = false;
+			}
+
+			//imageReg = JOptionPane.showConfirmDialog(null, "Image?", "Debug", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+			while (imageReg == JOptionPane.CLOSED_OPTION) {
+				imageReg = JOptionPane.showConfirmDialog(null, "Image reg exploration?", "Debug", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (imageReg==JOptionPane.YES_OPTION){
+					imageRegRun= true;
+				}
+				if (imageReg==JOptionPane.NO_OPTION){
+					imageRegRun= false;
+				}
+
 			}
 		}
 

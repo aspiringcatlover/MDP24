@@ -54,8 +54,8 @@ public class Exploration {
         }
 
         else
-            //return normalExploration();
-            return optimisedNormalExploration();
+            return normalExploration();
+            //return optimisedNormalExploration();
     }
 
 
@@ -269,11 +269,6 @@ public class Exploration {
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
-            try {
-                // ms timeout
-                Thread.sleep(200); // Customize your refresh time
-            } catch (InterruptedException e) {
-            }
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
@@ -584,11 +579,6 @@ public class Exploration {
             //send mdf shit
             System.out.println("sending mdf string...");
             actualRobot.sendMdfString();
-            try {
-                // ms timeout
-                Thread.sleep(200); // Customize your refresh time
-            } catch (InterruptedException e) {
-            }
         }
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
@@ -752,6 +742,8 @@ public class Exploration {
             if (takePhoto)
                 robot.takePhoto(rightObstacleCoordinates);
         }
+
+        senseMap();
         actual_percentage = getActualPerc();
 
 
@@ -865,6 +857,51 @@ public class Exploration {
             } catch (InterruptedException e) {
             }
         }
+
+        //a* to uncaptured surface
+        //a*star to capture image that haven capture
+        getAllSurfaces();
+        PriorityQueue<GridCell> goToGrids = getGridsImageReg();
+        int irGridX, irGridY;
+        Direction irDirection;
+        GridCell irGrid;
+        while (!goToGrids.isEmpty()){
+            System.out.println("image reg pq..");
+            for (GridCell gridCell:goToGrids){
+                System.out.println("x:"  +gridCell.getHorCoord() + "y: " + gridCell.getVerCoord() + "direction.." + gridCell.getDirection());
+            }
+            System.out.println("POLLLLLLL");
+            irGrid = goToGrids.poll();
+            irDirection = irGrid.getDirection();
+            irGridX = irGrid.getHorCoord();
+            irGridY= irGrid.getVerCoord();
+            pathFinder = new PathFinder(map);
+            path = pathFinder.getShortestPath(robot.getXCoord(), robot.getYCoord(), irGridX, irGridY, robot.getDirection());
+            if (path!=null&&path.size()!=0)
+                //photoReturnValue = sendRobotInstructionBash(path);
+                photoReturnValue = sendRobotInstructionFromPathNoSensorWithImageReg(path, path.get(path.size()-1));
+            if (photoReturnValue.equals("I")){
+                //terminate a* for image reg
+                System.out.println("TERMINATE image reg a*");
+                break;
+            }
+            //turn to face direction
+            System.out.println("grid... " + robot.getXCoord() + " " + robot.getYCoord() + " stupid robot direction" + robot.getDirection() +" is suppose to face here:" + irDirection);
+            if (robot.getDirection()!=irDirection){
+                System.out.println("eh hello robot move to face correct direction");
+                movementsToFaceCorrectDirection = robot.movementForRobotFaceDirection(irDirection);
+                photoReturnValue = sendRobotInstructionWithImageReg(movementsToFaceCorrectDirection);
+                if (photoReturnValue.equals("I")){
+                    //terminate a* for image reg
+                    System.out.println("TERMINATE image reg a*");
+                    break;
+                }
+                System.out.println("robot final position? " + robot.getDirection());
+            }
+            goToGrids = getGridsImageReg();
+        }
+        //send final mdf string
+        robot.setMap(map);
 
         System.out.println("WHERE IS THE ROBOT??? x:" + robot.getXCoord()+ " ,y:" + robot.getYCoord());
         //if robot not at start point get shortest path to start point & move to start point

@@ -3,6 +3,7 @@ package connection;
 import exploration.ExplorationApp;
 import fastestPath.FastestPathApp;
 import main.Constants;
+import main.Main;
 import robot.ActualRobot;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class ConnectionManager {
                 s = "Exploration Started";
                 explorationRun = true;
                 System.out.println("image reg boolean value in connection manager?" + Constants.IMAGE_REC);
-                thread = ExplorationApp.getInstance(robot, Constants.TIME, Constants.PERCENTAGE, Constants.SPEED, Constants.IMAGE_REC);
+                thread = ExplorationApp.getInstance(robot, Constants.TIME, Constants.PERCENTAGE, Constants.SPEED, Main.imageRegRun);
                 thread.setPriority(Thread.MAX_PRIORITY);
                 try {
                     thread.join();

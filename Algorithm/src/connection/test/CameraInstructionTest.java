@@ -19,7 +19,7 @@ public class CameraInstructionTest {
 
 
                 System.out.println("CONNECTED TO SOCKET");
-                socketConnection.sendMessage("ma");
+                socketConnection.sendMessage("");
                 System.out.println("camera instruction send");
                 while(true){}
 

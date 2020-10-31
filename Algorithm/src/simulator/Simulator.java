@@ -70,14 +70,14 @@ public class Simulator extends JFrame {
 		setTitle("Maze Simulator");
 		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(10000, 10000);
+		setSize(1000000, 1000000);
 
 		JPanel settingsContainer = new JPanel();
 
 		add(settingsContainer);
 
-		settingsContainer.setLayout(new GridLayout(0, 1));
-		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(8, 0, 0, 0)));
+		settingsContainer.setLayout(new GridLayout(0, 2));
+		settingsContainer.setBorder(new CompoundBorder(new TitledBorder("Settings"), new EmptyBorder(2, 0, 0, 0)));
 
 		// drop down menu to select map
 		JLabel selectMap = new JLabel("Select map:");
@@ -91,29 +91,45 @@ public class Simulator extends JFrame {
 		JLabel goalCovPer = new JLabel();
 		goalCovPer.setText("Enter goal coverage percentage:");
 		settingsContainer.add(goalCovPer);
-		JTextField goalCovPerField = new JTextField(5);
+		JTextField goalCovPerField = new JTextField(10);
 		settingsContainer.add(goalCovPerField);
 
 		// steps per second field
 		JLabel stepsPerSec = new JLabel();
 		stepsPerSec.setText("Enter steps per second:");
 		settingsContainer.add(stepsPerSec);
-		JTextField stepsPerSecField = new JTextField(5);
+		JTextField stepsPerSecField = new JTextField(10);
 		settingsContainer.add(stepsPerSecField);
 
 		// time field
 		JLabel timePer = new JLabel();
 		timePer.setText("Enter time in mm:ss:");
 		settingsContainer.add(timePer);
-		JTextField timeField = new JTextField(5);
+		JTextField timeField = new JTextField(10);
 		timeField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(timeField);
+
+		//startpoint x field
+		JLabel startpointX = new JLabel();
+		startpointX.setText("Enter startpoint (x):");
+		settingsContainer.add(startpointX);
+		JTextField startpointXField = new JTextField(10);
+		startpointXField.setBounds(0, 0, 10, 10);
+		settingsContainer.add(startpointXField);
+
+		//startpoint y field
+		JLabel startpointY = new JLabel();
+		startpointY.setText("Enter startpoint (y):");
+		settingsContainer.add(startpointY);
+		JTextField startpointYField = new JTextField(10);
+		startpointYField.setBounds(0, 0, 10, 10);
+		settingsContainer.add(startpointYField);
 
 		//waypoint x field
 		JLabel waypointX = new JLabel();
 		waypointX.setText("Enter waypoint (x):");
 		settingsContainer.add(waypointX);
-		JTextField waypointXField = new JTextField(5);
+		JTextField waypointXField = new JTextField(10);
 		waypointXField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(waypointXField);
 
@@ -121,17 +137,28 @@ public class Simulator extends JFrame {
 		JLabel waypointY = new JLabel();
 		waypointY.setText("Enter waypoint (y):");
 		settingsContainer.add(waypointY);
-		JTextField waypointYField = new JTextField(5);
+		JTextField waypointYField = new JTextField(10);
 		waypointYField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(waypointYField);
+
 
 		// enter mdf string
 		JLabel mdfString = new JLabel();
 		mdfString.setText("Enter MDF string:");
 		settingsContainer.add(mdfString);
-		JTextField mdfField = new JTextField(5);
+		JTextField mdfField = new JTextField(10);
 		mdfField.setBounds(0, 0, 10, 10);
 		settingsContainer.add(mdfField);
+
+		JSeparator s4 = new JSeparator();
+		s4.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s4);
+		s4.setBounds(0, 0, 1, 1);
+
+		JSeparator s5 = new JSeparator();
+		s5.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s5);
+		s5.setBounds(0, 0, 1, 1);
 
 		// exploration button
 		JButton expButton = new JButton();
@@ -143,39 +170,64 @@ public class Simulator extends JFrame {
 		fpButton.setText("Start Fastest Path");
 		settingsContainer.add(fpButton);
 
-		JSeparator s2 = new JSeparator();
-		s2.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s2);
-		s2.setBounds(0, 0, 1, 1);
+		JSeparator s6 = new JSeparator();
+		s6.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s6);
+		s6.setBounds(0, 0, 1, 1);
+
+		JSeparator s7 = new JSeparator();
+		s7.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s7);
+		s7.setBounds(0, 0, 1, 1);
 
 		// print status button
 		JButton statusButton = new JButton();
 		statusButton.setText("Print Status");
 		settingsContainer.add(statusButton);
 
+//		JSeparator s2 = new JSeparator();
+//		s2.setOrientation(SwingConstants.HORIZONTAL);
+//		settingsContainer.add(s2);
+//		s2.setBounds(0, 0, 1, 1);
+
 		//print settings info
-		JLabel statusInfo = new JLabel();
-		statusInfo.setText("Status Info:");
-		settingsContainer.add(statusInfo);
-		JTextField statusInfoField = new JTextField(25);
+//		JLabel statusInfo = new JLabel();
+//		statusInfo.setText("Status Info:");
+//		settingsContainer.add(statusInfo);
+		JTextField statusInfoField = new JTextField(10);
 		statusInfoField.setBounds(0, 0, 10, 50);
 		settingsContainer.add(statusInfoField);
-		
-		JSeparator s3 = new JSeparator();
-		s3.setOrientation(SwingConstants.HORIZONTAL);
-		settingsContainer.add(s3);
-		s3.setBounds(0, 0, 1, 1);
+
+		JSeparator s8 = new JSeparator();
+		s8.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s8);
+		s8.setBounds(0, 0, 1, 1);
+
+		JSeparator s9 = new JSeparator();
+		s9.setOrientation(SwingConstants.HORIZONTAL);
+		settingsContainer.add(s9);
+		s9.setBounds(0, 0, 1, 1);
 		
 		// print mdf button
 		JButton mdfButton = new JButton();
 		mdfButton.setText("Print MDF String");
 		settingsContainer.add(mdfButton);
 
+		// print match button
+		JButton matchButton = new JButton();
+		matchButton.setText("Is it a match?");
+		settingsContainer.add(matchButton);
+
+//		JSeparator s3 = new JSeparator();
+//		s3.setOrientation(SwingConstants.HORIZONTAL);
+//		settingsContainer.add(s3);
+//		s3.setBounds(0, 0, 1, 1);
+
 		// print mdf string part 1
 		JLabel mdf1 = new JLabel();
 		mdf1.setText("MDF String Part 1:");
 		settingsContainer.add(mdf1);
-		JTextField mdfStringField1 = new JTextField(5);
+		JTextField mdfStringField1 = new JTextField(10);
 		mdfStringField1.setBounds(0, 0, 10, 50);
 		settingsContainer.add(mdfStringField1);
 		
@@ -183,17 +235,12 @@ public class Simulator extends JFrame {
 		JLabel mdf2 = new JLabel();
 		mdf2.setText("MDF String Part 2:");
 		settingsContainer.add(mdf2);
-		JTextField mdfStringField2 = new JTextField(5);
+		JTextField mdfStringField2 = new JTextField(10);
 		mdfStringField2.setBounds(0, 0, 10, 50);
 		settingsContainer.add(mdfStringField2);
-		
-		// print match button
-		JButton matchButton = new JButton();
-		matchButton.setText("Is it a match?");
-		settingsContainer.add(matchButton);
 
 		//add vertical strut
-		add(Box.createHorizontalStrut(20));
+		add(Box.createHorizontalStrut(10));
 
 
 		// add map
@@ -221,6 +268,8 @@ public class Simulator extends JFrame {
 
 				//waypoint y
 				waypoint_y = Integer.parseInt(waypointYField.getText());
+
+
 
 				// map descriptor format string
 				mdf_string_ent = mdfField.getText();
@@ -286,7 +335,7 @@ public class Simulator extends JFrame {
 				}
 
                 robot = new SimulatorRobot(map, steps_per_sec, simulateMap);
-                startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, false);
+                startExploration(robot, time_limit_ms, goal_coverage_perc, steps_per_sec, Main.imageRegRun);
                 mapExplored=true;
                 actual_coverage_perc =  (int) robot.getMap().getActualPerc();
 

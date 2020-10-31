@@ -59,6 +59,7 @@ public class FastestPathApp extends Thread{
         }
         else{
             //update the simulator
+            this.robot.getMap().clearTravelledForGridCell();
             simulatorInstructions(robotMovements1);
 
         }
@@ -86,6 +87,7 @@ public class FastestPathApp extends Thread{
             }
             direction = robot.getDirection();
             robot.getMap().updateMap(robot.getXCoord(),robot.getYCoord());
+            robot.getMap().setTravellededForGridCell(robot.getYCoord(),robot.getXCoord(), true);
             robot.getMap().displayDirection(robot.getYCoord(),robot.getXCoord(),direction);
         }
 

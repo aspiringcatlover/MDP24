@@ -31,7 +31,7 @@ public class MapPanel extends JPanel {
 	public MapPanel(String[][] sample_map) {
 
 		gridcells = new GridCell[Constants.HEIGHT][Constants.WIDTH];
-		for (int row = 0; row < Constants.HEIGHT; row++) {
+		for (int row = 0; row <Constants.HEIGHT; row++) {
 			for (int col = 0; col < Constants.WIDTH; col++) {
 				GridCell gridCell = new GridCell(row, col, sample_map[row][col]);
 				gridcells[row][col] = gridCell;
@@ -207,6 +207,15 @@ public class MapPanel extends JPanel {
 		this.gridcells[y][x].setTravelled(travelled);
 	}
 
+	public void clearTravelledForGridCell(){
+		for (int y=0; y<Constants.HEIGHT; y++){
+			for (int x=0; x<Constants.WIDTH; x++){
+				this.gridcells[y][x].setTravelled(false);
+			}
+		}
+	}
+
+
 	public void setGridCell(int y, int x, GridCell gridCell) {
 		changed=true;
 		this.gridcells[y][x] = gridCell;
@@ -259,6 +268,9 @@ public class MapPanel extends JPanel {
 		gridcells[y][x- 1].setBackground(new Color(206, 157, 217));
 		gridcells[y][x].setBackground(new Color(206, 157, 217));
 
+		if (waypoint[1]!=-1&&waypoint[0]!=-1)
+			gridcells[waypoint[1]][waypoint[0]].setBackground(new Color(255,204,153));
+
 		revalidate();
 		repaint();
 	}
@@ -292,6 +304,7 @@ public class MapPanel extends JPanel {
 	public void setWayPoint(int x, int y) {
 		this.waypoint[0] = x;
 		this.waypoint[1] = y;
+		gridcells[y][x].setBackground(new Color(255,204,153));
 	}
 
 	public int[] getWayPoint() {
