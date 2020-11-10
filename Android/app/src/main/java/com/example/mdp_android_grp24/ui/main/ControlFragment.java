@@ -67,7 +67,7 @@ public class ControlFragment extends Fragment implements SensorEventListener {
 
             exploreTimeTextView.setText(String.format("%02d:%02d", minutesExplore, secondsExplore));
 
-            timerHandler.postDelayed(this, 0);
+            timerHandler.postDelayed(this, 500);
         }
     };
 
@@ -81,7 +81,7 @@ public class ControlFragment extends Fragment implements SensorEventListener {
 
             fastestTimeTextView.setText(String.format("%02d:%02d", minutesFastest, secondsFastest));
 
-            timerHandler.postDelayed(this, 0);
+            timerHandler.postDelayed(this, 500);
         }
     };
 
@@ -182,19 +182,7 @@ public class ControlFragment extends Fragment implements SensorEventListener {
             @Override
             public void onClick(View view) {
                 showLog("Clicked moveBackwardImageBtn");
-                if (gridMap.getAutoUpdate())
-                    updateStatus("Please press 'MANUAL'");
-                else if (gridMap.getCanDrawRobot() && !gridMap.getAutoUpdate()) {
-                    gridMap.moveRobot("back");
-                    MainActivity.refreshLabel();
-                    if (gridMap.getValidPosition())
-                        updateStatus("moving backward");
-                    else
-                        updateStatus("Unable to move backward");
-                    MainActivity.printMessage("S");
-                }
-                else
-                    updateStatus("Please press 'STARTING POINT'");
+
                 showLog("Exiting moveBackwardImageBtn");
             }
         });
@@ -354,7 +342,7 @@ public class ControlFragment extends Fragment implements SensorEventListener {
         @Override
         public void run() {
             sensorFlag = true;
-            sensorHandler.postDelayed(this,0);
+            sensorHandler.postDelayed(this,500);
         }
     };
 
@@ -373,11 +361,6 @@ public class ControlFragment extends Fragment implements SensorEventListener {
                 gridMap.moveRobot("forward");
                 MainActivity.refreshLabel();
                 MainActivity.printMessage("W");
-            } else if (y > 2) {
-                showLog("Sensor Move Backward Detected");
-                gridMap.moveRobot("back");
-                MainActivity.refreshLabel();
-                MainActivity.printMessage("S");
             } else if (x > 2) {
                 showLog("Sensor Move Left Detected");
                 gridMap.moveRobot("left");

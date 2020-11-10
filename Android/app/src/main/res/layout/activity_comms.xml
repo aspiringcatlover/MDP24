@@ -10,9 +10,8 @@
 
     <EditText
         android:id="@+id/typeBoxEditText"
-        android:layout_width="540dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="546dp"
+        android:layout_height="58dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center|start"
         android:hint="Type something..."
@@ -25,8 +24,8 @@
 
     <TextView
         android:id="@+id/messageReceivedTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="180dp"
+        android:layout_width="600dp"
+        android:layout_height="182dp"
         android:background="@drawable/rounded_corner"
         android:gravity="bottom"
         android:scrollbars="vertical"
@@ -34,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="30dp" />
+        tools:layout_editor_absoluteY="32dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/messageButton"

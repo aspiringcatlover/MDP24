@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <Button
         android:id="@+id/calibrateButton"
-        android:layout_width="140dp"
+        android:layout_width="135dp"
         android:layout_height="42dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="14dp"
         android:background="@drawable/border_darkpurple_background"
         android:clickable="true"
 
@@ -18,8 +19,8 @@
         android:shadowRadius="5"
         android:text="CALIBRATE"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.227"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +30,9 @@
         android:id="@+id/phoneTiltSwitch"
         android:layout_width="142dp"
         android:layout_height="26dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="2dp"
         android:splitTrack="false"
         android:text="TILT OFF"
         android:textColor="@color/colorDarkPurple"
@@ -48,27 +49,29 @@
         android:layout_height="75dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/leftImageBtn"
         app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
-        app:srcCompat="@drawable/ic_right" />
+        app:srcCompat="@drawable/ic_arrow_move_right" />
 
     <ImageButton
         android:id="@+id/backImageBtn"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="58dp"
         android:layout_marginBottom="2dp"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
         app:layout_constraintVertical_bias="0.029"
-        app:srcCompat="@drawable/ic_down" />
+        app:srcCompat="@drawable/ic_arrow_move_down" />
 
     <ImageButton
         android:id="@+id/leftImageBtn"
@@ -76,22 +79,25 @@
         android:layout_height="75dp"
         android:layout_marginStart="360dp"
         android:layout_marginLeft="360dp"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintEnd_toStartOf="@+id/backImageBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forwardImageBtn"
-        app:srcCompat="@drawable/ic_left" />
+        app:srcCompat="@drawable/ic_arrow_move_left" />
 
     <ImageButton
         android:id="@+id/forwardImageBtn"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginRight="82dp"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintBottom_toTopOf="@+id/leftImageBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_up" />
+        app:srcCompat="@drawable/ic_arrow_move_up" />
 
     <ImageButton
         android:id="@+id/exploreResetImageBtn"
@@ -101,16 +107,16 @@
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_white_background"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toEndOf="@+id/exploreToggleBtn"
         app:layout_constraintTop_toBottomOf="@+id/fastestTimeTextView"
-        app:srcCompat="@drawable/ic_refresh" />
+        app:srcCompat="@drawable/ic_icon_refresh" />
 
     <ToggleButton
         android:id="@+id/exploreToggleBtn"
-        android:layout_width="119dp"
+        android:layout_width="110dp"
         android:layout_height="38dp"
         android:layout_marginStart="41dp"
         android:layout_marginLeft="41dp"
@@ -163,7 +169,7 @@
 
     <ToggleButton
         android:id="@+id/fastestToggleBtn"
-        android:layout_width="119dp"
+        android:layout_width="110dp"
         android:layout_height="38dp"
         android:layout_marginStart="41dp"
         android:layout_marginLeft="41dp"
@@ -224,9 +230,9 @@
         android:layout_marginStart="67dp"
         android:layout_marginLeft="67dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/border_white_background"
+        android:background="@drawable/button_galaxy"
         app:layout_constraintStart_toEndOf="@+id/fastestToggleBtn"
         app:layout_constraintTop_toBottomOf="@+id/exploreResetImageBtn"
-        app:srcCompat="@drawable/ic_refresh" />
+        app:srcCompat="@drawable/ic_icon_refresh" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

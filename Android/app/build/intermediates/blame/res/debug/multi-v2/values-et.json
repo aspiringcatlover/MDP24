@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android v4/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-et/values-et.xml",
+            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-et/values-et.xml",
             "map": [
                 {
                     "source": "/Users/sherylsaw/.gradle/caches/transforms-2/files-2.1/77c2fc448e2bd0738fd67dce062b1efd/play-services-base-17.0.0/res/values-et/values.xml",

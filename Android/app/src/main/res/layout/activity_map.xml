@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/color"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <Switch
         android:id="@+id/manualAutoToggleBtn"
@@ -37,27 +38,26 @@
         android:layout_marginStart="356dp"
         android:layout_marginLeft="356dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/border_white_background"
+        android:background="@drawable/button_galaxy"
         android:scaleType="centerCrop"
-        android:tint="@color/border_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        app:srcCompat="@drawable/ic_check" />
+        app:srcCompat="@drawable/ic_checkcell" />
 
 
     <ImageButton
         android:id="@+id/directionChangeImageBtn"
-        android:layout_width="41dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="22dp"
-        android:background="@drawable/border_white_background"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/button_galaxy"
         android:scaleType="fitCenter"
-        android:tint="@color/colorBlack"
+        android:tint="@color/border_color"
         app:layout_constraintStart_toEndOf="@+id/obstacleImageBtn"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        app:srcCompat="@drawable/directionpic" />
+        app:srcCompat="@drawable/ic_direction" />
 
     <ImageButton
         android:id="@+id/obstacleImageBtn"
@@ -66,31 +66,33 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/button_galaxy"
         android:scaleType="centerCrop"
-        android:background="@drawable/border_white_background"
         android:tint="@color/border_color"
         app:layout_constraintStart_toEndOf="@+id/exploredImageBtn"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        app:srcCompat="@drawable/ic_arrow_error" />
+        app:srcCompat="@drawable/ic_error" />
 
     <ImageButton
         android:id="@+id/clearImageBtn"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/border_white_background"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/button_galaxy"
         android:scaleType="centerCrop"
-        android:tint="@color/border_color"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/directionChangeImageBtn"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        app:srcCompat="@drawable/ic_clear" />
+        app:srcCompat="@drawable/ic_delete" />
 
     <ToggleButton
         android:id="@+id/setStartPointToggleBtn"
 
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="18dp"
@@ -113,7 +115,7 @@
 
     <ToggleButton
         android:id="@+id/setWaypointToggleBtn"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="26dp"
@@ -137,7 +139,7 @@
 
     <Button
         android:id="@+id/resetMapBtn"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="26dp"
         android:background="@drawable/border_purple_background"

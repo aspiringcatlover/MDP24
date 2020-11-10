@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android v4/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
+            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
                     "source": "/Users/sherylsaw/.gradle/caches/transforms-2/files-2.1/c7eb9cd3508ac3959447c14fd76c9fb9/material-1.0.0/res/values-land/values-land.xml",

@@ -92,8 +92,8 @@ public class GridMap extends View {
         initMap();
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         obstacleColor.setColor(Color.BLACK);
-        robotColor.setColor(Color.parseColor("#FF9999"));
         endColor.setColor(Color.parseColor("#C7B7FE"));
+        robotColor.setColor(Color.parseColor("#FF9999"));
         startColor.setColor(Color.CYAN);
         waypointColor.setColor(Color.parseColor("#48D1CC"));
         unexploredColor.setColor(Color.parseColor("#FFFAF0"));

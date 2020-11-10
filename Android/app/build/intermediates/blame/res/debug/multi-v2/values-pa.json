@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android v4/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pa/values-pa.xml",
+            "outputFile": "/Users/sherylsaw/Documents/GitHub/MDP24/Android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pa/values-pa.xml",
             "map": [
                 {
                     "source": "/Users/sherylsaw/.gradle/caches/transforms-2/files-2.1/e9dab9c67c1ee3668e0bbf86c6d8cbd8/core-1.1.0/res/values-pa/values-pa.xml",
